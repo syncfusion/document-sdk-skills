@@ -1,0 +1,323 @@
+# Markdown Conversions
+
+> Bidirectional Markdown-DOCX conversion — converting Markdown files to Word documents and Word documents to Markdown format, supporting CommonMark and GitHub-flavored syntax with cross-platform and Windows-specific approaches.
+
+---
+
+## Required common usings
+
+```csharp
+using Syncfusion.DocIO;
+using Syncfusion.DocIO.DLS;
+```
+
+## Required usings for Windows-Specific
+
+```csharp
+using System;
+using System.IO;
+```
+
+## Convert Markdown to Word
+
+### Minimal Code
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.md", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Markdown))
+    {
+        MemoryStream outputStream = new MemoryStream();
+        document.Save(outputStream, FormatType.Docx);
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument("Input.md", FormatType.Markdown);
+MemoryStream outputStream = new MemoryStream();
+document.Save(outputStream, FormatType.Docx);
+document.Close();
+```
+
+### Save to File
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.md", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Markdown))
+    {
+        var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "Output.docx");
+        using (FileStream outStream = new FileStream(outputPath, FileMode.Create, FileAccess.ReadWrite))
+        {
+            document.Save(outStream, FormatType.Docx);
+        }
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument("Input.md", FormatType.Markdown);
+document.Save("Output.docx", FormatType.Docx);
+document.Close();
+```
+
+### Customize Image During Import
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.md", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Markdown))
+    {
+        document.MdImportSettings.ImageNodeVisited += (sender, args) =>
+        {
+            if (args.Uri == "Image_1.png")
+                args.ImageStream = new FileStream("Image_1.png", FileMode.Open);
+        };
+        
+        MemoryStream outputStream = new MemoryStream();
+        document.Save(outputStream, FormatType.Docx);
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument();
+document.MdImportSettings.ImageNodeVisited += (sender, args) =>
+{
+    if (args.Uri == "Image_1.png")
+        args.ImageStream = new FileStream("Image_1.png", FileMode.Open);
+};
+document.Open("Input.md");
+
+MemoryStream outputStream = new MemoryStream();
+document.Save(outputStream, FormatType.Docx);
+document.Close();
+```
+
+---
+
+## Convert Word to Markdown
+
+### Minimal Code
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
+    {
+        MemoryStream outputStream = new MemoryStream();
+        document.Save(outputStream, FormatType.Markdown);
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+MemoryStream outputStream = new MemoryStream();
+document.Save(outputStream, FormatType.Markdown);
+document.Close();
+```
+
+### Save to File
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
+    {
+        var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "Output.md");
+        using (FileStream outStream = new FileStream(outputPath, FileMode.Create, FileAccess.ReadWrite))
+        {
+            document.Save(outStream, FormatType.Markdown);
+        }
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.Save("Output.md", FormatType.Markdown);
+document.Close();
+```
+
+### Export Images to Folder
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
+    {
+        document.SaveOptions.MarkdownExportImagesFolder = "D:\\WordToMdImages";
+        MemoryStream outputStream = new MemoryStream();
+        document.Save(outputStream, FormatType.Markdown);
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.SaveOptions.MarkdownExportImagesFolder = "D:\\WordToMdImages";
+document.Save("Output.md", FormatType.Markdown);
+document.Close();
+```
+
+### Customize Image Path During Export
+
+#### Cross-Platform
+```csharp
+using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
+    {
+        document.SaveOptions.ImageNodeVisited += (sender, args) =>
+        {
+            string imagePath = @"D:\Output\" + Path.GetFileName(args.Uri);
+            using (FileStream fs = File.Create(imagePath))
+                args.ImageStream.CopyTo(fs);
+            args.Uri = imagePath;
+        };
+        
+        MemoryStream outputStream = new MemoryStream();
+        document.Save(outputStream, FormatType.Markdown);
+    }
+}
+```
+
+#### Windows-Specific
+```csharp
+WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.SaveOptions.ImageNodeVisited += (sender, args) =>
+{
+    string imagePath = @"D:\Output\" + Path.GetFileName(args.Uri);
+    using (FileStream fs = File.Create(imagePath))
+        args.ImageStream.CopyTo(fs);
+    args.Uri = imagePath;
+};
+
+document.Save("Output.md", FormatType.Markdown);
+document.Close();
+```
+
+---
+
+## Markdown Format Overview
+
+| Aspect | Details |
+|--------|---------|
+| **Format Name** | Markdown |
+| **Specification** | CommonMark and GitHub-flavored Markdown |
+| **Human Readable** | Yes, lightweight markup language |
+| **Use Case** | Documentation, readme files, structured text with formatting |
+| **Content Retention** | Preserves text formatting, lists, links, images, headings |
+| **Supported Conversions** | Bidirectional with DOCX, can also convert to HTML, PDF, Image |
+
+---
+
+## Supported Markdown Syntax
+
+| Element | Syntax | Description |
+|---------|--------|-------------|
+| **Bold** | `**text**` | Bold formatting |
+| **Italic** | `*text*` | Italic formatting |
+| **Bold & Italic** | `***text***` | Both bold and italic |
+| **Strikethrough** | `~~text~~` | Strikethrough text |
+| **Subscript** | `<sub>text</sub>` | Subscript formatting |
+| **Superscript** | `<sup>text</sup>` | Superscript formatting |
+| **Headings** | `# H1, ## H2, ... ###### H6` | 6 levels of headings |
+| **Block Quote** | `> text` | Block quote |
+| **Code Span** | `` `code` `` | Inline code |
+| **Indented Code** | 4 spaces + code | Code block |
+| **Fenced Code** | ` ``` code ``` ` | Fenced code block |
+| **Ordered List** | `1. Item` | Numbered list |
+| **Unordered List** | `- Item` | Bulleted list |
+| **Links** | `[text](url)` | Hyperlink |
+| **Images** | `![alt](url)` | Image reference |
+| **Horizontal Line** | `---` | Thematic break |
+| **Task Item** | `- [ ] Task` | Checkbox task (with content control) |
+| **Table** | Pipe/underscore syntax | Tables (GitHub-flavored) |
+
+---
+
+## Supported Word Elements in Markdown Conversion
+
+| Element | Support | Notes |
+|---------|---------|-------|
+| **Paragraphs** | ✓ | Preserved as single line |
+| **Tables** | ✓ | GitHub-flavored syntax; nested tables merged to parent |
+| **Images** | ✓ | Base64 in stream; folder export for file save |
+| **Hyperlinks** | ✓ | Preserved in Markdown syntax |
+| **Lists** | ✓ | Numbered and bulleted; restart requires empty paragraph |
+| **Headings** | ✓ | 6 levels (Word styles: Heading 1-6) |
+| **Bold/Italic** | ✓ | Text formatting preserved |
+| **Fields** | ✓ | Field result preserved |
+| **Form Fields** | ✓ | Text and dropdown results preserved |
+| **Content Controls** | ✓ | Contents preserved; checkbox = task item |
+| **Block Quotes** | ✓ | Quote style applied; nested via `>` prefix |
+
+---
+
+## Word Styles for Markdown Export
+
+| Word Style | Markdown Result |
+|-----------|-----------------|
+| Heading 1-6 | `# Heading 1` through `###### Heading 6` |
+| Quote | `> Block quote` |
+| FencedCode | ` ``` Fenced code block ``` ` |
+| IndentedCode | Indented code block (4 spaces) |
+| InlineCode (character style) | `` `inline code` `` |
+
+---
+
+## Key Properties and Methods
+
+| Item | Type | Description |
+|------|------|-------------|
+| `FormatType.Markdown` | Enum | Specifies Markdown format for conversion |
+| `FormatType.Docx` | Enum | Specifies DOCX format for conversion |
+| `Save(stream, FormatType)` | Method | Save document to stream with specified format |
+| `Save(path, FormatType)` | Method | Save document to file with specified format |
+| `WordDocument(stream, FormatType)` | Constructor | Load document from stream with specified format |
+| `MdImportSettings.ImageNodeVisited` | Event | Customize image data during Markdown import |
+| `SaveOptions.ImageNodeVisited` | Event | Customize image path during Word to Markdown export |
+| `SaveOptions.MarkdownExportImagesFolder` | Property | Set folder for image export during conversion |
+
+---
+
+## Common Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `FormatType` | Enum | Document format (Markdown, Docx, etc.) |
+| `FileMode.Open` | Enum | Open existing file stream |
+| `FileMode.Create` | Enum | Create new file stream |
+| `FileAccess.Read` | Enum | Read-only access |
+| `FileAccess.ReadWrite` | Enum | Read and write access |
+| `FileShare.ReadWrite` | Enum | Allow concurrent read and write |
+
+---
+
+## Placeholders
+
+- `"Input.md"` → Replace with `"{markdown-file-path}"`
+- `"Input.docx"` → Replace with `"{docx-file-path}"`
+- `"Output.md"` → Replace with `"{output-markdown-path}"`
+- `"Output.docx"` → Replace with `"{output-docx-path}"`
+- `"Image_1.png"` → Replace with `"{image-file-path}"`
+- `"D:\\WordToMdImages"` → Replace with `"{images-folder-path}"`
+- `"D:\\Output\\"` → Replace with `"{output-folder-path}"`
+
+---
+

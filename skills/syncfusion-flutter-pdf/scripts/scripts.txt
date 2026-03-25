@@ -1,0 +1,6 @@
+This folder is used for temporary Dart scripts generated during Mode 2 (Execution Mode).
+
+Temp scripts are created here as: temp-{unix-timestamp}.dart
+They are automatically deleted after execution.
+
+Do NOT manually place scripts here — they are managed by the skill.
