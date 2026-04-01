@@ -71,9 +71,9 @@ Copilot can automatically:
 #### Mode 1 — Code Generation
 *Use these when you want C# code snippets for your own project.*
 
-- "Generate a C# snippet report.pdf or image, convert the PDF to JSON, and save the result as result.json."
+- "Generate a C# snippet report.pdf or image, convert the PDF to JSON, and save the result as result.json using SmartDataExtractor."
 - "Write Program.cs code using Syncfusion.SmartDataExtractor to extract the input as pdf stream."
-- "Show me code to enable the table and form option for extracting the data as Json."
+- "Show me code to enable the table and form option for extracting the data as Json using SmartDataExtractor."
 
 > **Key distinction:** Prompts with *"extract"*,*"show me"*, *"code"*, *"snippet"*, or *"how to"* → **Mode 1**.
 

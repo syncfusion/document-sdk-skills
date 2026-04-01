@@ -90,5 +90,4 @@ All templates and snippets are in the `references/` folder:
 
 ## Rules
 
-- Use license key from `SyncfusionLicense.txt` at workspace root or env var `SYNCFUSION_LICENSE_KEY`
 - Never use Python libraries (e.g., python-docx)

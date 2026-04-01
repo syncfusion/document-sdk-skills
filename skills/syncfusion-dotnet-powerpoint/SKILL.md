@@ -21,7 +21,6 @@ This skill supports two operational modes — generating C# code for the user’
 ## Prerequisites
 
 - .NET SDK 8+ and `dotnet-script`: `dotnet tool install -g dotnet-script`
-- Syncfusion License: `SyncfusionLicense.txt` or env var `SYNCFUSION_LICENSE_KEY`
 - Free license: https://www.syncfusion.com/products/communitylicense
 
 ## Quick Start Examples
@@ -121,6 +120,5 @@ All templates and snippets are in the `references/` folder:
 
 - Output files go in `./output/` directory
 - Temp `.csx` scripts must be created inside `{skill-root}/syncfusion-dotnet-powerpoint/scripts/` — never in the workspace root or customer `scripts/` folder
-- Use license key from `SyncfusionLicense.txt` at workspace root or env var `SYNCFUSION_LICENSE_KEY`
 - Never use Python libraries (e.g., python-pptx)
 - Never leave temp `.csx` files after execution

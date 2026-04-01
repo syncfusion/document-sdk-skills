@@ -14,6 +14,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 - **Excel (XLSX)** - Create, edit, and convert Excel documents with support for formulas, charts, pivot tables, conditional formatting, data validation, and encryption.
 - **PowerPoint (PPTX)** - Create, edit, and convert PowerPoint presentations with full support for charts, animations, transitions, encryption, and slide-to-image conversion.
 - **Markdown** - Create and open Markdown documents with support for headings, tables, lists, images, hyperlinks, code blocks, and blockquotes.
+- **Calculate** - Parse and compute formulas, expressions, and calculations with support for 400+ built-in functions, named ranges, array formulas, custom functions, and Excel-style formula evaluation.
 - **Smart Data Extraction** - Extract text, structured fields, Identify the form field and tables from PDFs and images as JSON or new PDF document.
 - **Pdf To Image Converter** - Convert the PDF document to image.
 
@@ -33,7 +34,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 
 **Step 1: Checkout and copy the required skills**
 
-Clone or download the Document-SDK-Skills repository and copy the product skills you need (e.g., syncfusion-dotnet-pdf, syncfusion-dotnet-word, syncfusion-dotnet-excel, syncfusion-dotnet-powerpoint, syncfusion-dotnet-markdown, syncfusion-dotnet-smart-data-extraction, syncfusion-java-word) from the `skills/` directory.
+Clone or download the Document-SDK-Skills repository and copy the product skills you need (e.g., syncfusion-dotnet-pdf, syncfusion-dotnet-word, syncfusion-dotnet-excel, syncfusion-dotnet-powerpoint, syncfusion-dotnet-markdown, syncfusion-dotnet-calculate, syncfusion-dotnet-smart-data-extraction, syncfusion-java-word) from the `skills/` directory.
 
 **Step 2: Install the skills**
 
@@ -53,6 +54,8 @@ your-workspace/
 │   ├── syncfusion-dotnet-pdf-to-image/
 │   │   └── SKILL.md
 │   ├── syncfusion-dotnet-markdown/
+│   │   └── SKILL.md
+│   ├── syncfusion-dotnet-calculate/
 │   │   └── SKILL.md
 │   ├── syncfusion-dotnet-smart-data-extraction/
 │   │   └── SKILL.md
@@ -139,6 +142,9 @@ dotnet add package Syncfusion.Pdf.Imaging.Net.Core     # For advanced PDF functi
 
 # Markdown
 dotnet add package Syncfusion.Markdown
+
+# Calculate
+dotnet add package Syncfusion.Calculate.Base
 
 # Smart Data Extraction
 dotnet add package Syncfusion.SmartDataExtractor.Net.Core
@@ -241,6 +247,16 @@ How do I add a list and code block to a Markdown file using Syncfusion?
 # Mode 2 — Document generation
 Create a Markdown report with headings and a table using Syncfusion at output/report.md.
 Parse output/notes.md and add a new section with a bulleted list using Syncfusion.
+```
+### Calculate
+
+```
+# Mode 1 — Code generation
+Create a calculation engine and evaluate arithmetic and Excel-style formulas.
+Show me how to parse and compute formulas using CalcQuickBase.
+Generate code to evaluate built-in formulas such as SUM, IF, and ROUND.
+Demonstrate how to define and use named ranges in calculations.
+How do I create custom functions with optional arguments in Calculate?
 ```
 
 ### Java Word

@@ -75,12 +75,9 @@ All templates and snippets are in the `references/` folder:
 ## Rules
 
 - Output files go in `./output/` directory
-- Use license key from `SyncfusionLicense.txt` at workspace root
 - Don't use any API which is not in reference
 
 ## Prerequisites
 
 - Install required runtime and library packages from NuGet before running recognition.
 - .NET SDK 8+ and `dotnet-script`: `dotnet tool install -g dotnet-script`
-- Syncfusion License: `SyncfusionLicense.txt` or env var `SYNCFUSION_LICENSE_KEY`
-- Free license: https://www.syncfusion.com/products/communitylicense

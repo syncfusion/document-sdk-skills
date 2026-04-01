@@ -24,13 +24,13 @@ This skill supports one operational mode — generating C# code for the user's p
 ## Prerequisites
 
 - Install required runtime and library packages from NuGet before running extraction.
-- Syncfusion License: `LICENSE.txt` or env var `SYNCFUSION_LICENSE_KEY`
+- Syncfusion License: https://www.syncfusion.com/products/communitylicense
 
 ## Quick Start Examples
 
 
 ### Example : Generate Code
-**User:** "Write Program.cs code to extract the data from pdf and save as JSON."
+**User:** "Write Program.cs code to extract the data from pdf and save as JSON using SmartDataExtractor."
 **Result:** C# code snippet displayed (no files created)
 
 ## Mode 
@@ -77,7 +77,6 @@ All templates and snippets are in the `references/` folder:
 ## Rules
 
 - Output files go in `./output/` directory
-- Use license key from `LICENSE.txt` at workspace root
 - Don't use any API which is not in reference
  - Only use NuGet package IDs and versions defined in `references/nuget-packages.md` when recommending or adding packages.
  - For table-only extraction requests, recommend/install only the table extractor package from `references/nuget-packages.md` for the detected application type.

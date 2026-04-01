@@ -61,8 +61,8 @@ Do NOT invent, guess, or suggest any API, method, property, class, or namespace 
 - Read the relevant `references/*.md` file(s) for the requested feature
 - Build C# code **strictly** from the APIs and snippets found in those files
 - Select the correct snippet variant based on the app type detected in Step 1:
-  - **Windows-specific apps** (WinForms, WPF, .NET Framework Console, ASP.NET MVC4/5, UWP) → use Windows-specific snippets
-  - **Cross-platform apps** (ASP.NET Core, .NET Core/.NET 5+ Console, Blazor, MAUI, Xamarin) → use cross-platform / `.Net.Core` snippets
+  - **Windows-specific apps** (WinForms, WPF, .NET Framework Console, ASP.NET MVC5) → use Windows-specific snippets
+  - **Cross-platform apps** (ASP.NET Core, .NET Core/.NET 5+ Console, Blazor, MAUI) → use cross-platform / `.Net.Core` snippets
 - Do **not** create or run any `.csx` script
 
 ---
@@ -147,6 +147,5 @@ All templates and snippets are in the `references/` folder:
 
 - Output files go in `./output/` directory
 - Temp `.csx` scripts must be created inside `{skill-root}/syncfusion-dotnet-word/scripts/` — never in the workspace root or customer `scripts/` folder
-- Use license key from `SyncfusionLicense.txt` at workspace root or env var `SYNCFUSION_LICENSE_KEY`
 - Never use Python libraries (e.g., python-docx)
 - Never leave temp `.csx` files after execution

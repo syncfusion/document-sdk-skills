@@ -55,8 +55,6 @@ When the pdftoimage skill is loaded, the AI Agent provides focused C# snippets a
 
 - **Visual Studio** 2019 or later
 - **.NET** Framework 4.6+ or .NET 6+
-- **Syncfusion License** — register your key in `Program.cs`, or set the `SYNCFUSION_LICENSE_KEY` environment variable.  
-  Free license: [Syncfusion Community License](https://www.syncfusion.com/products/communitylicense)
 
 
 ### NuGet Packages
@@ -85,7 +83,6 @@ When the pdftoimage skill is loaded, the AI Agent provides focused C# snippets a
 
 | Issue | Solution |
 |-------|----------|
-| License warning at startup | Call `SyncfusionLicenseProvider.RegisterLicense()` in `Program.cs` before any control is created |
 | Missing NuGet package | Add the corresponding package by referring references/nuget-packages.md |
 ---
 
@@ -95,7 +92,3 @@ When the pdftoimage skill is loaded, the AI Agent provides focused C# snippets a
 - [API Reference](https://help.syncfusion.com/cr/document-processing/Syncfusion.PdfToImageConverter.html)
 
 ---
-
-## License
-
-Syncfusion PdfToImageConverter requires a commercial license for production use. A [free community license](https://www.syncfusion.com/products/communitylicense) is available for qualifying organizations.

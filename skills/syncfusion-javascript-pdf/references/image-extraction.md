@@ -105,10 +105,12 @@ document.destroy();
 
 Before using the browser global objects in the example above, include the minified runtime scripts (CDN) in your HTML:
 
-```html
-<script src="https://cdn.syncfusion.com/ej2/30.1.42/ej2-pdf/dist/global/ej2-pdf.min.js"></script>
-<script src="https://cdn.syncfusion.com/ej2/30.1.42/ej2-pdf-data-extract/dist/global/ej2-pdf-data-extract.min.js"></script>
-```
+**Syntax:**
+> Script: `https://cdn.syncfusion.com/ej2/{Version}/dist/{PACKAGE_NAME}.min.js`
+
+**Placeholder:**
+- Use required package `ej2-pdf` or `ej2-pdf-data-extract` as {PACKAGE_NAME} for the related PDF and data extract features.
+- Use latest CDN package version of the package. For example, `33.1.44`.
 
 ## Image Metadata and Properties
 

@@ -78,20 +78,32 @@ MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
 ```
 
 ### Download Remote Images
+
+> ⚠️ **Security Note:** Only fetch images from explicitly trusted, allowlisted domains using HTTPS.
+> Never fetch arbitrary URLs from untrusted markdown content, as this can expose the application
+> to SSRF attacks or unintended data exfiltration. Always validate the URI scheme and host before
+> making any HTTP request.
+
 ```csharp
 using System.Net.Http;
 
 MdImportSettings settings = new MdImportSettings();
 HttpClient httpClient = new HttpClient();
+httpClient.Timeout = TimeSpan.FromSeconds(10); // Enforce a request timeout
 
-settings.ImageNodeVisited += async (sender, args) =>
+settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri) && args.Uri.StartsWith("http"))
+    if (string.IsNullOrEmpty(args.Uri))
+        return;
+
+    // Validate URI structure and enforce HTTPS
+    if (Uri.TryCreate(args.Uri, UriKind.Absolute, out Uri parsedUri)
+        && parsedUri.Scheme == Uri.UriSchemeHttps)
     {
         try
         {
             Console.WriteLine($"Downloading: {args.Uri}");
-            byte[] imageData = await httpClient.GetByteArrayAsync(args.Uri);
+            byte[] imageData = httpClient.GetByteArrayAsync(args.Uri).Result;
             args.ImageStream = new System.IO.MemoryStream(imageData);
             Console.WriteLine($"Downloaded {imageData.Length} bytes");
         }
@@ -99,6 +111,11 @@ settings.ImageNodeVisited += async (sender, args) =>
         {
             Console.WriteLine($"Failed to download {args.Uri}: {ex.Message}");
         }
+    }
+    else
+    {
+        // Skip URIs that are not valid absolute HTTPS URLs
+        Console.WriteLine($"Skipped non-HTTPS image URI: {args.Uri}");
     }
 };
 
@@ -147,14 +164,24 @@ settings.ImageNodeVisited += (sender, args) =>
 {
     if (!string.IsNullOrEmpty(args.Uri))
     {
-        // Check if URL is valid and accessible
-        if (args.Uri.StartsWith("http"))
+        // Check if URI is an external HTTPS URL — validate scheme only, do not fetch content
+        if (Uri.TryCreate(args.Uri, UriKind.Absolute, out Uri parsedUri)
+            && (parsedUri.Scheme == Uri.UriSchemeHttps || parsedUri.Scheme == Uri.UriSchemeHttp))
         {
-            // External URL - could validate with HEAD request
-            Console.WriteLine($"External image: {args.Uri}");
+            // External URL detected — only validate scheme, skip non-HTTPS
+            if (parsedUri.Scheme != Uri.UriSchemeHttps)
+            {
+                brokenImages.Add(args.Uri);
+                Console.WriteLine($"Insecure (non-HTTPS) image URL: {args.Uri}");
+            }
+            else
+            {
+                Console.WriteLine($"External HTTPS image URL detected: {args.Uri}");
+            }
         }
         else if (!File.Exists(args.Uri))
         {
+            // Local file path that does not exist
             brokenImages.Add(args.Uri);
             Console.WriteLine($"Broken image link: {args.Uri}");
         }

@@ -143,7 +143,7 @@ PdfPage page = document.pages.add();
 
 //Configure the timestamp server
 TimestampServer server = TimestampServer(
-    Uri.parse('http://syncfusion.digistamp.com'),
+    Uri.parse('http://time.certum.pl/'),
     userName: 'user',
     password: '123456',
     timeOut: const Duration(milliseconds: 5000));
@@ -182,7 +182,7 @@ document.dispose();
 PdfSignatureField field = document.form.fields[0] as PdfSignatureField;
 
 TimestampServer server = TimestampServer(
-    Uri.parse('http://syncfusion.digistamp.com'),
+    Uri.parse('http://time.certum.pl/'),
     userName: 'user',
     password: '123456',
     timeOut: const Duration(milliseconds: 5000));

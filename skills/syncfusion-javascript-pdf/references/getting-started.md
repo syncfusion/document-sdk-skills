@@ -123,10 +123,7 @@ npm start
 
 ```javascript
 // Using ES modules
-import { PdfDocument, PdfPage, PdfGraphics, PdfFont, PdfFontFamily, PdfFontStyle, PdfBrush } from '@syncfusion/ej2-pdf';
-
-// Or using CDN (add to HTML)
-<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+const { PdfDocument, PdfFontFamily, PdfFontStyle, PdfBrush } = require('@syncfusion/ej2-pdf');
 ```
 
 **2. Create PDF document:**
@@ -150,6 +147,15 @@ document.getElementById('createPdfButton').onclick = function() {
   document.destroy();
 };
 ```
+
+Before using the browser global objects in the example above, include the minified runtime scripts (CDN) in your HTML:
+
+**Syntax:**
+> Script: `https://cdn.syncfusion.com/ej2/{Version}/dist/{PACKAGE_NAME}.min.js`
+
+**Placeholder:**
+- Use required package `ej2-pdf` or `ej2-pdf-data-extract` as {PACKAGE_NAME} for the related PDF and data extract features.
+- Use latest CDN package version of the package. For example, `33.1.44`.
 
 ### Angular
 

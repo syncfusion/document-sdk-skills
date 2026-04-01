@@ -122,12 +122,33 @@ document.Close();
 
 ### Load Images from URL
 
+> ⚠️ **Security Note:** Only HTTPS URIs with a valid, well-formed structure are fetched.
+> Plain HTTP or malformed URIs are rejected to reduce exposure to untrusted third-party content.
+> Always ensure the HTML source is from a trusted origin before enabling external image loading.
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
+using System.Net.Http;
+
+var httpClient = new HttpClient();
+httpClient.Timeout = TimeSpan.FromSeconds(10); // Enforce a request timeout
+
 document.HTMLImportSettings.ImageNodeVisited += (s, e) =>
 {
-    var client = new HttpClient();
-    e.ImageStream = client.GetStreamAsync(e.Uri).Result;
+    if (string.IsNullOrEmpty(e.Uri))
+        return;
+
+    // Validate URI structure and enforce HTTPS before fetching
+    if (Uri.TryCreate(e.Uri, UriKind.Absolute, out Uri parsedUri)
+        && parsedUri.Scheme == Uri.UriSchemeHttps)
+    {
+        e.ImageStream = httpClient.GetStreamAsync(e.Uri).Result;
+    }
+    else
+    {
+        // Skip non-HTTPS or malformed URIs
+        Console.WriteLine($"Skipped non-HTTPS image URI: {e.Uri}");
+    }
 };
 ```
 
