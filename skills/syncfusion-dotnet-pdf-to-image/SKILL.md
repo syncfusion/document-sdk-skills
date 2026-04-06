@@ -20,7 +20,7 @@ This PDF to image converter library allows converting PDF documents to images wi
 ## One Modes
 
 ### Mode 1: Generate C# Code for the User's Project *(default)*
-Use this mode when the user wants to view, write, review, refactor, or modify C# code related to pdf to image conversion processing.
+Use this mode when the user wants to view, write, review, refactor, or modify C# code related to pdf to image conversion processing. Licensing, authentication, and secret configuration are out of scope.
 
 **Trigger keywords:** "show me how", "how to", "how can I", "how do I", "provide code", "provide an example", "give an example", "demonstrate", "code snippet", "sample code", "example", "sample", "give me", "show me", "Program.cs", "example code", "generate code for", "codesnippet".
 
@@ -37,6 +37,7 @@ Use this mode when the user wants to view, write, review, refactor, or modify C#
 
 - Read the relevant `references/*.md` file(s) for the requested feature
 - Build C# code **strictly** from the APIs and snippets found in those files
+- Exclude any licensing, authentication, or secret‑handling logic.
 - Do **not** create or run any `.csx` script
 ---
 

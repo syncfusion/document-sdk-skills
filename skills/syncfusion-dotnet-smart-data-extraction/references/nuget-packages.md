@@ -82,18 +82,3 @@ Required when deploying ASP.NET Core apps (PDF/Image conversion) on Linux enviro
 |---|---|
 | `SkiaSharp.NativeAssets.Linux` v3.119.1 + `HarfBuzzSharp.NativeAssets.Linux` v8.3.1.2 | Ubuntu, Alpine, CentOS, Debian, Fedora, RHEL, Azure App Service, Google App Engine |
 | `SkiaSharp.NativeAssets.Linux.NoDependencies` v3.119.1 | AWS Lambda, AWS Elastic Beanstalk |
-
-## Register License
- 
-```csharp
-using Syncfusion.Licensing;
- 
-// Register Syncfusion License
-var licenseFile = Path.Combine(Directory.GetCurrentDirectory(), "LICENSE.txt");
-if (File.Exists(licenseFile))
-{
-    var license = File.ReadAllText(licenseFile).Trim();
-    if (!string.IsNullOrWhiteSpace(license))
-        SyncfusionLicenseProvider.RegisterLicense(license);
-}
-```

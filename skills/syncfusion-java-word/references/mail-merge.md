@@ -9,6 +9,13 @@
 ```java
 import com.syncfusion.docio.*;
 import com.syncfusion.javahelper.system.data.DataTableSupport;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import java.nio.charset.StandardCharsets;
+import com.syncfusion.javahelper.system.collections.generic.DictionarySupport;
+import com.syncfusion.javahelper.system.collections.generic.ListSupport;
 ```
 
 ## Simple Field Mail Merge
@@ -439,34 +446,50 @@ doc.close();
 
 ```java
 Path jsonPath = Paths.get(System.getProperty("user.dir"), "input", "data.json");
-String jsonContent = Files.readString(jsonPath);
+String json = new String(Files.readAllBytes(jsonPath), StandardCharsets.UTF_8);
+		
+JsonObject data = new Gson().fromJson(json, JsonObject.class);
 
-ObjectMapper mapper = new ObjectMapper();
-List<Map<String, Object>> jsonData = mapper.readValue(
-    jsonContent, new TypeReference<List<Map<String, Object>>>() {}
-);
-
-// Convert JSON list to DataTable-like List<Map<String,String>>
-List<Map<String, String>> dt = new ArrayList<>();
-if (jsonData != null && !jsonData.isEmpty()) {
-    for (Map<String, Object> item : jsonData) {
-        Map<String, String> row = new LinkedHashMap<>();
-        for (Map.Entry<String, Object> e : item.entrySet()) {
-            row.put(e.getKey(), e.getValue() == null ? "" : e.getValue().toString());
-        }
-        dt.add(row);
-    }
-}
-
+// Convert JsonObject to DictionarySupport (required format for mail merge)
+DictionarySupport<String, Object> result = getData(data);
+		
+// Extract the list of organizations for mail merge
+MailMergeDataTable dataTable = new MailMergeDataTable("Organizations", (ListSupport<Object>) result.get("Organizations"));
+		
 WordDocument doc = new WordDocument();
 WSection section = (WSection) doc.addSection();
 
+section.addParagraph().appendField("BeginGroup:Organizations", FieldType.FieldMergeField);
 section.addParagraph().appendField("FirstName", FieldType.FieldMergeField);
 section.addParagraph().appendField("LastName", FieldType.FieldMergeField);
+section.addParagraph().appendField("Department", FieldType.FieldMergeField);
+section.addParagraph().appendField("EndGroup:Organizations", FieldType.FieldMergeField);
 
 // Execute with DataTable-like collection
-doc.getMailMerge().execute(dt);
+doc.getMailMerge().executeGroup(dataTable);
 doc.close();
+
+public static DictionarySupport<String, Object> getData(JsonObject data) throws Exception {
+    DictionarySupport<String, Object> map = new DictionarySupport<>(String.class, Object.class);
+    for (String key : data.keySet()) {
+        if (data.get(key).isJsonArray()) {
+            map.add(key, getData(data.getAsJsonArray(key)));
+        } else if (data.get(key).isJsonObject()) {
+            map.add(key, getData(data.getAsJsonObject(key)));
+        } else if (data.get(key).isJsonPrimitive()) {
+            map.add(key, data.get(key).getAsString());
+        }
+    }
+    return map;
+}
+public static ListSupport<Object> getData(JsonArray array) throws Exception {
+    ListSupport<Object> list = new ListSupport<>();
+    for (int i = 0; i < array.size(); i++) {
+        JsonObject obj = array.get(i).getAsJsonObject();
+        list.add(getData(obj)); // recursive call
+    }
+    return list;
+}
 ```
 
 ---

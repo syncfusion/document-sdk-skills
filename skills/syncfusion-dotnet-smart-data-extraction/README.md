@@ -20,8 +20,6 @@ Produces production-ready C# code and adds it directly into the user's project f
   ```bash
   dotnet tool install -g dotnet-script
   ```
-- **Syncfusion License** — place your key in `License.txt` at the workspace root, or set the `SYNCFUSION_LICENSE_KEY` environment variable.
-  Free license: [Syncfusion Community License](https://www.syncfusion.com/products/communitylicense)
 
 ### NuGet Packages (Mode 1 — user's project)
 
@@ -84,7 +82,6 @@ Copilot can automatically:
 | Issue | Solution |
 |-------|----------|
 | Missing NuGet package | `dotnet add package Syncfusion.SmartDataExtractor.Net.Core` |
-| License error | Add key to `License.txt` or register via `SyncfusionLicenseProvider.RegisterLicense()` |
 | File access error | Check path, permissions, and ensure the file isn't open elsewhere |
 
 ---

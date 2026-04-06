@@ -57,14 +57,22 @@ npm install @syncfusion/ej2-pdf-data-extract --save
 ### Using CDN
 
 **Core Library:**
-```html
-<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
-```
+
+**Syntax:**
+> Script: `https://cdn.syncfusion.com/ej2/{Version}/dist/{PACKAGE_NAME}.min.js`
 
 **Data Extract Library** (if needed):
-```html
-<script src="https://cdn.syncfusion.com/ej2/dist/ej2-pdf-data-extract.min.js"></script>
-```
+
+**Syntax:**
+> Script: `https://cdn.syncfusion.com/ej2/{Version}/dist/{PACKAGE_NAME}.min.js`
+
+**Placeholder:**
+
+- Replace **{PACKAGE_NAME}** with one of the following based on your requirement:
+  - `ej2-pdf` – for core PDF functionality
+  - `ej2-pdf-data-extract` – for PDF data extraction features
+
+- Replace **{VERSION}** with the latest available CDN version of the package. For example: `33.1.44`.
 
 ### Dependencies
 

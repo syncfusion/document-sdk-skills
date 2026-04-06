@@ -7,13 +7,30 @@ using System.IO;
 using Syncfusion.Office.Markdown;
 
 // Register Syncfusion License
-var licenseFile = Path.Combine(Directory.GetCurrentDirectory(), "SyncfusionLicense.txt");
-if (File.Exists(licenseFile))
+var licenseKey = Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
+
+if (string.IsNullOrWhiteSpace(licenseKey))
 {
-    var license = File.ReadAllText(licenseFile).Trim();
-    if (!string.IsNullOrWhiteSpace(license))
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license);
+
+    var licenseFile = Path.Combine(Directory.GetCurrentDirectory(), "SyncfusionLicense.txt");
+
+    if (File.Exists(licenseFile))
+
+    {
+
+        licenseKey = File.ReadAllText(licenseFile).Trim();
+
+    }
+
 }
+ 
+if (!string.IsNullOrWhiteSpace(licenseKey))
+{
+
+    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+
+}
+ 
 
 // Ensure output directory exists
 Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "output"));

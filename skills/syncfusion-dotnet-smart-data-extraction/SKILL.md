@@ -23,8 +23,7 @@ This skill supports one operational mode — generating C# code for the user's p
 
 ## Prerequisites
 
-- Install required runtime and library packages from NuGet before running extraction.
-- Syncfusion License: https://www.syncfusion.com/products/communitylicense
+- Install required runtime and library packages from NuGet before running extraction.	
 
 ## Quick Start Examples
 
@@ -53,7 +52,6 @@ Do NOT invent, guess, or suggest any API, method, property, class, or namespace 
 - Select the correct snippet variant based on the app type detected in Step 1:
   - **Windows-specific apps** (WinForms, WPF, .NET Framework Console) → use Windows-specific snippets
   - **Cross-platform apps** (ASP.NET Core, .NET Core/.NET 5+ Console, Blazor, MAUI) → use cross-platform / `.Net.Core` snippets
-  - After the `using` / namespace lines at the top of the generated code, always insert the license registration block from the **Register License** section in `references/nuget-packages.md`
   - Do **not** create or run any `.csx` script
 ---
 

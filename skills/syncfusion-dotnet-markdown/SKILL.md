@@ -1,6 +1,6 @@
 ---
 name: syncfusion-dotnet-markdown
-description: Create, edit, and convert Markdown documents (.md) using Syncfusion Markdown. Supports two modes — generate C# code for the user's project or execute a task via CSX script. Use when the user mentions markdown, .md files, markdown generation, Syncfusion Markdown.
+description: Create, edit, format, and convert Markdown (.md) documents using Syncfusion Markdown for .NET. Use this skill for Markdown processing and document automation when the user asks to generate Markdown files, modify or format Markdown content, build structured documentation programmatically, automate Markdown workflows, or convert Markdown to other formats using C# code or CSX execution.
 metadata:
   author: Syncfusion Inc
   version: "33.1.44"
@@ -35,7 +35,7 @@ This skill supports two operational modes — generating C# code for the user's 
 ### Example 2: Execute Task (Mode 2)
 **User:** "Create a Markdown file at output/report.md"
 
-**Result:** Physical file created at specified path (via temporary CSX script)
+**Result:** Physical file created at specified path
 
 ## Two Modes — Choose Based on User Intent
 

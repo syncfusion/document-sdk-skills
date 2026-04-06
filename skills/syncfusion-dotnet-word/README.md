@@ -70,16 +70,6 @@ dotnet tool install -g dotnet-script
 
 ### Syncfusion License
 
-Place your license key in `SyncfusionLicense.txt` at the workspace root, or set the environment variable:
-
-```bash
-# Windows
-set SYNCFUSION_LICENSE_KEY=your_key_here
-
-# macOS/Linux
-export SYNCFUSION_LICENSE_KEY=your_key_here
-```
-
 Get a free license: [Syncfusion Community License](https://www.syncfusion.com/products/communitylicense)
 
 ### NuGet Packages Used in Mode 2
@@ -120,7 +110,6 @@ dotnet add package Syncfusion.DocIORenderer.Net.Core   # For PDF conversion
 | Issue | Solution |
 |-------|----------|
 | `dotnet script` not found | `dotnet tool install -g dotnet-script` |
-| License Watermark | Add key to `SyncfusionLicense.txt` or use env var `SYNCFUSION_LICENSE_KEY` |
 | Missing NuGet package | `dotnet add package Syncfusion.DocIO.Net.Core` |
 | File access error | Ensure the file isn't open in another application |
 
