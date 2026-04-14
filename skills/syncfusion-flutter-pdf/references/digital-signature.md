@@ -135,7 +135,7 @@ class PdfExternalSigner extends IPdfExternalSigner {
 
 ## Add a Timestamp to a Digital Signature
 
-> **Note:** Timestamp signing only works with asynchronous `document.save()`.
+> **Note:** Timestamp signing only works with asynchronous `document.save()`. Before building the application, provide a valid URL to configure the timestamp.
 
 ```dart
 PdfDocument document = PdfDocument();
@@ -143,7 +143,7 @@ PdfPage page = document.pages.add();
 
 //Configure the timestamp server
 TimestampServer server = TimestampServer(
-    Uri.parse('http://time.certum.pl/'),
+    Uri.parse('add valid url'),
     userName: 'user',
     password: '123456',
     timeOut: const Duration(milliseconds: 5000));
@@ -178,11 +178,13 @@ document.dispose();
 
 ## Add Timestamp to an Existing PDF Document
 
+> **Note:** Before building the application, provide a valid URL to configure the timestamp.
+
 ```dart
 PdfSignatureField field = document.form.fields[0] as PdfSignatureField;
 
 TimestampServer server = TimestampServer(
-    Uri.parse('http://time.certum.pl/'),
+    Uri.parse('add valid url'),
     userName: 'user',
     password: '123456',
     timeOut: const Duration(milliseconds: 5000));

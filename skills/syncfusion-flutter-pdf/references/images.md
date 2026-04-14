@@ -1,6 +1,6 @@
 # Working with Images
 
-> Insert raster images (JPEG, PNG) into PDF pages using PdfBitmap. Apply transparency, rotation, and load from file.
+> Insert raster images (JPEG, PNG) into PDF pages using PdfBitmap. Apply transparency, rotation, and load from file or web URL.
 
 ---
 
@@ -123,6 +123,37 @@ page.graphics.restore(state);
 
 ---
 
+## Insert Image from Web URL
+
+```dart
+// Required pubspec.yaml dependency:
+// http: ^0.13.4
+
+import 'package:http/http.dart' show get;
+
+PdfDocument document = PdfDocument();
+PdfPage page = document.pages.add();
+
+//Fetch image data from web URL
+final url = 'valid image url';
+final response = await get(Uri.parse(url));
+final data = response.bodyBytes;
+
+//Create a bitmap from downloaded bytes
+PdfBitmap image = PdfBitmap(data);
+
+//Draw the image on the page
+page.graphics.drawImage(
+    image,
+    Rect.fromLTWH(
+        0, 0, page.getClientSize().width, page.getClientSize().height));
+
+List<int> bytes = await document.save();
+document.dispose();
+```
+
+> **Note:** Before building the application, update the `url` variable with a valid image URL to ensure the above code functions correctly.
+---
 
 ## Notes
 
