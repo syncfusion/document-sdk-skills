@@ -128,28 +128,21 @@ document.Close();
 
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
-using System.Net.Http;
 
-var httpClient = new HttpClient();
-httpClient.Timeout = TimeSpan.FromSeconds(10); // Enforce a request timeout
-
+FileStream docStream = new FileStream("Input.html", FileMode.Open, FileAccess.Read);
+var document = new WordDocument();
 document.HTMLImportSettings.ImageNodeVisited += (s, e) =>
 {
     if (string.IsNullOrEmpty(e.Uri))
         return;
 
-    // Validate URI structure and enforce HTTPS before fetching
-    if (Uri.TryCreate(e.Uri, UriKind.Absolute, out Uri parsedUri)
-        && parsedUri.Scheme == Uri.UriSchemeHttps)
-    {
-        e.ImageStream = httpClient.GetStreamAsync(e.Uri).Result;
-    }
-    else
-    {
-        // Skip non-HTTPS or malformed URIs
-        Console.WriteLine($"Skipped non-HTTPS image URI: {e.Uri}");
-    }
+    // TODO:
+    // Download the image from an external URL and assign it to ImageStream.
+    // Consumers may implement this using WebClient or HttpClient ONLY after
+    // validating and restricting URLs to trusted sources to prevent SSRF
+    // or data exfiltration vulnerabilities.
 };
+document.Open(docStream, FormatType.Html);
 ```
 
 ---

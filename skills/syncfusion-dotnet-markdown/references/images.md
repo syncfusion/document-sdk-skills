@@ -411,12 +411,7 @@ Console.WriteLine($"Found {pngImages.Count} PNG images");
 
 ### Download External Images
 ```csharp
-using System.Net.Http;
-
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
-
-using HttpClient client = new HttpClient();
-
 foreach (IMdBlock block in doc.Blocks)
 {
     if (block is MdParagraph para)
@@ -425,16 +420,11 @@ foreach (IMdBlock block in doc.Blocks)
         {
             if (inline is MdPicture picture && picture.Url.StartsWith("http"))
             {
-                try
-                {
-                    byte[] imageData = await client.GetByteArrayAsync(picture.Url);
-                    picture.ImageBytes = imageData;
-                    Console.WriteLine($"Downloaded: {picture.Url} ({imageData.Length} bytes)");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Failed to download {picture.Url}: {ex.Message}");
-                }
+                // TODO:
+                // Download the image from an external URL.
+                // Consumers may implement this using WebClient or HttpClient ONLY after
+                // validating and restricting URLs to trusted sources to prevent SSRF
+                // or data exfiltration vulnerabilities.
             }
         }
     }

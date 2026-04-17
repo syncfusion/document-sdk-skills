@@ -522,19 +522,11 @@ class CustomImageHandler
         // Load from web
         else if (uri.StartsWith("http://") || uri.StartsWith("https://"))
         {
-            try
-            {
-                using (var client = new System.Net.WebClient())
-                {
-                    byte[] imageData = client.DownloadData(uri);
-                    imageCache[uri] = imageData;
-                    args.ImageStream = new MemoryStream(imageData);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to load image: {uri} - {ex.Message}");
-            }
+            // TODO:
+            // Download the image from an external URL and assign it to ImageStream.
+            // Consumers may implement this using WebClient or HttpClient ONLY after
+            // validating and restricting URLs to trusted sources to prevent SSRF
+            // or data exfiltration vulnerabilities.
         }
     }
 }

@@ -77,52 +77,6 @@ settings.ImageNodeVisited += (sender, args) =>
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
 ```
 
-### Download Remote Images
-
-> ⚠️ **Security Note:** Only fetch images from explicitly trusted, allowlisted domains using HTTPS.
-> Never fetch arbitrary URLs from untrusted markdown content, as this can expose the application
-> to SSRF attacks or unintended data exfiltration. Always validate the URI scheme and host before
-> making any HTTP request.
-
-```csharp
-using System.Net.Http;
-
-MdImportSettings settings = new MdImportSettings();
-HttpClient httpClient = new HttpClient();
-httpClient.Timeout = TimeSpan.FromSeconds(10); // Enforce a request timeout
-
-settings.ImageNodeVisited += (sender, args) =>
-{
-    if (string.IsNullOrEmpty(args.Uri))
-        return;
-
-    // Validate URI structure and enforce HTTPS
-    if (Uri.TryCreate(args.Uri, UriKind.Absolute, out Uri parsedUri)
-        && parsedUri.Scheme == Uri.UriSchemeHttps)
-    {
-        try
-        {
-            Console.WriteLine($"Downloading: {args.Uri}");
-            byte[] imageData = httpClient.GetByteArrayAsync(args.Uri).Result;
-            args.ImageStream = new System.IO.MemoryStream(imageData);
-            Console.WriteLine($"Downloaded {imageData.Length} bytes");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to download {args.Uri}: {ex.Message}");
-        }
-    }
-    else
-    {
-        // Skip URIs that are not valid absolute HTTPS URLs
-        Console.WriteLine($"Skipped non-HTTPS image URI: {args.Uri}");
-    }
-};
-
-MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
-httpClient.Dispose();
-```
-
 ### Cache Image Data
 ```csharp
 Dictionary<string, byte[]> imageCache = new Dictionary<string, byte[]>();
