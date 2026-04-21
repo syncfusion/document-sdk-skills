@@ -64,7 +64,7 @@ image.Save("sample.png");
 
 ## Export with Custom DPI Resolution 
 
-**Note:**  For Syncfusion.PdfToImageConverter.WPF, Syncfusion.PdfToImageConverter.Asp.net.Mvc5 and Syncfusion.PdfToImageConverter.WinForms NuGets this method wilol available page-range DPI (`DpiX`/`DpiY`) 
+**Note:**  For Syncfusion.PdfToImageConverter.WPF, Syncfusion.PdfToImageConverter.Asp.net.Mvc5 and Syncfusion.PdfToImageConverter.WinForms NuGets this method will available page-range DPI (`DpiX`/`DpiY`) 
 
 ```csharp
 int startPageIndex = 0;
@@ -107,4 +107,54 @@ imageConverter.ScaleFactor = 1;
 FileStream inputStream = new FileStream("Input.pdf", FileMode.Open, FileAccess.ReadWrite);
 imageConverter.Load(inputStream);
 Stream outputStream = imageConverter.Convert(0, zoomFactor, tileXCount, tileYCount, tileX, tileY);
+```
+
+---
+## Export Images with DPI and Custom Size
+
+Use DPI values along with SizeF to gain fine‑grained control over image resolution and output dimensions. This allows you to export PDF pages as images with a custom size and desired quality.
+
+**Note:**  For Syncfusion.PdfToImageConverter.WPF, Syncfusion.PdfToImageConverter.Asp.net.Mvc5 and Syncfusion.PdfToImageConverter.WinForms NuGets this method will available page-range DPI (`DpiX`/`DpiY`) 
+
+```csharp
+float dpiX = 200;
+float dpiY = 200;
+int pageIndex = 1;
+
+PdfToImageConverter imageConverter = new PdfToImageConverter();
+FileStream inputStream = new FileStream("Input.pdf", FileMode.Open, FileAccess.ReadWrite);
+imageConverter.Load(inputStream);
+Stream outputStream = imageConverter.Convert(pageIndex, new SizeF(100,100), dpiX, dpiY, false, false, false);
+```
+
+---
+## Export a Specific Range of Pages with a Custom Size
+
+Use SizeF to control the output dimensions when exporting a specific range of PDF pages as images. This allows you to convert only the required pages and generate images with a custom size and consistent quality.
+
+
+```csharp
+PdfToImageConverter imageConverter = new PdfToImageConverter();
+FileStream inputStream = new FileStream("Input.pdf", FileMode.Open, FileAccess.ReadWrite);
+imageConverter.Load(inputStream);
+Stream outputStream = imageConverter.Convert(startPageIndex, endPageIndex, new SizeF(100,100), false, false, false);
+```
+
+---
+## Convert a Range of Pages with Custom DPI and Page Size
+
+Converts a specified range of PDF pages into images with custom DPI settings and optional size control. This API provides fine‑grained control over image resolution (DpiX and DpiY) while allowing you to retain the original page size or define a custom output size using SizeF.
+
+**Note:**  For Syncfusion.PdfToImageConverter.WPF, Syncfusion.PdfToImageConverter.Asp.net.Mvc5 and Syncfusion.PdfToImageConverter.WinForms NuGets this method will available page-range DPI (`DpiX`/`DpiY`) 
+
+```csharp
+float dpiX = 200;
+float dpiY = 200;
+int startPageIndex = 0;
+int endPageIndex = 1;
+
+PdfToImageConverter imageConverter = new PdfToImageConverter();
+FileStream inputStream = new FileStream("Input.pdf", FileMode.Open, FileAccess.ReadWrite);
+imageConverter.Load(inputStream);
+Stream outputStream = imageConverter.Convert(startPageIndex, endPageIndex, new SizeF(100,100), dpiX, dpiY, false, false, false);
 ```

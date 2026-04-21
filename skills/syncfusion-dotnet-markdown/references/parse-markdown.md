@@ -84,22 +84,8 @@ using (FileStream stream = new FileStream("document.md", FileMode.Open))
 // Event handler for custom image loading
 void OnImageNodeVisited(object sender, MdImageNodeVisitedEventArgs args)
 {
-    // Load image from custom source
-    string imagePath = args.Uri;
-    
-    if (File.Exists(imagePath))
-    {
-        args.ImageStream = File.OpenRead(imagePath);
-    }
-    else
-    {
-        // Try alternative locations
-        string altPath = Path.Combine("images", Path.GetFileName(imagePath));
-        if (File.Exists(altPath))
-        {
-            args.ImageStream = File.OpenRead(altPath);
-        }
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 }
 ```
 
@@ -503,31 +489,8 @@ class CustomImageHandler
     
     private void OnImageNodeVisited(object sender, MdImageNodeVisitedEventArgs args)
     {
-        string uri = args.Uri;
-        
-        // Check cache first
-        if (imageCache.ContainsKey(uri))
-        {
-            args.ImageStream = new MemoryStream(imageCache[uri]);
-            return;
-        }
-        
-        // Load from file system
-        if (File.Exists(uri))
-        {
-            byte[] imageData = File.ReadAllBytes(uri);
-            imageCache[uri] = imageData;
-            args.ImageStream = new MemoryStream(imageData);
-        }
-        // Load from web
-        else if (uri.StartsWith("http://") || uri.StartsWith("https://"))
-        {
-            // TODO:
-            // Download the image from an external URL and assign it to ImageStream.
-            // Consumers may implement this using WebClient or HttpClient ONLY after
-            // validating and restricting URLs to trusted sources to prevent SSRF
-            // or data exfiltration vulnerabilities.
-        }
+        // TODO:
+        // Implement secure image handling logic if required by the application.
     }
 }
 ```

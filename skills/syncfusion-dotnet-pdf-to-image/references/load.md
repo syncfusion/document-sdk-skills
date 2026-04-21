@@ -43,3 +43,17 @@ PdfToImageConverter imageConverter = new PdfToImageConverter();
 FileStream inputPDFStream = new FileStream(@"Input.pdf", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 imageConverter.Load(inputPDFStream, "password");
 ```
+
+---
+
+## Dispose the PDF Document Using the Dispose Method After the Conversion Process
+
+Create an instance of `PdfToImageConverter`, load the PDF document, convert it to images, and then call the `Dispose` method to release resources once the conversion is complete.
+
+```csharp
+PdfToImageConverter imageConverter = new PdfToImageConverter();
+FileStream inputPDFStream = new FileStream(@"Input.pdf", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+imageConverter.Load(inputPDFStream);
+// Perform the PDF-to-image conversion here
+imageConverter.Dispose();
+```

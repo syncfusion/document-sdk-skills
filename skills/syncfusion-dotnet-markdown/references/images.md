@@ -418,13 +418,10 @@ foreach (IMdBlock block in doc.Blocks)
     {
         foreach (IMdInline inline in para.Inlines)
         {
-            if (inline is MdPicture picture && picture.Url.StartsWith("http"))
+            if (inline is MdPicture picture)
             {
                 // TODO:
-                // Download the image from an external URL.
-                // Consumers may implement this using WebClient or HttpClient ONLY after
-                // validating and restricting URLs to trusted sources to prevent SSRF
-                // or data exfiltration vulnerabilities.
+                // Implement secure image handling logic if required by the application.
             }
         }
     }
@@ -487,12 +484,10 @@ foreach (IMdBlock block in doc.Blocks)
     {
         foreach (IMdInline inline in para.Inlines)
         {
-            if (inline is MdPicture picture && File.Exists(picture.Url))
+            if (inline is MdPicture picture)
             {
-                // Load image file into bytes
-                picture.ImageBytes = File.ReadAllBytes(picture.Url);
-                // Optionally clear URL since we now have bytes
-                picture.Url = null;
+                // TODO:
+                // Implement secure image handling logic if required by the application.
             }
         }
     }
@@ -507,16 +502,8 @@ MdImportSettings settings = new MdImportSettings();
 
 settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri))
-    {
-        // Resolve relative paths
-        if (!Path.IsPathRooted(args.Uri))
-        {
-            args.Uri = Path.Combine("C:\\Images", args.Uri);
-        }
-
-        Console.WriteLine($"Image found: {args.Uri}");
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
@@ -528,11 +515,8 @@ MdImportSettings settings = new MdImportSettings();
 
 settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri) && File.Exists(args.Uri))
-    {
-        args.ImageStream = File.OpenRead(args.Uri);
-        Console.WriteLine($"Loaded image: {args.Uri} ({args.ImageStream.Length} bytes)");
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);

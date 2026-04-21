@@ -36,7 +36,7 @@ Use this mode when the user wants to view, write, review, refactor, or modify C#
 > **Do NOT invent, guess, or suggest any API, method, property, class, or namespace not explicitly present in the reference files.**
 
 - Read the relevant `references/*.md` file(s) for the requested feature
-- Build C# code **strictly** from the APIs and snippets found in those files
+- Build C# code **strictly** from the APIs and snippets found in those files.
 - Exclude any licensing, authentication, or secret‑handling logic.
 - Do **not** create or run any `.csx` script
 ---
@@ -54,6 +54,10 @@ Use this mode when the user wants to view, write, review, refactor, or modify C#
 | `imageConverter.Convert(pageIndex, SizeF, keepAspectRatio, keepTransparency, isSkipAnnotations)` | Converts a PDF page to an image with a custom width and height |
 | `imageConverter.Convert(startPage, endPage, dpiX, dpiY, keepTransparency, isSkipAnnotations)` | Converts a range of PDF pages to images at a custom DPI resolution (MVC / WinForms / WPF) |
 | `imageConverter.Convert(pageIndex, zoomFactor, tileXCount, tileYCount, tileX, tileY)` | Converts a PDF page to an image using zoom factor and tile matrix coordinates (ASP.NET Core / Blazor) |
+| `imageConverter.Convert(startPageIndex, endPageIndex, SizeF, dpiX, dpiY, keepAspectRatio, keepTransparency, isSkipAnnotations)` | Converts a range of PDF pages to image streams with a custom size and DPI resolution (MVC / WinForms / WPF) |
+| `imageConverter.Convert(startPageIndex, endPageIndex, SizeF, keepAspectRatio, keepTransparency, isSkipAnnotations)` |Converts a range of PDF pages to image streams with a custom width and height. |
+| `imageConverter.Convert(pageIndex, SizeF, dpiX, dpiY,keepAspectRatio, keepTransparency, isSkipAnnotations)` |Converts a single PDF page to an image with a custom size and DPI. |
+| `imageConverter.Dispose()` |Releases all resources used by the PdfToImageConverter. |
 | `imageConverter.PageCount` | Gets the total number of pages in the loaded PDF document |
 | `imageConverter.ScaleFactor` | Sets the scale factor to enhance output image quality (default: `1.5f`) |
 | `imageConverter.ReferencePath` | Sets a custom folder path for PDFium binary extraction in restricted-access environments |
@@ -67,7 +71,7 @@ All templates and snippets are in the `references/` folder:
 | File | Contents |
 |---|---|
 | `nuget-packages.md` | Lists the required NuGet packages for PDFToImageConverter per target platform, with application-type detection signals |
-| `load.md` | Loads a PDF document (plain or encrypted) as stream into PdfToImageConverter using constructor or Load method |
+| `load.md` | Loads a PDF document (plain or encrypted) as a stream into PdfToImageConverter using the constructor or the Load method. After the conversion, dispose of the PdfToImageConverter using the Dispose method |
 | `customizing-conversion.md` | Converts PDF pages to images — single page, page range, custom size, custom DPI, and zoom/tile resolution |
 | `multithreading-pdf-to-image.md` | Converts PDF pages to images using multithreading — via Task-based async and Parallel.For patterns |
 

@@ -36,17 +36,8 @@ MdImportSettings settings = new MdImportSettings();
 
 settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri))
-    {
-        Console.WriteLine($"Image found: {args.Uri}");
-        
-        // Load image file if it exists
-        if (File.Exists(args.Uri))
-        {
-            args.ImageStream = File.OpenRead(args.Uri);
-            Console.WriteLine($"Loaded {args.ImageStream.Length} bytes");
-        }
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 
 using FileStream stream = File.OpenRead("document.md");
@@ -64,14 +55,8 @@ MdImportSettings settings = new MdImportSettings();
 
 settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri) && !Path.IsPathRooted(args.Uri))
-    {
-        // Convert relative path to absolute
-        string absolutePath = Path.Combine(basePath, args.Uri);
-        args.Uri = absolutePath;
-        
-        Console.WriteLine($"Resolved: {args.Uri}");
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
@@ -85,24 +70,8 @@ MdImportSettings settings = new MdImportSettings();
 
 settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri))
-    {
-        // Check cache first
-        if (imageCache.ContainsKey(args.Uri))
-        {
-            byte[] cached = imageCache[args.Uri];
-            args.ImageStream = new System.IO.MemoryStream(cached);
-            Console.WriteLine($"Loaded from cache: {args.Uri}");
-        }
-        else if (File.Exists(args.Uri))
-        {
-            // Load and cache
-            byte[] data = File.ReadAllBytes(args.Uri);
-            imageCache[args.Uri] = data;
-            args.ImageStream = new System.IO.MemoryStream(data);
-            Console.WriteLine($"Loaded and cached: {args.Uri}");
-        }
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
@@ -116,30 +85,8 @@ MdImportSettings settings = new MdImportSettings();
 
 settings.ImageNodeVisited += (sender, args) =>
 {
-    if (!string.IsNullOrEmpty(args.Uri))
-    {
-        // Check if URI is an external HTTPS URL — validate scheme only, do not fetch content
-        if (Uri.TryCreate(args.Uri, UriKind.Absolute, out Uri parsedUri)
-            && (parsedUri.Scheme == Uri.UriSchemeHttps || parsedUri.Scheme == Uri.UriSchemeHttp))
-        {
-            // External URL detected — only validate scheme, skip non-HTTPS
-            if (parsedUri.Scheme != Uri.UriSchemeHttps)
-            {
-                brokenImages.Add(args.Uri);
-                Console.WriteLine($"Insecure (non-HTTPS) image URL: {args.Uri}");
-            }
-            else
-            {
-                Console.WriteLine($"External HTTPS image URL detected: {args.Uri}");
-            }
-        }
-        else if (!File.Exists(args.Uri))
-        {
-            // Local file path that does not exist
-            brokenImages.Add(args.Uri);
-            Console.WriteLine($"Broken image link: {args.Uri}");
-        }
-    }
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 
 MarkdownDocument doc = new MarkdownDocument(markdownStream, settings);
@@ -830,35 +777,8 @@ class MarkdownProcessor
     
     private void OnImageNodeVisited(object sender, MdImageNodeVisitedEventArgs args)
     {
-        if (string.IsNullOrEmpty(args.Uri))
-            return;
-
-        // Check cache
-        if (_imageCache.ContainsKey(args.Uri))
-        {
-            args.ImageStream = new System.IO.MemoryStream(_imageCache[args.Uri]);
-            return;
-        }
-
-        // Resolve relative paths
-        string path = args.Uri;
-        if (!Path.IsPathRooted(path))
-        {
-            path = Path.Combine(_basePath, path);
-        }
-
-        // Load and cache
-        if (File.Exists(path))
-        {
-            byte[] data = File.ReadAllBytes(path);
-            _imageCache[args.Uri] = data;
-            args.ImageStream = new System.IO.MemoryStream(data);
-            Console.WriteLine($"  Loaded image: {args.Uri}");
-        }
-        else
-        {
-            Console.WriteLine($"  Image not found: {args.Uri}");
-        }
+        // TODO:
+        // Implement secure image handling logic if required by the application.
     }
 }
 
