@@ -202,6 +202,224 @@ engine.ReloadErrorStrings();
 
 ---
 
+## Performance and Optimization Properties
+
+### AllowShortCircuitIFs
+
+Enables short-circuit evaluation for nested IF formulas, skipping unnecessary condition evaluations.
+
+```csharp
+CalcData calcData = new CalcData();
+CalcEngine engine = new CalcEngine(calcData);
+
+// Enable short-circuit IF evaluation
+engine.AllowShortCircuitIFs = true;
+
+// Complex nested IF formula - only evaluates necessary branches
+string formula = "=IF(A1>100, \"High\", IF(A1>50, \"Medium\", IF(A1>0, \"Low\", \"None\")))";
+string result = engine.ParseAndComputeFormula(formula);
+```
+
+**Type:** Property (bool)  
+**Default:** false  
+**Use Case:** Optimize nested IF formulas with multiple conditions
+
+---
+
+### CalculatingSuspended
+
+Suspends all calculations temporarily during bulk updates, then resumes computation after changes are complete.
+
+```csharp
+// Class derived from ICalcData
+CalcData calcData = new CalcData();
+
+CalcEngine engine = new CalcEngine(calcData);
+
+// Set values to the variables
+calcData.SetValueRowCol(100, 1, 1); 
+calcData.SetValueRowCol(200, 1, 2);
+calcData.SetValueRowCol(140, 2, 2);
+calcData.SetValueRowCol(120, 3, 2);
+calcData.SetValueRowCol(100, 4, 2);  
+
+// Parsing the formula
+var parsedFormula = engine.ParseFormula("=SUM(A1:E4)"); 
+
+// Computing the value of parsed formula
+string result = engine.ComputeFormula(parsedFormula);
+
+// Turn off calculations
+engine.CalculatingSuspended = true;
+
+Random random = new Random();
+
+// Makes multiple updates to cells involved in calculation
+for (int i = 0; i < 5000; i++)
+{
+    for (int j = 0; j < 5000; j++)
+    {
+        calcData.SetValueRowCol(random.Next(5) + 1,i,j);
+    }
+}
+
+// Turn on calculations
+engine.CalculatingSuspended = false;
+
+// Again computing the value of parsed formula
+result = engine.ComputeFormula(parsedFormula);
+```
+
+**Type:** Property (bool)  
+**Default:** false  
+**Use Case:** Massive performance improvement for bulk data updates
+
+---
+
+### UseFormulaValues
+
+Enables caching of formula values to avoid redundant recalculations for cells with many dependencies.
+
+```csharp
+CalcData calcData = new CalcData();
+CalcEngine engine = new CalcEngine(calcData);
+
+// Enable formula value caching
+engine.UseFormulaValues = true;
+
+// First computation
+string result1 = engine.ParseAndComputeFormula("=SUM(A1:Z1000)");
+
+// Subsequent access uses cached value instead of recalculating
+string result2 = engine.ParseAndComputeFormula("=SUM(A1:Z1000)");
+```
+
+**Type:** Property (bool)  
+**Default:** false  
+**Use Case:** Reduce redundant calculations for repeated formula accesses
+
+---
+
+### MaximumRecursiveCalls
+
+Sets the maximum depth of recursive calculations to prevent stack overflow errors.
+
+```csharp
+CalcData calcData = new CalcData();
+CalcEngine engine = new CalcEngine(calcData);
+
+// Default is 100, increase for deeply nested formulas
+engine.MaximumRecursiveCalls = 10000;
+
+// Enables computation of deeply nested or recursive formulas
+string formula = "=SUMPRODUCT((A1:Z100>50)*1)";
+string result = engine.ParseAndComputeFormula(formula);
+```
+
+**Type:** Property (int)  
+**Default:** 100  
+**Warning:** Setting too high may cause stack overflow. Balance based on application needs.  
+**Use Case:** Deep recursion or complex nested calculations
+
+---
+
+### ThrowCircularException
+
+Controls whether circular references throw an exception or allow iterative calculations to proceed.
+
+```csharp
+CalcData calcData = new CalcData();
+CalcEngine engine = new CalcEngine(calcData);
+
+// Enable circular exception throwing
+engine.ThrowCircularException = true;
+
+// Create circular reference: A1 = B1, B1 = A1
+calcData.SetValueRowCol("=B1", 1, 1);  // A1 = =B1
+calcData.SetValueRowCol("=A1", 1, 2);  // B1 = =A1
+
+try
+{
+    string result = engine.ParseAndComputeFormula("A1");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Circular reference detected: {ex.Message}");
+}
+```
+
+**Type:** Property (bool)  
+**Default:** false  
+**Use Case:** Detect and handle circular reference errors
+
+---
+
+## Iteration Properties
+
+### IterationMaxCount
+
+Sets the maximum number of iterations for formulas with circular references. When greater than 0, enables iterative calculation mode.
+
+```csharp
+CalcEngine engine = new CalcEngine(new CalcData());
+
+// Enable iterative calculations with maximum iterations
+engine.IterationMaxCount = 100;  // Maximum 100 iterations
+
+// When set, CircularException behavior is automatically adjusted
+// Formula calculations will iterate up to the specified count
+```
+
+**Type:** Property (int)  
+**Default:** 0 (iterative calculation disabled)  
+**Use Case:** Allow controlled circular reference iterations
+
+---
+
+### IterationMaxTolerance
+
+Sets the convergence tolerance for iterative calculations. Iterations stop when convergence is reached.
+
+```csharp
+CalcEngine engine = new CalcEngine(new CalcData());
+
+// Set iteration tolerance for convergence detection
+engine.IterationMaxTolerance = 0.001;  // Stop iterating when change < 0.001
+
+// Use with IterationMaxCount for full iterative calculation control
+engine.IterationMaxCount = 100;
+```
+
+**Type:** Property (double)  
+**Default:** 0.001  
+**Use Case:** Control precision of iterative calculations
+
+---
+
+## Stack Management
+
+### MaxStackDepth
+
+Static property controlling the maximum depth of calculation stack operations. Prevents memory issues with deeply nested formulas.
+
+```csharp
+CalcEngine engine = new CalcEngine(new CalcData());
+
+// Default is 50, increase for complex nested operations
+CalcEngine.MaxStackDepth = 10000;
+
+// Allows complex nested formulas to execute
+string complexFormula = "=((((A1+B1)*C1)/D1)^2)*100";
+string result = engine.ParseAndComputeFormula(complexFormula);
+```
+
+**Type:** Static Property (int)  
+**Default:** 50  
+**Warning:** Excessive values may cause memory problems.  
+**Use Case:** Complex nested formula evaluation
+
+---
+
 ## Key Members
 
 | Member | Type | Description |
@@ -216,6 +434,14 @@ engine.ReloadErrorStrings();
 | `ErrorStrings` | Static Property | Array of Excel-compatible error strings (`#VALUE!`, `#REF!`, etc.). |
 | `FormulaErrorStrings` | Static Property | Array of internal Calculate error strings. |
 | `ReloadErrorStrings()` | Method | Reloads or resets internal error strings after modification. |
+| `AllowShortCircuitIFs` | Property | Enables short-circuit evaluation for nested IF formulas. |
+| `CalculatingSuspended` | Property | Suspends calculations during bulk updates. |
+| `UseFormulaValues` | Property | Enables formula value caching for optimization. |
+| `MaximumRecursiveCalls` | Property | Sets maximum recursion depth to prevent stack overflow. |
+| `ThrowCircularException` | Property | Controls circular reference exception throwing. |
+| `IterationMaxCount` | Property | Sets maximum iterations for circular reference handling. |
+| `IterationMaxTolerance` | Property | Sets convergence tolerance for iterative calculations. |
+| `MaxStackDepth` | Static Property | Controls maximum calculation stack depth. |
 
 ---
 

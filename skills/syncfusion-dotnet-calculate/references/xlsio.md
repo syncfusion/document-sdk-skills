@@ -402,6 +402,164 @@ public class ExcelCalculationWorkflow
 
 ---
 
+## Advanced XlsIO Integration Methods
+
+### RecalculateRange
+
+Recalculates a specific range of cells in the worksheet after updates have been made.
+
+```csharp
+ExcelEngine excelEngine = new ExcelEngine();
+IWorkbook workbook = excelEngine.Excel.Workbooks.Open(@"Sample.xlsx");
+IWorksheet sheet = workbook.Worksheets["Inputs"];
+
+sheet.EnableSheetCalculations();
+
+// Suspend calculations for bulk updates
+sheet.CalcEngine.CalculatingSuspended = true;
+
+// Make multiple updates
+sheet[1, 1].Value = "100";
+sheet[2, 1].Value = "200";
+sheet[3, 1].Value = "150";
+
+// Resume calculations
+sheet.CalcEngine.CalculatingSuspended = false;
+
+// Recalculate only the affected range
+sheet.CalcEngine.RecalculateRange(RangeInfo.Cells(1, 1, 3, 5), sheet);
+
+// Get updated values
+string result = sheet["A5"].CalculatedValue;
+```
+
+**Method Signature:** `void RecalculateRange(RangeInfo range, ICalcData data)`  
+**Parameters:**
+- `range` - The range of cells to recalculate (RangeInfo object)
+- `data` - The ICalcData source (typically the worksheet)
+
+**Use Case:** Efficiently update only affected cells after bulk modifications
+
+---
+
+### GetSheetID
+
+Gets the unique sheet ID for a worksheet, used in advanced XlsIO integration scenarios.
+
+```csharp
+ExcelEngine excelEngine = new ExcelEngine();
+IWorkbook workbook = excelEngine.Excel.Workbooks.Open(@"Sample.xlsx");
+
+IWorksheet inputSheet = workbook.Worksheets["Inputs"];
+IWorksheet outputSheet = workbook.Worksheets["Outputs"];
+
+inputSheet.EnableSheetCalculations();
+outputSheet.EnableSheetCalculations();
+
+// Get sheet IDs for cross-sheet operations
+int inputSheetId = inputSheet.CalcEngine.GetSheetID(inputSheet);
+int outputSheetId = inputSheet.CalcEngine.GetSheetID(outputSheet);
+
+Console.WriteLine($"Input Sheet ID: {inputSheetId}");
+Console.WriteLine($"Output Sheet ID: {outputSheetId}");
+```
+
+**Method Signature:** `int GetSheetID(ICalcData data)`  
+**Parameters:**
+- `data` - The ICalcData object (worksheet) to get ID for
+
+**Return:** Unique sheet ID (int)
+
+**Use Case:** Cross-sheet calculation management and reference tracking
+
+---
+
+### UpdateCalcID
+
+Updates the calculation state ID after making modifications. Used with `CalculatingSuspended` to ensure proper calculation tracking.
+
+```csharp
+ExcelEngine excelEngine = new ExcelEngine();
+IWorkbook workbook = excelEngine.Excel.Workbooks.Open(@"Sample.xlsx");
+IWorksheet sheet = workbook.Worksheets[0];
+
+sheet.EnableSheetCalculations();
+
+// Suspend calculations during bulk updates
+sheet.CalcEngine.CalculatingSuspended = true;
+
+Random r = new Random();
+for (int row = 1; row <= 100; row++)
+{
+    for (int col = 1; col <= 10; col++)
+    {
+        sheet[row, col].Value = r.Next(1000).ToString();
+    }
+}
+
+// Update calculation state
+sheet.CalcEngine.CalculatingSuspended = false;
+sheet.CalcEngine.UpdateCalcID();
+
+// Now calculations reflect the updated values
+string result = sheet["A10"].CalculatedValue;
+```
+
+**Method Signature:** `void UpdateCalcID()`  
+**Parameters:** None
+
+**Use Case:** Sync calculation state after suspended calculation mode
+
+---
+
+### PullUpdatedValue
+
+Pulls updated calculated values from a specific cell after calculations have been updated.
+
+```csharp
+ExcelEngine excelEngine = new ExcelEngine();
+IWorkbook workbook = excelEngine.Excel.Workbooks.Open(@"Sample.xlsx");
+
+IWorksheet inputSheet = workbook.Worksheets["Inputs"];
+IWorksheet outputSheet = workbook.Worksheets["Outputs"];
+
+inputSheet.EnableSheetCalculations();
+outputSheet.EnableSheetCalculations();
+
+// Suspend during updates
+inputSheet.CalcEngine.CalculatingSuspended = true;
+
+Random r = new Random();
+
+// Update input values
+inputSheet[1, 2].Value = (r.Next(74) + 15).ToString();    // Age
+inputSheet[2, 2].Value = (r.Next(50) + 20).ToString();    // Income
+inputSheet[3, 2].Value = (r.Next(100) + 1).ToString();    // Transactions
+outputSheet[1,1].Value = (r.Next(100) + 1).ToString();
+
+// Update calculation state
+inputSheet.CalcEngine.CalculatingSuspended = false;
+inputSheet.CalcEngine.UpdateCalcID();
+
+// Pull updated value from output sheet
+int outputSheetId = inputSheet.CalcEngine.GetSheetID(outputSheet);
+inputSheet.CalcEngine.PullUpdatedValue(outputSheetId, 1, 1);
+
+// Get calculated result
+string calculatedValue = outputSheet[1, 1].CalculatedValue;
+Console.WriteLine($"Updated Result: {calculatedValue}");
+```
+
+**Method Signature:** `void PullUpdatedValue(int sheetId, int row, int col)`  
+**Parameters:**
+- `sheetId` - The sheet ID obtained from `GetSheetID()`
+- `row` - The row index of the cell (1-based)
+- `col` - The column index of the cell (1-based)
+
+**Use Case:** Retrieve updated values after resuming suspended calculations
+
+---
+
 ## Performance Tips
 
 ### 1. Batch Updates
@@ -444,6 +602,10 @@ excelEngine.Dispose();
 | `CalcEngine` | Property | Access underlying CalcEngine instance |
 | `CalculatedValue` | Property | Get computed value of formula cell |
 | `Formula` | Property | Get or set cell formula |
+| `RecalculateRange(RangeInfo, ICalcData)` | Method | Recalculate a specific range of cells |
+| `GetSheetID(ICalcData)` | Method | Get unique ID for a worksheet |
+| `UpdateCalcID()` | Method | Update calculation state after resuming suspended mode |
+| `PullUpdatedValue(int, int, int)` | Method | Pull updated calculated value from a specific cell |
 
 ---
 

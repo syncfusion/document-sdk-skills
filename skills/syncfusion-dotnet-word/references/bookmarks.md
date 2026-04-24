@@ -94,6 +94,12 @@ if (bookmark != null)
     doc.Bookmarks.Remove(bookmark);
 ```
 
+### Remove all Bookmarks
+```csharp
+// Remove all the bookmarks from Word document
+doc.Bookmarks.Clear();
+```
+
 ### Placeholders
 - `"BookmarkName"` → Replace with `"{bookmark-name}"`
 
@@ -156,6 +162,21 @@ wordDocumentPart.Close();
 
 ---
 
+## Retrieve Word Document Content
+
+### Get Entire Word Document Content as WordDocumentPart
+```csharp
+var fileStream = new FileStream("Template.docx", FileMode.Open, FileAccess.Read);
+var doc = new WordDocument(fileStream, FormatType.Docx);
+// Get Word document content as WordDocumentPart
+WordDocumentPart wordDocumentPart = new WordDocumentPart(doc);
+```
+
+### Placeholders
+- `"Template.docx"` → Replace with `"{filename}.docx"`
+
+---
+
 ## Retrieve Bookmark Content Within Table
 
 ### Minimal Code
@@ -193,11 +214,21 @@ for (int i = 0; i < part.BodyItems.Count; i++)
 ## Insert Content into Bookmark
 
 ### Insert Simple Text
+
+#### Insert with Formatting
 ```csharp
 var bookmarkNavigator = new BookmarksNavigator(doc);
 bookmarkNavigator.MoveToBookmark("BookmarkName");
-// Insert text before bookmark end
-bookmarkNavigator.InsertText("New text content here.");
+// Insert text before bookmark end and preserve existing formatting.
+bookmarkNavigator.InsertText("New text content here.", true);
+```
+
+#### Insert without Formatting
+```csharp
+var bookmarkNavigator = new BookmarksNavigator(doc);
+bookmarkNavigator.MoveToBookmark("BookmarkName");
+// Insert text before bookmark end and discard existing formatting.
+bookmarkNavigator.InsertText("New text content here.", false);
 ```
 
 ### Insert Paragraph
@@ -311,7 +342,33 @@ bookmarkNavigator.MoveToBookmark("TargetBookmark");
 bookmarkNavigator.ReplaceBookmarkContent(textBodyPart);
 ```
 
+### Replace with Plain Text
+
+#### Replace with Formatting
+```csharp
+// Bookmark "BookmarkName" already exists and contains formatted text
+BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
+// Move to the virtual cursor before the end location of the bookmark "BookmarkName"
+bookmarkNavigator.MoveToBookmark("BookmarkName");
+// Replace the bookmark content with simple text and preserve existing formatting.
+bookmarkNavigator.ReplaceBookmarkContent(" Northwind Database is a set of tables containing data fitted into predefined categories.", true);
+```
+
+#### Replace without Formatting
+```csharp
+// Bookmark "BookmarkName" already exists and contains formatted text
+BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
+// Move to the virtual cursor before the end location of the bookmark "BookmarkName"
+bookmarkNavigator.MoveToBookmark("BookmarkName");
+// Replace the bookmark content with simple text and discard existing formatting.
+bookmarkNavigator.ReplaceBookmarkContent(" Northwind Database is a set of tables containing data fitted into predefined categories.", false);
+```
+
+#### Placeholders
+- `"BookmarkName"` → Replace with `"{bookmark-name}"`
+
 ### Replace with WordDocumentPart
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 // Load template document
@@ -342,6 +399,7 @@ templateDoc.Close();
 ## Complete Example: Bookmark Operations
 
 ### Full Example
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "BookmarkOperations.docx");
@@ -367,7 +425,7 @@ section.AddParagraph();
 // Navigate to bookmark and insert content
 var bookmarkNavigator = new BookmarksNavigator(doc);
 bookmarkNavigator.MoveToBookmark("ContentBookmark", false, true);
-bookmarkNavigator.InsertText(" [Inserted text after bookmark start]");
+bookmarkNavigator.InsertText(" [Inserted text after bookmark start]", false);
 
 // Add another section with bookmark
 doc.AddSection();

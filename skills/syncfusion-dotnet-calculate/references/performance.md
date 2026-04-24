@@ -18,6 +18,15 @@ using Syncfusion.Calculate;
 
 ## Performance Optimization Techniques
 
+### Overview
+
+The following optimization techniques can significantly improve calculation performance:
+
+1. **AllowShortCircuitIFs** - Skip unnecessary IF condition evaluations
+2. **CalculatingSuspended** - Suspend recalculation during bulk updates
+3. **UseFormulaValues** - Cache formula results to avoid redundant calculations
+4. **Parse Once, Compute Multiple Times** - Reuse parsed formulas
+
 ### 1. Allow Short Circuit IFs
 
 For nested IF formulas, enable short-circuit evaluation to avoid computing unnecessary alternatives.
@@ -51,10 +60,20 @@ When making multiple changes to dependent cells, suspend calculations and recalc
 CalcData calcData = new CalcData();
 CalcEngine engine = new CalcEngine(calcData);
 
-// Turn off calculations
+// Set some initial values (example)
+calcData.SetValueRowCol(100, 1, 1);
+calcData.SetValueRowCol(200, 1, 2);
+calcData.SetValueRowCol(140, 2, 2);
+calcData.SetValueRowCol(120, 3, 2);
+calcData.SetValueRowCol(100, 4, 2);
+
+// Parse and compute once before bulk updates
+var parsedFormula = engine.ParseFormula("=SUM(A1:E4)");
+string resultBefore = engine.ComputeFormula(parsedFormula);
+
+// Turn off calculations during bulk updates
 engine.CalculatingSuspended = true;
 
-// Make multiple updates without triggering recalculation
 Random random = new Random();
 for (int i = 0; i < 5000; i++)
 {
@@ -67,8 +86,8 @@ for (int i = 0; i < 5000; i++)
 // Turn on calculations
 engine.CalculatingSuspended = false;
 
-// Recalculate affected ranges
-engine.RecalculateRange(RangeInfo.Cells(1, 1, 5000, 5000), calcData);
+// Compute again using the parsed formula
+string resultAfter = engine.ComputeFormula(parsedFormula);
 ```
 
 **Benefits:**
@@ -250,7 +269,7 @@ string result = engine.ParseAndComputeFormula(formula);
 
 ### 4. Set Maximum Stack Depth
 
-Control the maximum calculation stack depth to prevent memory issues.
+Control the maximum calculation stack depth to prevent memory issues. `MaxStackDepth` is a static property that applies globally to all CalcEngine instances.
 
 ```csharp
 CalcEngine engine = new CalcEngine(new CalcData());
@@ -260,11 +279,19 @@ CalcEngine.MaxStackDepth = 10000;
 
 // Allows complex nested formulas
 string complexFormula = "=((((A1+B1)*C1)/D1)^2)*100";
+string result = engine.ParseAndComputeFormula(complexFormula);
 ```
 
-**Default Value:** 50
+**Property Details:**
+- **Type:** Static Property (int)
+- **Default Value:** 50
+- **Scope:** Global - affects all CalcEngine instances
+- **Warning:** Excessive values may cause memory problems
 
-**Warning:** Excessive values may cause memory problems.
+**Use Cases:**
+- Complex deeply nested formulas
+- Matrix operations
+- Recursive calculations
 
 ---
 
@@ -326,6 +353,105 @@ private void GetCalculatedValue()
     // Compute the formula
     calculatedValue = engine.ParseAndComputeFormula("D1");
 }
+```
+
+---
+
+## RangeInfo Utility Class
+
+### Overview
+
+`RangeInfo` is a utility class used to define ranges of cells for operations like `RecalculateRange()`. It provides factory methods to create range specifications.
+
+### GetAlphaLabel
+
+Converts a numeric column index (1-based) to its alphabetic column label (A, B, C, ..., Z, AA, AB, etc.).
+
+```csharp
+// Convert column number to letter
+string colA = RangeInfo.GetAlphaLabel(1);      // "A"
+string colB = RangeInfo.GetAlphaLabel(2);      // "B"
+string colZ = RangeInfo.GetAlphaLabel(26);     // "Z"
+string colAA = RangeInfo.GetAlphaLabel(27);    // "AA"
+string colAZ = RangeInfo.GetAlphaLabel(52);    // "AZ"
+string colBA = RangeInfo.GetAlphaLabel(53);    // "BA"
+```
+
+**Method Signature:** `static string GetAlphaLabel(int column)`  
+**Parameters:**
+- `column` - The 1-based column index
+
+**Return:** String representation of the column letter(s)
+
+**Use Case:** Convert cell coordinates to column references
+
+---
+
+### Cells Factory Method
+
+Creates a RangeInfo object representing a rectangular range of cells.
+
+```csharp
+CalcData calcData = new CalcData();
+CalcEngine engine = new CalcEngine(calcData);
+
+// Create range from A1 to C5
+RangeInfo range = RangeInfo.Cells(1, 1, 5, 3);
+
+// Populate some cells
+for (int row = 1; row <= 5; row++)
+{
+    for (int col = 1; col <= 3; col++)
+    {
+        calcData.SetValueRowCol(row * col, row, col);
+    }
+}
+
+// Recalculate formulas in the range
+engine.CalculatingSuspended = false;
+engine.RecalculateRange(range, calcData);
+```
+
+**Method Signature:** `static RangeInfo Cells(int startRow, int startCol, int endRow, int endCol)`  
+**Parameters:**
+- `startRow` - Starting row index (1-based)
+- `startCol` - Starting column index (1-based)
+- `endRow` - Ending row index (1-based)
+- `endCol` - Ending column index (1-based)
+
+**Return:** RangeInfo object defining the rectangular range
+
+**Use Case:** Define ranges for recalculation or iteration
+
+---
+
+### RangeInfo Usage Example
+
+```csharp
+CalcData calcData = new CalcData();
+CalcEngine engine = new CalcEngine(calcData);
+
+// Set up data
+calcData.SetValueRowCol(10, 1, 1);   // A1 = 10
+calcData.SetValueRowCol(20, 1, 2);   // B1 = 20
+calcData.SetValueRowCol("=A1+B1", 1, 3);  // C1 = =A1+B1
+
+// Suspend calculations for bulk updates
+engine.CalculatingSuspended = true;
+
+// Update values
+calcData.SetValueRowCol(15, 1, 1);   // A1 = 15
+calcData.SetValueRowCol(25, 1, 2);   // B1 = 25
+
+// Resume calculations
+engine.CalculatingSuspended = false;
+
+// Recalculate affected range
+RangeInfo range = RangeInfo.Cells(1, 1, 1, 3);
+engine.RecalculateRange(range, calcData);
+
+// Get result
+string result = engine.ParseAndComputeFormula("C1");  // "40"
 ```
 
 ---

@@ -84,6 +84,12 @@ if (bookmark != null)
 }
 ```
 
+### Remove all Bookmarks
+```java
+// Remove all the bookmarks from Word document
+doc.getBookmarks().clear();
+```
+
 ### Placeholders
 - `"BookmarkName"` → Replace with `"{bookmark-name}"`
 
@@ -146,6 +152,20 @@ wordDocumentPart.Close();
 
 ---
 
+## Retrieve Word Document Content
+
+### Get Entire Word Document Content as WordDocumentPart
+```java
+WordDocument doc = new WordDocument(new FileInputStream("Template.docx"), FormatType.Docx);
+// Get Word document content as WordDocumentPart
+WordDocumentPart wordDocumentPart = new WordDocumentPart(doc);
+```
+
+### Placeholders
+- `"Template.docx"` → Replace with `"{filename}.docx"`
+
+---
+
 ## Retrieve Bookmark Content Within Table
 
 ### Minimal Code
@@ -183,11 +203,21 @@ for (int i = 0; i < part.getBodyItems().getCount(); i++)
 ## Insert Content into Bookmark
 
 ### Insert Simple Text
+
+#### Insert with Formatting
 ```java
 BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
 bookmarkNavigator.moveToBookmark("BookmarkName");
-// Insert text before bookmark end
-bookmarkNavigator.insertText("New text content here.");
+// Insert text before bookmark end and preserve existing formatting.
+bookmarkNavigator.insertText("New text content here.", true);
+```
+
+#### Insert without Formatting
+```java
+BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
+bookmarkNavigator.moveToBookmark("BookmarkName");
+// Insert text before bookmark end and discard existing formatting.
+bookmarkNavigator.insertText("New text content here.", false);
 ```
 
 ### Insert Paragraph
@@ -294,6 +324,28 @@ bookmarkNavigator.moveToBookmark("TargetBookmark");
 bookmarkNavigator.replaceBookmarkContent(textBodyPart);
 ```
 
+### Replace with Plain Text
+
+#### Replace with Formatting
+```java
+// Bookmark "BookmarkName" already exists and contains formatted text
+BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
+// Move to the virtual cursor before the end location of the bookmark "BookmarkName"
+bookmarkNavigator.moveToBookmark("BookmarkName");
+// Replace the bookmark content with simple text and preserve existing formatting.
+bookmarkNavigator.replaceBookmarkContent(" Northwind Database is a set of tables containing data fitted into predefined categories.", true);
+```
+
+#### Replace without Formatting
+```java
+// Bookmark "BookmarkName" already exists and contains formatted text
+BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
+// Move to the virtual cursor before the end location of the bookmark "BookmarkName"
+bookmarkNavigator.moveToBookmark("BookmarkName");
+// Replace the bookmark content with simple text and discard existing formatting.
+bookmarkNavigator.replaceBookmarkContent(" Northwind Database is a set of tables containing data fitted into predefined categories.", false);
+```
+
 ### Replace with WordDocumentPart
 ```java
 WordDocument templateDoc = new WordDocument(new FileInputStream("Template.docx"), FormatType.Docx);
@@ -346,7 +398,7 @@ section.addParagraph();
 // Navigate to bookmark and insert content
 BookmarksNavigator bookmarkNavigator = new BookmarksNavigator(doc);
 bookmarkNavigator.moveToBookmark("ContentBookmark", false, true);
-bookmarkNavigator.insertText(" Inserted text after bookmark start");
+bookmarkNavigator.insertText(" Inserted text after bookmark start", false);
 
 // Add another section with bookmark
 doc.AddSection();
