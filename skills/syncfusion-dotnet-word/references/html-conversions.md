@@ -101,15 +101,14 @@ if (document.LastSection.Body.IsValidXHTML(htmlString, XHTMLValidationType.Trans
 
 ## Customize Image Data (HTML to Word)
 
-### Load Images from File
-
-#### Common for Cross-Platform and Windows-Specific
+### Common for Cross-Platform and Windows-Specific
 ```csharp
 FileStream docStream = new FileStream("Input.html", FileMode.Open, FileAccess.Read);
 var document = new WordDocument();
 document.HTMLImportSettings.ImageNodeVisited += (s, e) =>
 {
-    e.ImageStream = File.OpenRead(e.Uri);
+    // TODO:
+    // Implement secure image handling logic if required by the application.
 };
 document.Open(docStream, FormatType.Html);
 
@@ -118,31 +117,6 @@ document.Save(outStream, FormatType.Docx);
 outStream.Close();
 docStream.Close();
 document.Close();
-```
-
-### Load Images from URL
-
-> ⚠️ **Security Note:** Only HTTPS URIs with a valid, well-formed structure are fetched.
-> Plain HTTP or malformed URIs are rejected to reduce exposure to untrusted third-party content.
-> Always ensure the HTML source is from a trusted origin before enabling external image loading.
-
-#### Common for Cross-Platform and Windows-Specific
-```csharp
-
-FileStream docStream = new FileStream("Input.html", FileMode.Open, FileAccess.Read);
-var document = new WordDocument();
-document.HTMLImportSettings.ImageNodeVisited += (s, e) =>
-{
-    if (string.IsNullOrEmpty(e.Uri))
-        return;
-
-    // TODO:
-    // Download the image from an external URL and assign it to ImageStream.
-    // Consumers may implement this using WebClient or HttpClient ONLY after
-    // validating and restricting URLs to trusted sources to prevent SSRF
-    // or data exfiltration vulnerabilities.
-};
-document.Open(docStream, FormatType.Html);
 ```
 
 ---
