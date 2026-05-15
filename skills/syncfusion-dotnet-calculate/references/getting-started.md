@@ -348,6 +348,6 @@ string result = engine.ParseAndComputeFormula("SUM(5,5;10,5)");  // "20,5"
 
 - Learn about [Parse and Compute Operations](parse-compute.md)
 - Explore [CalcQuickBase](calcquickbase.md) for detailed API
-- Understand [ICalcData Interface](./icalcdata.md)
+- Understand [ICalcData Interface](icalcdata.md)
 - Discover [Cross-Sheet References](calcengine.md#cross-sheet-reference)
 - Create [Custom Functions](customfunction.md)
