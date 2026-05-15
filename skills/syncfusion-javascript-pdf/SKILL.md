@@ -321,13 +321,14 @@ document.destroy();
 - Component-based integration
 - Handle file downloads in component lifecycle
 - State management for document generation
+- Keep Syncfusion PDF operations in framework services, hooks, or component methods, then bind generated output to the framework's download or upload flow.
 
 ### ASP.NET Core/MVC
 - Server-side PDF generation
 - Return PDF as file result
 - Memory stream handling
 
-For platform-specific setup details, see [references/getting-started.md](references/getting-started.md)
+For platform-specific setup details and package examples for TypeScript, JavaScript, Angular, React, Vue, ASP.NET Core, and ASP.NET MVC, see [references/getting-started.md](references/getting-started.md).
 
 ## Key Props and Methods
 

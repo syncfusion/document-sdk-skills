@@ -16,6 +16,7 @@ REF_RE = re.compile(r"`?(references/[A-Za-z0-9_.\-/]+\.(?:md|csx))`?")
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+PINNED_NUGET_RE = re.compile(r'#r\s+"nuget:\s*[^",]+,\s*[^"]+"')
 
 
 def is_external_link(target: str) -> bool:
@@ -80,6 +81,8 @@ def validate_skill(skill_dir: Path) -> list[str]:
     skill_md = skill_dir / "SKILL.md"
     readme = skill_dir / "README.md"
     references = skill_dir / "references"
+    scripts = skill_dir / "scripts"
+    template_csx = references / "template.csx"
 
     for required in (skill_md, readme, references):
         if not required.exists():
@@ -94,6 +97,38 @@ def validate_skill(skill_dir: Path) -> list[str]:
         if not frontmatter.get("description"):
             errors.append(f"{skill_md.relative_to(ROOT)}: missing description")
 
+    markdown_text = ""
+    for path in (skill_md, readme):
+        if path.exists():
+            markdown_text += "\n" + strip_code(path.read_text(encoding="utf-8"))
+
+    supports_csx_mode = "Mode 2" in markdown_text and (
+        "CSX" in markdown_text or "dotnet script" in markdown_text
+    )
+    if supports_csx_mode:
+        if not scripts.exists():
+            errors.append(
+                f"{skill_dir.relative_to(ROOT)}: CSX Mode 2 skills must include scripts/"
+            )
+        if not template_csx.exists():
+            errors.append(
+                f"{skill_dir.relative_to(ROOT)}: CSX Mode 2 skills must include references/template.csx"
+            )
+
+    return errors
+
+
+def validate_template(path: Path) -> list[str]:
+    errors: list[str] = []
+    text = path.read_text(encoding="utf-8")
+    if PINNED_NUGET_RE.search(text):
+        errors.append(
+            f"{path.relative_to(ROOT)}: avoid pinned versions in dotnet-script #r nuget references"
+        )
+    if 'Syncfusion.Licensing' not in text:
+        errors.append(
+            f"{path.relative_to(ROOT)}: template should reference Syncfusion.Licensing"
+        )
     return errors
 
 
@@ -115,6 +150,9 @@ def main() -> int:
             errors.append(
                 f"{markdown.relative_to(ROOT)}: replace placeholder package version ^xx.x.xx"
             )
+
+    for template in sorted(SKILLS_DIR.glob("*/references/template.csx")):
+        errors.extend(validate_template(template))
 
     if errors:
         print("Skill validation failed:")

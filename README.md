@@ -186,6 +186,23 @@ For skills that explicitly document execution mode, creates a temporary script, 
 
 **Trigger keywords:** `"create"`, `"generate"`, `"make"`, `"open"`, `"edit"`, `"modify"`, file paths (e.g., `output/report.docx`)
 
+### Supported Modes by Skill
+
+| Skill | Mode 1: Generate code | Mode 2: Execute script | Notes |
+|-------|------------------------|------------------------|-------|
+| .NET PDF | ✅ | ✅ | CSX execution |
+| .NET Word | ✅ | ✅ | CSX execution |
+| .NET Excel | ✅ | ✅ | CSX execution |
+| .NET PowerPoint | ✅ | ✅ | CSX execution |
+| .NET Markdown | ✅ | ✅ | CSX execution |
+| .NET Calculate | ✅ | ❌ | Code generation only |
+| .NET Smart Data Extraction | ✅ | ❌ | Code generation only |
+| .NET PDF to Image Converter | ✅ | ❌ | Code generation only |
+| Java Word | ✅ | ❌ | Code generation only |
+| JavaScript PDF | ✅ | ❌ | Code generation only |
+| Flutter PDF | ✅ | ❌ | Code generation only |
+| Flutter Excel | ✅ | ❌ | Code generation only |
+
 
 ## Example Prompts
 
