@@ -436,5 +436,5 @@ public class ParseAndComputeExample
 
 - [CalcEngine](calcengine.md) - Advanced engine features
 - [CalcQuickBase](calcquickbase.md) - Simple calculation interface
-- [ICalcData](ICalcData.md) - Data source implementation
+- [ICalcData](icalcdata.md) - Data source implementation
 - [Operators](operators.md) - Formula operators and precedence
