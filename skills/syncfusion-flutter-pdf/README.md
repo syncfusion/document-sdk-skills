@@ -37,7 +37,7 @@ Do NOT invent APIs/methods not in reference files.
 - Add dependency to `pubspec.yaml`:
   ```yaml
   dependencies:
-    syncfusion_flutter_pdf: <latest-compatible-version>
+    syncfusion_flutter_pdf: ^33.1.44
   ```
 - Use the latest compatible package version from pub.dev or Syncfusion documentation, then run: `flutter pub get`
 - Import in your Dart file:

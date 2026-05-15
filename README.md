@@ -166,8 +166,8 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  syncfusion_flutter_xlsio: <latest-compatible-version>
-  syncfusion_officechart: <latest-compatible-version>
+  syncfusion_flutter_xlsio: ^33.1.44
+  syncfusion_officechart: ^33.1.44
 ```
 
 Use the latest compatible package versions from pub.dev or Syncfusion documentation, then run: `flutter pub get`. Add `syncfusion_officechart` when chart support is needed.

@@ -1,4 +1,4 @@
-# ICalcData — Syncfusion Windows Forms Calculation Engine
+# ICalcData — Syncfusion Calculate Data Source Interface
 
 > `ICalcData` is an interface that allows `CalcEngine` to communicate with arbitrary data sources. Implement this interface to integrate calculation support into classes representing row/column data structures.
 
