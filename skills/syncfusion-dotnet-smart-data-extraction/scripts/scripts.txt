@@ -1,1 +1,1 @@
-All temporary csx files will be generated here in this folder
+This skill currently supports code generation only and does not create temporary scripts.

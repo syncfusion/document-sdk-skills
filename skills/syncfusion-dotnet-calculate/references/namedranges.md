@@ -403,7 +403,7 @@ int count = engine.NamedRanges.Count;
 
 ## See Also
 
-- [CalcEngine](./CalcEngine.md) - Core calculation engine
-- [Parse and Compute](./ParseAndComputeRef.md) - Formula operations
-- [Getting Started](./GettingStarted.md) - Setup guide
-- [Operators](./OperatorsRef.md) - Formula operators
+- [CalcEngine](calcengine.md) - Core calculation engine
+- [Parse and Compute](parse-compute.md) - Formula operations
+- [Getting Started](getting-started.md) - Setup guide
+- [Operators](operators.md) - Formula operators

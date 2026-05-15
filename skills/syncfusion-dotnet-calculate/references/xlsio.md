@@ -698,7 +698,7 @@ string total = payroll["C102"].CalculatedValue;
 
 ## See Also
 
-- [CalcEngine](./CalcEngine.md) - Advanced engine features
-- [Parse and Compute](./ParseAndComputeRef.md) - Formula operations
-- [Getting Started](./GettingStarted.md) - Setup guide
-- [Performance](./PerformanceRef.md) - Optimization techniques
+- [CalcEngine](calcengine.md) - Advanced engine features
+- [Parse and Compute](parse-compute.md) - Formula operations
+- [Getting Started](getting-started.md) - Setup guide
+- [Performance](performance.md) - Optimization techniques

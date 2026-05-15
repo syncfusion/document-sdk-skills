@@ -382,4 +382,4 @@ let images = extractor.extractImages({
 ## Related Topics
 
 - Content Redaction: [content-redaction.md](content-redaction.md)
-- Common Workflows: [common-workflows.md](common-workflows.md)
+- Common Workflows: [README.md](../README.md#common-use-cases)

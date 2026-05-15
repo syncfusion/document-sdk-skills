@@ -28,9 +28,10 @@ This skill supports generating Dart code snippets for Flutter projects targeting
 - Add dependencies to `pubspec.yaml`:
   ```yaml
   dependencies:
-    syncfusion_flutter_xlsio: ^xx.x.xx
-    syncfusion_officechart: ^xx.x.xx
-  ```
+    syncfusion_flutter_xlsio: <latest-compatible-version>
+    syncfusion_officechart: <latest-compatible-version>
+    ```
+- Use the latest compatible package versions from pub.dev or Syncfusion documentation.
 - Run: `flutter pub get`
 - Import in Dart code:
   ```dart

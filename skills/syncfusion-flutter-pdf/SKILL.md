@@ -80,8 +80,9 @@ All snippets are in the `references/` folder:
 - Add to `pubspec.yaml`:
   ```yaml
   dependencies:
-    syncfusion_flutter_pdf: ^xx.x.xx
-  ```
+    syncfusion_flutter_pdf: <latest-compatible-version>
+   ```
+- Use the latest compatible package version from pub.dev or Syncfusion documentation.
 - Run: `flutter pub get`
 - Import in Dart code:
   ```dart

@@ -414,7 +414,7 @@ string result = engine1.ParseAndComputeFormula("SUM(Sheet1!A1, Sheet2!A1)");  //
 
 ## See Also
 
-- [CalcEngine](./CalcEngine.md) - Core calculation engine
-- [CalcQuickBase](./CalcQuickBaseRef.md) - Simplified calculation interface
-- [Getting Started](./GettingStarted.md) - Setup guide
-- [Parse and Compute](./ParseAndCompute.md) - Formula operations
+- [CalcEngine](calcengine.md) - Core calculation engine
+- [CalcQuickBase](calcquickbase.md) - Simplified calculation interface
+- [Getting Started](getting-started.md) - Setup guide
+- [Parse and Compute](parse-compute.md) - Formula operations

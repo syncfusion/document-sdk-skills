@@ -350,7 +350,7 @@ public class OperatorExample
 
 ## See Also
 
-- [Parse and Compute](./ParseAndComputeRef.md) - Formula parsing
-- [Named Ranges](./NamedRangesRef.md) - Named cell references
-- [CalcEngine](./CalcEngine.md) - Advanced features
-- [Getting Started](./GettingStarted.md) - Setup guide
+- [Parse and Compute](parse-compute.md) - Formula parsing
+- [Named Ranges](namedranges.md) - Named cell references
+- [CalcEngine](calcengine.md) - Advanced features
+- [Getting Started](getting-started.md) - Setup guide

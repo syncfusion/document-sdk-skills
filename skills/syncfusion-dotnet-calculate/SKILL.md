@@ -17,18 +17,18 @@ Parses and evaluates formulas using the Syncfusion dotnet Calculate. It generate
 ### Example 1
 **User:** "Show me how to Parse and Compute the formulas using the CalcEngine"
 
-**Result:** C# code generated to for parsed and Computed the formula
+**Result:** C# code generated to parse and compute the formula
 
 ### Example 2
 **User:** "Add custom formula to the calculate control to compare two strings"
 
-**Result:** C# code generated for create custom function 
+**Result:** C# code generated to create a custom function
 
 ---
 
 ## Generate C# Code for the User's Project *(default)*
 
-**Trigger keywords:** "code", "snippet", "how to write", "Program.cs", "show me", "sample", "example code", "generate code for", "NuGet", "add to project", "integrate", "implementation", "usage example", "API example", "compute formula", "evaluate expression", "calculate result", "parse formula", "register variable", "cross-sheet formula", "use CalcQuickBase", "use CalcEngine", "use ICalcData", "compute with cell references", "auto calc", "refresh calculations", "reset keys", "format result", "region settings", "custom function", "user-defined formula", "register function", "LibraryFunctions", "ExcelLikeComputations", "iterative calculation", "suspend calculations", "supported formulas", "list formulas" "ParseAndCompute" "parseAndComputeFormula".
+**Trigger keywords:** "code", "snippet", "how to write", "Program.cs", "show me", "sample", "example code", "generate code for", "NuGet", "add to project", "integrate", "implementation", "usage example", "API example", "compute formula", "evaluate expression", "calculate result", "parse formula", "register variable", "cross-sheet formula", "use CalcQuickBase", "use CalcEngine", "use ICalcData", "compute with cell references", "auto calc", "refresh calculations", "reset keys", "format result", "region settings", "custom function", "user-defined formula", "register function", "LibraryFunctions", "ExcelLikeComputations", "iterative calculation", "suspend calculations", "supported formulas", "list formulas", "ParseAndCompute", "parseAndComputeFormula".
 
 ### STEP 1 — Analyze User Request
   1. Read the user’s request and extract the feature keywords.
@@ -108,7 +108,7 @@ Flow: Always start with references/getting-started.md (Prerequisites and Setup R
 ## Rules
 
 1. **Use Only Reference Snippets**
-   - Generate code **exclusively from** the Markdown files under `references/
+   - Generate code **exclusively from** the Markdown files under `references/`
    - **Do not invent/guess/include** any properties, events, API methods, component names, or parameters not present in `references/*.md`
 
 2. **NO FILE MODIFICATIONS WITHOUT PERMISSION**

@@ -223,7 +223,7 @@ Use this reference for security:
 - Validation and verification
 - Timestamp servers
 
-📄 **Read:** [references/redaction.md](references/redaction.md)
+📄 **Read:** [references/content-redaction.md](references/content-redaction.md)
 
 Use this reference for content removal:
 - Redacting sensitive text
