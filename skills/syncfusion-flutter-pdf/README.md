@@ -38,7 +38,7 @@ Do NOT invent APIs/methods not in reference files.
   ```yaml
   dependencies:
     syncfusion_flutter_pdf: <latest-compatible-version>
-   ```
+  ```
 - Use the latest compatible package version from pub.dev or Syncfusion documentation, then run: `flutter pub get`
 - Import in your Dart file:
   ```dart

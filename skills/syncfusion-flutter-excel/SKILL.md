@@ -30,7 +30,7 @@ This skill supports generating Dart code snippets for Flutter projects targeting
   dependencies:
     syncfusion_flutter_xlsio: <latest-compatible-version>
     syncfusion_officechart: <latest-compatible-version>
-    ```
+  ```
 - Use the latest compatible package versions from pub.dev or Syncfusion documentation.
 - Run: `flutter pub get`
 - Import in Dart code:
