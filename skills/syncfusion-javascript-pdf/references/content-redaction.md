@@ -558,4 +558,4 @@ if (pageIndex >= 0 && pageIndex < document.pageCount) {
 ## Related Topics
 
 - Image Extraction: [image-extraction.md](image-extraction.md)
-- Common Workflows: [common-workflows.md](common-workflows.md)
+- Common Workflows: [README.md](../README.md#common-use-cases)

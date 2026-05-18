@@ -6,9 +6,9 @@ See **[SKILL.md](SKILL.md)** for the full intent-routing guide and rules.
 
 ---
 
-## Two Modes
+## One Mode
 
-### Mode 1: Generate Dart Code for the User's Flutter Project *(default)*
+### Generate Dart Code for the User's Flutter Project *(default)*
 
 Produces production-ready Dart code for use in a Flutter project. No standalone scripts are created or run.
 
@@ -29,31 +29,6 @@ Do NOT invent APIs/methods not in reference files.
   - **Desktop** → `getApplicationSupportDirectory()` + `OpenFile.open()`
   - **Web** → base64 + JavaScript download or `web` package approach
 
----
-
-### Mode 2: Execute via Dart Script *(does not touch project files)*
-
-**Trigger keywords:** "create a PDF", "make a PDF", "generate a PDF", "open", "edit", "modify" a `.pdf` file, "without modifying my project", "run a dart script", or when the user provides a file path (e.g., `output/report.pdf`).
-
-**Workflow:**
-
-#### Step 1 — Create Temp Dart Script
-- Create at: `{skill-root}/flutter/pdf/scripts/temp-{timestamp}.dart`
-- Use Unix timestamp; never create in workspace root
-
-#### Step 2 — Build Script from Reference Files
-- Read relevant `references/*.md` file(s) and extract code snippets
-- Replace all placeholders: file paths, document content, data values, etc.
-
-#### Step 3 — Execute Script
-- Run: `dart run {skill-root}/flutter/pdf/scripts/temp-{timestamp}.dart`
-
-#### Step 4 — Clean Up and Report
-- Delete the temp `.dart` file after execution
-- Report SUCCESS/ERROR with output file path(s)
-
----
-
 ## Quick Start
 
 ### Prerequisites
@@ -62,9 +37,9 @@ Do NOT invent APIs/methods not in reference files.
 - Add dependency to `pubspec.yaml`:
   ```yaml
   dependencies:
-    syncfusion_flutter_pdf: ^xx.x.xx
+    syncfusion_flutter_pdf: ^33.1.44
   ```
-- Run: `flutter pub get`
+- Use the latest compatible package version from pub.dev or Syncfusion documentation, then run: `flutter pub get`
 - Import in your Dart file:
   ```dart
   import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -218,20 +193,12 @@ document.dispose();
 
 ## Example Prompts
 
-### Mode 1 — Code Generation
+### Code Generation
 - "Show me how to create a PDF with a title and paragraph using Syncfusion Flutter PDF."
 - "How do I add a table to a PDF document in Flutter?"
 - "Provide code to draw a rectangle and an ellipse on a PDF page."
 - "How can I add bookmarks to a PDF in Flutter?"
 - "How do I encrypt a Flutter PDF with AES 256?"
-
-### Mode 2 — Document Generation
-- "Create a PDF with an invoice table and save it to output/invoice.pdf."
-- "Generate a PDF report with a header, footer with page numbers, and 3 pages of content."
-- "Make a PDF with a bulleted list of programming languages."
-- "Create an encrypted PDF document at output/secure.pdf."
-
----
 
 ## Troubleshooting
 

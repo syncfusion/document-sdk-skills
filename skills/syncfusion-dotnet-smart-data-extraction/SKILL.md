@@ -32,7 +32,7 @@ This skill supports one operational mode — generating C# code for the user's p
 **User:** "Write Program.cs code to extract the data from pdf and save as JSON using SmartDataExtractor."
 **Result:** C# code snippet displayed (no files created)
 
-## Mode 
+## One Mode
 
 ### Mode 1: Generate C# Code for the User's Project *(default)*
 
@@ -78,4 +78,3 @@ All templates and snippets are in the `references/` folder:
 - Don't use any API which is not in reference
  - Only use NuGet package IDs and versions defined in `references/nuget-packages.md` when recommending or adding packages.
  - For table-only extraction requests, recommend/install only the table extractor package from `references/nuget-packages.md` for the detected application type.
-

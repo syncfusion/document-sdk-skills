@@ -484,7 +484,7 @@ list.Draw(page, new RectangleF(0, 10, page.GetClientSize().Width, page.GetClient
 
 - Use `PdfTrueTypeFont` instead of `PdfStandardFont` for Unicode, international characters, or culture-specific symbols (e.g., `€`, umlauts).
 - Call `System.Text.Encoding.RegisterProvider(CodePagesEncodingProvider.Instance)` once at startup in .NET Core before using `SetTextEncoding`.
-- `PdfHTMLTextElement` supports only basic inline HTML; for complex HTML with CSS and URLs use the HTML-to-PDF converter — see [conversions.md](../word-document-processing/references/conversions.md) or the official HTML-to-PDF docs.
+- `PdfHTMLTextElement` supports only basic inline HTML; for complex HTML with CSS and URLs use the HTML-to-PDF converter — see [conversions.md](conversions.md) and the [official HTML-to-PDF documentation](https://help.syncfusion.com/document-processing/pdf/conversions/html-to-pdf/net).
 - RTF-to-image (`PdfImage.FromRtf`) is Windows-only; use the RTF-to-PDF conversion path for cross-platform support.
 - Always wrap `RotateTransform`/`TranslateTransform` between `Save()` and `Restore()` to avoid affecting subsequent drawing operations.
 - `PdfStringLayouter.Layout()` is useful for pre-flight checks — measure how much text fits before committing to a draw call.
@@ -499,8 +499,10 @@ list.Draw(page, new RectangleF(0, 10, page.GetClientSize().Width, page.GetClient
 - [images.md](images.md)
 - [headers-and-footers.md](headers-and-footers.md)
 - [document-structure.md](document-structure.md)
+- [conversions.md](conversions.md)
 - ../SKILL.md
 
 ## Official documentation
 
 - <https://help.syncfusion.com/document-processing/pdf/pdf-library/net/working-with-text>
+- <https://help.syncfusion.com/document-processing/pdf/conversions/html-to-pdf/net>

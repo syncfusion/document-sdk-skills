@@ -82,6 +82,7 @@ All templates and snippets are in the `references/` folder:
 | **brushes.md** | Fill shapes with solid, linear gradient, radial gradient, tiling, and hatch brushes; PdfBrushes static colors; combine pen and brush |
 | **images.md** | Insert, draw, replace, remove, clip, transform, and paginate raster images (JPEG, PNG, BMP, GIF, TIFF, ICO); image masking; multi-page TIFF to PDF; unit conversion for image placement |
 | **text.md** | Draw text with standard, TrueType, OpenType, and CJK fonts; alignment, RTL, complex scripts, HTML styled text, multi-column, paginated text flow, ordered/unordered lists, string measurement, text clipping detection, and unit conversion |
+| **conversions.md** | Conversion guidance for scenarios such as complex HTML-to-PDF conversion that require converter APIs instead of direct drawing APIs |
 | **merge-pdf.md** | Merge multiple PDFs into one file |
 | **split-pdf.md** | Divide a single PDF into separate files |
 | **compress-pdf.md** | Reduce and optimize PDF file size |

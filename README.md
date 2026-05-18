@@ -4,7 +4,7 @@
 
 ## About This Repository
 
-This repository contains **AI-ready skills** that empower AI agents to efficiently handle Office document processing tasks using Syncfusion .NET libraries. Each skill enables your AI to generate C# code for your project or create documents instantly via script execution.
+This repository contains **AI-ready skills** that empower AI agents to efficiently handle Office document processing tasks using Syncfusion Document Processing libraries across .NET, Java, JavaScript, and Flutter. Depending on the selected skill, agents can generate language-specific code for your project or create documents via supported script execution modes.
 
 ## Included Product Skills
 
@@ -15,8 +15,8 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 - **PowerPoint (PPTX)** - Create, edit, and convert PowerPoint presentations with full support for charts, animations, transitions, encryption, and slide-to-image conversion.
 - **Markdown** - Create and open Markdown documents with support for headings, tables, lists, images, hyperlinks, code blocks, and blockquotes.
 - **Calculate** - Parse and compute formulas, expressions, and calculations with support for 400+ built-in functions, named ranges, array formulas, custom functions, and Excel-style formula evaluation.
-- **Smart Data Extraction** - Extract text, structured fields, Identify the form field and tables from PDFs and images as JSON or new PDF document.
-- **Pdf To Image Converter** - Convert the PDF document to image.
+- **Smart Data Extraction** - Extract text, structured fields, form fields, and tables from PDFs and images as JSON or PDF output.
+- **PDF to Image Converter** - Convert PDF document pages to images.
 
 ### Java
 - **Word (DOCX)** - Create and edit Word documents in Java with support for mail merge, track changes, comments, shapes, tables, encryption, and multi-format export (HTML, RTF, Markdown, XML).
@@ -34,7 +34,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 
 **Step 1: Checkout and copy the required skills**
 
-Clone or download the Document-SDK-Skills repository and copy the product skills you need (e.g., syncfusion-dotnet-pdf, syncfusion-dotnet-word, syncfusion-dotnet-excel, syncfusion-dotnet-powerpoint, syncfusion-dotnet-markdown, syncfusion-dotnet-calculate, syncfusion-dotnet-smart-data-extraction, syncfusion-java-word) from the `skills/` directory.
+Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-javascript-pdf`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
 
 **Step 2: Install the skills**
 
@@ -93,17 +93,17 @@ There are two ways to use skills:
    /syncfusion-dotnet-pdf Merge multiple PDFs into one
    ```
 
-When a skill is loaded, AI Agent gains specialized knowledge of Syncfusion .NET libraries and can help you generate code or execute document operations efficiently.
+When a skill is loaded, AI Agent gains specialized knowledge of Syncfusion Document Processing libraries and can help you generate code or execute supported document operations efficiently.
 
 ### Prerequisites
 
-```bash
-# .NET SDK 8+
-dotnet --version
+Install the runtime required by the selected skill:
 
-# dotnet-script (required for Mode 2)
-dotnet tool install -g dotnet-script
-```
+- **.NET skills:** .NET SDK 8+ (`dotnet --version`)
+- **.NET execution-mode skills only:** `dotnet-script` (`dotnet tool install -g dotnet-script`)
+- **Java skill:** Java SE 8 or later
+- **JavaScript skill:** Node.js/npm
+- **Flutter skills:** Flutter SDK and Dart tooling
 
 ### Syncfusion License
 
@@ -119,7 +119,7 @@ export SYNCFUSION_LICENSE_KEY=your_key_here
 
 Get a free license: [Syncfusion Community License](https://www.syncfusion.com/products/communitylicense)
 
-### NuGet Packages Used in Mode 2
+### Common .NET NuGet Packages
 
 Install the package for the format you need:
 
@@ -160,31 +160,48 @@ npm install @syncfusion/ej2-pdf --save
 npm install @syncfusion/ej2-pdf-data-extract --save
 ```
 
-### Flutter Packages (Flutter Excel)
+### Flutter Packages
 
 Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  syncfusion_flutter_xlsio: ^xx.x.xx
-  syncfusion_officechart: ^xx.x.xx   # For chart support
+  syncfusion_flutter_xlsio: ^33.1.44
+  syncfusion_officechart: ^33.1.44
 ```
 
-Then run: `flutter pub get`
+Use the latest compatible package versions from pub.dev or Syncfusion documentation, then run: `flutter pub get`. Add `syncfusion_officechart` when chart support is needed.
 
 ## How it works?
 
-Every skill supports two operating modes:
+Skills support one or more operating modes depending on product and platform:
 
-### Mode 1 — Generate C# Code *(default)*
-Produces production-ready C# code and inserts it into your project files (e.g., `Program.cs`). No scripts are created or run. Ideal when you want to learn or integrate document features into your own application.
+### Mode 1 — Generate Code *(default)*
+Produces production-ready code for the selected platform, such as C#, Java, Dart, TypeScript, or JavaScript. No scripts are created or run. Ideal when you want to learn or integrate document features into your own application.
 
-**Trigger keywords:** `"code"`, `"snippet"`, `"how to"`, `"show me"`, `"sample"`, `"example"`, `"Program.cs"`
+**Trigger keywords:** `"code"`, `"snippet"`, `"how to"`, `"show me"`, `"sample"`, `"example"`, `"Program.cs"`, `"main.dart"`
 
-### Mode 2 — Execute via CSX Script
-Creates a temporary `.csx` script, runs it with `dotnet script`, produces the output file, then cleans up — without touching your project. Ideal when you just want a document generated immediately.
+### Mode 2 — Execute via Temporary Script *(supported skills only)*
+For skills that explicitly document execution mode, creates a temporary script, runs it, produces the output file, then cleans up — without touching your project. .NET execution-mode skills use `.csx` and `dotnet script`.
 
 **Trigger keywords:** `"create"`, `"generate"`, `"make"`, `"open"`, `"edit"`, `"modify"`, file paths (e.g., `output/report.docx`)
+
+### Supported Modes by Skill
+
+| Skill | Mode 1: Generate code | Mode 2: Execute script | Notes |
+|-------|------------------------|------------------------|-------|
+| .NET PDF | ✅ | ✅ | CSX execution |
+| .NET Word | ✅ | ✅ | CSX execution |
+| .NET Excel | ✅ | ✅ | CSX execution |
+| .NET PowerPoint | ✅ | ✅ | CSX execution |
+| .NET Markdown | ✅ | ✅ | CSX execution |
+| .NET Calculate | ✅ | ❌ | Code generation only |
+| .NET Smart Data Extraction | ✅ | ❌ | Code generation only |
+| .NET PDF to Image Converter | ✅ | ❌ | Code generation only |
+| Java Word | ✅ | ❌ | Code generation only |
+| JavaScript PDF | ✅ | ❌ | Code generation only |
+| Flutter PDF | ✅ | ❌ | Code generation only |
+| Flutter Excel | ✅ | ❌ | Code generation only |
 
 
 ## Example Prompts
@@ -321,6 +338,13 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 | Missing NuGet package | Run the appropriate `dotnet add package` command above |
 | File access error | Ensure the file isn't open in another application |
 
+## Maintaining Skills
+
+- Follow the [Skill Authoring Guide](docs/skill-authoring-guide.md) when adding or updating skills.
+- Run `python scripts/validate_skills.py` before submitting changes.
+- Keep each skill's `SKILL.md`, `README.md`, `references/`, and optional `scripts/` folder consistent with the modes documented for that skill.
+- Ensure all relative links and referenced files exist.
+
 ## Resources
 
 ### .NET
@@ -347,4 +371,3 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 ## License
 
 Syncfusion Document SDK libraries require a [commercial license](https://www.syncfusion.com/document-sdk) for production use. A [free Community License](https://www.syncfusion.com/products/communitylicense) is also available for individual developers and small businesses.
-

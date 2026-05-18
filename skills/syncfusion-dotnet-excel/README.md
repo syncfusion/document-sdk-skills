@@ -55,7 +55,7 @@ Produces production-ready C# code and adds it directly into the user's project f
 #### Step 1 — Create Temp CSX Script
 
 - Start with `references/template.csx` as the base
-- Create at: `{skill-root}/excel/scripts/temp-{timestamp}.csx` (e.g., `skill-root` = `.codestudio/skills`)
+- Create at: `{skill-root}/syncfusion-dotnet-excel/scripts/temp-{timestamp}.csx` (e.g., `skill-root` = `.codestudio/skills`)
 - Use Unix timestamp for unique filename; never create in workspace root
 
 #### Step 2 — Build Script from Reference Files
@@ -66,7 +66,7 @@ Produces production-ready C# code and adds it directly into the user's project f
 
 #### Step 3 — Execute Script
 
-- Run: `dotnet script {skill-root}/excel/scripts/temp-{timestamp}.csx`
+- Run: `dotnet script {skill-root}/syncfusion-dotnet-excel/scripts/temp-{timestamp}.csx`
 - Verify successful execution and capture any errors
 
 #### Step 4 — Clean Up and Report

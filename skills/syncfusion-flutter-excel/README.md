@@ -39,10 +39,10 @@ Do NOT invent APIs/methods not in reference files.
 - Add dependency to `pubspec.yaml`:
   ```yaml
   dependencies:
-    syncfusion_flutter_xlsio: ^xx.x.xx
-    syncfusion_officechart: ^xx.x.xx
+    syncfusion_flutter_xlsio: ^33.1.44
+    syncfusion_officechart: ^33.1.44
   ```
-- Run: `flutter pub get`
+- Use the latest compatible package versions from pub.dev or Syncfusion documentation, then run: `flutter pub get`
 - Import in your Dart file:
   ```dart
   import 'package:syncfusion_flutter_xlsio/xlsio.dart';

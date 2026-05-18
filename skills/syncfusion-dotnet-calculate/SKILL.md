@@ -17,18 +17,18 @@ Parses and evaluates formulas using the Syncfusion dotnet Calculate. It generate
 ### Example 1
 **User:** "Show me how to Parse and Compute the formulas using the CalcEngine"
 
-**Result:** C# code generated to for parsed and Computed the formula
+**Result:** C# code generated to parse and compute the formula
 
 ### Example 2
 **User:** "Add custom formula to the calculate control to compare two strings"
 
-**Result:** C# code generated for create custom function 
+**Result:** C# code generated to create a custom function
 
 ---
 
 ## Generate C# Code for the User's Project *(default)*
 
-**Trigger keywords:** "code", "snippet", "how to write", "Program.cs", "show me", "sample", "example code", "generate code for", "NuGet", "add to project", "integrate", "implementation", "usage example", "API example", "compute formula", "evaluate expression", "calculate result", "parse formula", "register variable", "cross-sheet formula", "use CalcQuickBase", "use CalcEngine", "use ICalcData", "compute with cell references", "auto calc", "refresh calculations", "reset keys", "format result", "region settings", "custom function", "user-defined formula", "register function", "LibraryFunctions", "ExcelLikeComputations", "iterative calculation", "suspend calculations", "supported formulas", "list formulas" "ParseAndCompute" "parseAndComputeFormula".
+**Trigger keywords:** "code", "snippet", "how to write", "Program.cs", "show me", "sample", "example code", "generate code for", "NuGet", "add to project", "integrate", "implementation", "usage example", "API example", "compute formula", "evaluate expression", "calculate result", "parse formula", "register variable", "cross-sheet formula", "use CalcQuickBase", "use CalcEngine", "use ICalcData", "compute with cell references", "auto calc", "refresh calculations", "reset keys", "format result", "region settings", "custom function", "user-defined formula", "register function", "LibraryFunctions", "ExcelLikeComputations", "iterative calculation", "suspend calculations", "supported formulas", "list formulas", "ParseAndCompute", "parseAndComputeFormula".
 
 ### STEP 1 — Analyze User Request
   1. Read the user’s request and extract the feature keywords.
@@ -93,7 +93,7 @@ Flow: Always start with references/getting-started.md (Prerequisites and Setup R
 |---|---|
 | **getting-started.md** | Prerequisites, NuGet package setup, Program.cs configuration, minimal code examples for CalcQuickBase and ICalcData, cross-sheet references, culture settings, quick reference table |
 | **calcquickbase.md** | ParseAndCompute method, register variables with square bracket notation, compute expressions and built-in formulas, AutoCalc for automatic recalculation, RefreshAllCalculations, ResetKeys method, key properties and methods, indexer-based access |
-| **ICalcData.md** | ICalcData interface implementation, SetValueRowCol/GetValueRowCol methods, WireParentObject method, ValueChanged event, complete implementation example, integration with CalcEngine, cross-sheet references, data grid integration |
+| **icalcdata.md** | ICalcData interface implementation, SetValueRowCol/GetValueRowCol methods, WireParentObject method, ValueChanged event, complete implementation example, integration with CalcEngine, cross-sheet references, data grid integration |
 | **calcengine.md** | ParseFormula method, ComputeFormula method, ParseAndComputeFormula method, cross-sheet references with RegisterGridAsSheet and CreateSheetFamilyID, region/culture settings (ParseDecimalSeparator, ParseArgumentSeparator), error strings, supported built-in formulas by category |
 | **customfunction.md** | LibraryFunction delegate, custom function creation, registration with CalcEngine, examples (CustomMin, CustomMax, ApplyDiscount, CalculateGrade, CompoundInterest), RemoveFunction method, managing library functions, error handling, best practices |
 | **xlsio.md** | XlsIO integration, ExcelEngine initialization, enable/disable sheet calculations (EnableSheetCalculations/DisableSheetCalculations), set and compute values at runtime, suspend calculations during bulk updates (CalculatingSuspended), CalculatedValue property, table formulas, complete workflows, error handling |
@@ -108,7 +108,7 @@ Flow: Always start with references/getting-started.md (Prerequisites and Setup R
 ## Rules
 
 1. **Use Only Reference Snippets**
-   - Generate code **exclusively from** the Markdown files under `references/
+   - Generate code **exclusively from** the Markdown files under `references/`
    - **Do not invent/guess/include** any properties, events, API methods, component names, or parameters not present in `references/*.md`
 
 2. **NO FILE MODIFICATIONS WITHOUT PERMISSION**

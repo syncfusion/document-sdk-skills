@@ -554,6 +554,6 @@ string result = engine.ParseAndComputeFormula(
 
 ## See Also
 
-- [CalcEngine](./CalcEngine.md) - Engine properties and methods
-- [Parse and Compute](./ParseAndComputeRef.md) - Formula operations
-- [Getting Started](./GettingStarted.md) - Setup guide
+- [CalcEngine](calcengine.md) - Engine properties and methods
+- [Parse and Compute](parse-compute.md) - Formula operations
+- [Getting Started](getting-started.md) - Setup guide

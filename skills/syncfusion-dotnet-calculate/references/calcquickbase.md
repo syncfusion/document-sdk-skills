@@ -412,7 +412,7 @@ calcQuick.ResetKeys();
 
 ## See Also
 
-- [CalcEngine](./CalcEngine.md) - Advanced calculation engine
-- [ICalcData](./ICalcData.md) - Custom data source interface
-- [Parse and Compute](./ParseAndCompute.md) - Formula parsing and computation
-- [Getting Started](./GettingStarted.md) - Comparison guide
+- [CalcEngine](calcengine.md) - Advanced calculation engine
+- [ICalcData](icalcdata.md) - Custom data source interface
+- [Parse and Compute](parse-compute.md) - Formula parsing and computation
+- [Getting Started](getting-started.md) - Comparison guide

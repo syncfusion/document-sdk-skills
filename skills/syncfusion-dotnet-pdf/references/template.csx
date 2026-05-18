@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet-script
-#r "nuget: Syncfusion.Pdf.Net.Core, 33.1.43"
+#r "nuget: Syncfusion.Pdf.Net.Core"
 #r "nuget: Syncfusion.Licensing"
 
 using System;

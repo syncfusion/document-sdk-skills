@@ -1,7 +1,7 @@
 ---
 name: syncfusion-dotnet-pdf-to-image
 description: Convert PDF files to images with customization options (output format, DPI, pages, scaling, and image quality). Supports one mode — generate C# code for the user's project.
-compatibility: Requires .NET SDK 8+ and dotnet-script global tool. Designed for Windows, macOS, and Linux.
+compatibility: Requires .NET SDK 8+. Designed for Windows, macOS, and Linux.
 metadata:
   author: Syncfusion Inc
   version: "33.1.44"
@@ -17,7 +17,7 @@ This PDF to image converter library allows converting PDF documents to images wi
 **User:** "Show me the C# code to convert pdf to image."
 **Result:** C# code snippet displayed (no files created)
 
-## One Modes
+## One Mode
 
 ### Mode 1: Generate C# Code for the User's Project *(default)*
 Use this mode when the user wants to view, write, review, refactor, or modify C# code related to pdf to image conversion processing. Licensing, authentication, and secret configuration are out of scope.
@@ -84,5 +84,5 @@ All templates and snippets are in the `references/` folder:
 
 ## Prerequisites
 
-- Install required runtime and library packages from NuGet before running recognition.
-- .NET SDK 8+ and `dotnet-script`: `dotnet tool install -g dotnet-script`
+- Install required runtime and library packages from NuGet before generating code.
+- .NET SDK 8+

@@ -533,7 +533,7 @@ public string ValidatedCalc(string args)
 
 ## See Also
 
-- [CalcEngine](./CalcEngine.md) - Core engine features
-- [Parse and Compute](./ParseAndComputeRef.md) - Formula operations
-- [Overview](./Overview.md) - Built-in functions reference
-- [Getting Started](./GettingStarted.md) - Setup guide
+- [CalcEngine](calcengine.md) - Core engine features
+- [Parse and Compute](parse-compute.md) - Formula operations
+- [Overview](overview.md) - Built-in functions reference
+- [Getting Started](getting-started.md) - Setup guide

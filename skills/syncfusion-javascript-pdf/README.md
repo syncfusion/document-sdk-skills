@@ -5,7 +5,7 @@ This directory contains comprehensive skill documentation for working with Syncf
 ## Directory Structure
 
 ```
-processing-pdf-documents/
+syncfusion-javascript-pdf/
 ├── README.md (this file)
 ├── SKILL.md (main skill entry point)
 └── references/ (20 detailed feature documentation files)
@@ -13,7 +13,7 @@ processing-pdf-documents/
 
 ## Overview
 
-**Skill Name:** `processing-pdf-documents`
+**Skill Name:** `syncfusion-javascript-pdf`
 
 **Purpose:** Create, manipulate, and process PDF documents programmatically using Syncfusion's JavaScript PDF libraries.
 
@@ -253,7 +253,7 @@ For detailed platform-specific setup instructions, see:
     - Image metadata and properties
     - Saving extracted images
 
-20. **[redaction.md](references/redaction.md)** (~200 lines)
+20. **[content-redaction.md](references/content-redaction.md)** (~200 lines)
     - ⚠️ **Requires:** `@syncfusion/ej2-pdf-data-extract`
     - Text and shape redaction
     - Permanent content removal
@@ -436,7 +436,7 @@ document.destroy();
 **Packages:** Mixed
 
 - **Digital Signatures** → Read: [digital-signatures.md](references/digital-signatures.md) (`ej2-pdf`)
-- **Redaction** → Read: [redaction.md](references/redaction.md) ⚠️ (`ej2-pdf-data-extract`)
+- **Redaction** → Read: [content-redaction.md](references/content-redaction.md) ⚠️ (`ej2-pdf-data-extract`)
 - **Password Protection** → Read: [document-settings.md](references/document-settings.md) (`ej2-pdf`)
 
 ## Navigation by Feature
@@ -562,7 +562,7 @@ Combine multiple reference files:
 
 ## Skill Metadata
 
-- **Skill Name:** `processing-pdf-documents`
+- **Skill Name:** `syncfusion-javascript-pdf`
 - **Version:** 1.0.0
 - **Author:** Syncfusion Inc
 - **Last Updated:** March 22, 2026
