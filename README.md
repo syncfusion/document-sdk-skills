@@ -182,7 +182,7 @@ Produces production-ready code for the selected platform, such as C#, Java, Dart
 **Trigger keywords:** `"code"`, `"snippet"`, `"how to"`, `"show me"`, `"sample"`, `"example"`, `"Program.cs"`, `"main.dart"`
 
 ### Mode 2 — Execute via Temporary Script *(supported skills only)*
-For skills that explicitly document execution mode, creates a temporary script, runs it, produces the output file, then cleans up — without touching your project. .NET execution-mode skills use `.csx` and `dotnet script`; Flutter execution-mode skills, when documented, use Dart scripts.
+For skills that explicitly document execution mode, creates a temporary script, runs it, produces the output file, then cleans up — without touching your project. .NET execution-mode skills use `.csx` and `dotnet script`.
 
 **Trigger keywords:** `"create"`, `"generate"`, `"make"`, `"open"`, `"edit"`, `"modify"`, file paths (e.g., `output/report.docx`)
 
