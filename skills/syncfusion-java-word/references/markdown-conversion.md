@@ -120,19 +120,6 @@ try (FileInputStream docStream = new FileInputStream("Input.docx");
 
 ---
 
-## Markdown Format Overview
-
-| Aspect | Details |
-|--------|---------|
-| **Format Name** | Markdown |
-| **Specification** | CommonMark and GitHub-flavored Markdown |
-| **Human Readable** | Yes, lightweight markup language |
-| **Use Case** | Documentation, readme files, structured text with formatting |
-| **Content Retention** | Preserves text formatting, lists, links, images, headings |
-| **Supported Conversions** | Bidirectional with DOCX, can also convert to HTML, PDF, Image |
-
----
-
 ## Supported Markdown Syntax
 
 | Element | Syntax | Description |
@@ -147,7 +134,7 @@ try (FileInputStream docStream = new FileInputStream("Input.docx");
 | **Block Quote** | `> text` | Block quote |
 | **Code Span** | `` `code` `` | Inline code |
 | **Indented Code** | 4 spaces + code | Code block |
-| **Fenced Code** | ` ``` code ``` ` | Fenced code block |
+| **Fenced Code** |  ``` code ```  | Fenced code block |
 | **Ordered List** | `1. Item` | Numbered list |
 | **Unordered List** | `- Item` | Bulleted list |
 | **Links** | `[text](url)` | Hyperlink |
@@ -182,7 +169,7 @@ try (FileInputStream docStream = new FileInputStream("Input.docx");
 |-----------|-----------------|
 | Heading 1-6 | `# Heading 1` through `###### Heading 6` |
 | Quote | `> Block quote` |
-| FencedCode | ` ``` Fenced code block ``` ` |
+| FencedCode | ``` Fenced code block ``` |
 | IndentedCode | Indented code block (4 spaces) |
 | InlineCode (character style) | `` `inline code` `` |
 

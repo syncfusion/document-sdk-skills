@@ -203,7 +203,6 @@ For skills that explicitly document execution mode, creates a temporary script, 
 | Flutter PDF | ✅ | ❌ | Code generation only |
 | Flutter Excel | ✅ | ❌ | Code generation only |
 
-
 ## Example Prompts
 
 ### Word
@@ -265,6 +264,7 @@ How do I add a list and code block to a Markdown file using Syncfusion?
 Create a Markdown report with headings and a table using Syncfusion at output/report.md.
 Parse output/notes.md and add a new section with a bulleted list using Syncfusion.
 ```
+
 ### Calculate
 
 ```

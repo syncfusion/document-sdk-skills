@@ -62,6 +62,52 @@ PdfOrderedList alphaList = PdfOrderedList(
 
 ---
 
+## Create Ordered List and Configure Marker
+
+```dart
+//Create a new ordered list.
+PdfOrderedList(
+    items: PdfListItemCollection(['Essential tools', 'Essential grid']),
+    font: PdfStandardFont(PdfFontFamily.helvetica, 16,
+        style: PdfFontStyle.italic))
+  ..items[0].subList = PdfOrderedList(
+      items: PdfListItemCollection(['PDF', 'DocIO']),
+      marker: PdfOrderedMarker(
+          style: PdfNumberStyle.numeric, delimiter: ',', suffix: ')')
+          //Set the start number.
+      ..startNumber = 2)
+  ..draw(
+      page: document.pages.add(), bounds: const Rect.fromLTWH(20, 20, 0, 0));
+```
+
+---
+
+## Create Ordered List and layout event arguments.
+
+```dart
+PdfOrderedList(
+    text: 'PDF\nXlsIO\nDocIO\nPPT',
+    font: PdfStandardFont(PdfFontFamily.helvetica, 16,
+        style: PdfFontStyle.italic),
+    format: PdfStringFormat(lineSpacing: 20))
+  //Begin item layout event.
+  ..beginItemLayout = (Object sender, BeginItemLayoutArgs args) {
+    args.item.text += '_Beginsave';
+    PdfPage page = args.page;
+  }
+  //End item layout event.
+  ..endItemLayout = (Object sender, EndItemLayoutArgs args) {
+    args.page.graphics.drawRectangle(
+        brush: PdfBrushes.red,
+        bounds: const Rect.fromLTWH(400, 400, 100, 100));
+    PdfListItem item = args.item;
+  }
+  ..draw(
+      page: document.pages.add(), bounds: const Rect.fromLTWH(20, 20, 0, 0));
+```
+
+---
+
 ## Create Unordered List (Bullets)
 
 ```dart

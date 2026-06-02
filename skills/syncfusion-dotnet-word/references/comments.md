@@ -190,6 +190,10 @@ if (doc.Comments.Count > 1)
     doc.Comments.RemoveAt(1);
 }
 
+WComment comment = doc.Comments[3];
+// Remove by instance
+doc.Comments.Remove(comment);
+
 // Save modified document
 var outputStream = new FileStream("output.docx", FileMode.Create, FileAccess.Write);
 doc.Save(outputStream, FormatType.Docx);
@@ -200,7 +204,7 @@ doc.Close();
 
 ### Placeholders
 - `"document.docx"` → Replace with `"{input-file-path}"`
-- `1` → Replace with `"{comment-index}"`
+- `1`, `3` → Replace with `"{comment-index}"`
 - `"output.docx"` → Replace with `"{output-file-path}"`
 
 ---
@@ -287,6 +291,87 @@ doc.Close();
 
 ---
 
+## Remove or Replace Commented Items
+
+Remove or replace the paragraph items (text, images, etc.) that are within a comment.
+
+### Remove Commented Items
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+
+var stream = new FileStream("document.docx", FileMode.Open, FileAccess.Read);
+var doc = new WordDocument(stream, FormatType.Docx);
+
+// Iterate through comments
+foreach (WComment comment in doc.Comments)
+{
+    // Remove all items associated with the comment
+    comment.RemoveCommentedItems();
+}
+
+// Save document
+var outputStream = new FileStream("output.docx", FileMode.Create, FileAccess.Write);
+doc.Save(outputStream, FormatType.Docx);
+outputStream.Dispose();
+stream.Dispose();
+doc.Close();
+```
+
+### Replace Commented Items using TextBodyPart
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var stream = new FileStream("document.docx", FileMode.Open, FileAccess.Read);
+var doc = new WordDocument(stream, FormatType.Docx);
+
+// Create replacement content
+TextBodyPart replacementPart = new TextBodyPart(doc);
+WParagraph para = replacementPart.AddParagraph();
+para.AppendText("Updated content for the comment.");
+
+// Replace commented items
+foreach (WComment comment in doc.Comments)
+{
+    comment.ReplaceCommentedItems(replacementPart);
+}
+
+// Save document
+var outputStream = new FileStream("output.docx", FileMode.Create, FileAccess.Write);
+doc.Save(outputStream, FormatType.Docx);
+outputStream.Dispose();
+stream.Dispose();
+doc.Close();
+```
+
+###  Replace Commented Items using String
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var stream = new FileStream("document.docx", FileMode.Open, FileAccess.Read);
+var doc = new WordDocument(stream, FormatType.Docx);
+
+// Replace commented items with plain text
+foreach (WComment comment in doc.Comments)
+{
+    comment.ReplaceCommentedItems("This content has been replaced.");
+}
+
+// Save document
+var outputStream = new FileStream("output.docx", FileMode.Create, FileAccess.Write);
+doc.Save(outputStream, FormatType.Docx);
+outputStream.Dispose();
+stream.Dispose();
+doc.Close();
+```
+
+### Placeholders
+- `document.docx` → Replace with `{input-file-path}`
+- `Updated content for the comment.` and `This content has been replaced.` → Replace with `{replacement-text}`
+- `output.docx` → Replace with `{output-file-path}`
+
+---
+
 ## List All Comments
 
 Retrieve and display all comments in a document with metadata.
@@ -307,6 +392,7 @@ for (int i = 0; i < doc.Comments.Count; i++)
     Console.WriteLine($"Initials: {comment.Format.UserInitials}");
     Console.WriteLine($"Date: {comment.Format.DateTime}");
     Console.WriteLine($"Text: {comment.TextBody.LastParagraph.Text}");
+    Console.WriteLine($"Resolved: {comment.Done}");
     
     // Check if it's a reply
     WComment parent = comment.Ancestor;

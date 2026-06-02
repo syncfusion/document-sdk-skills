@@ -103,18 +103,28 @@ section1.HeadersFooters.Header.AddParagraph().AppendText("[ First Section Header
 section1.HeadersFooters.Footer.AddParagraph().AppendText("[ First Section Footer ]");
 IWParagraph para1 = section1.AddParagraph();
 para1.AppendText("First section content");
-
+// Second section (linked to previous)
 IWSection section2 = document.AddSection();
-section2.HeadersFooters.LinkToPrevious = true;
+section2.HeadersFooters.Header.AddParagraph().AppendText("[ Second Section Header ]");
+section2.HeadersFooters.Footer.AddParagraph().AppendText("[ Second Section Footer ]");
+section2.HeadersFooters.LinkToPrevious = true; // Inherit header/footer
 IWParagraph para2 = section2.AddParagraph();
 para2.AppendText("Second section content");
-
+// Third section (unlink from previous)
 IWSection section3 = document.AddSection();
 section3.HeadersFooters.Header.AddParagraph().AppendText("[ Third Section Header ]");
 section3.HeadersFooters.Footer.AddParagraph().AppendText("[ Third Section Footer ]");
 IWParagraph para3 = section3.AddParagraph();
 para3.AppendText("Third section content");
 ```
+
+### Options
+
+| API | Effect |
+|---|---|
+| HeadersFooters.LinkToPrevious | Links **all** headers & footers |
+| HeadersFooters.Header.LinkToPrevious | Links **only header** |
+| HeadersFooters.Footer.LinkToPrevious | Links **only footer** |
 
 ---
 

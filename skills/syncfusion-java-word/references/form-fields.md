@@ -161,13 +161,14 @@ for (Object obj : document.getSections()) {
     FormFieldCollection formFields = section.getBody().getFormFields();
     for (int i = 0; i < formFields.getCount(); i++) {
         WFormField formField = (WFormField) formFields.get(i);
-        if (formField.getFormFieldType() == FormFieldType.TextInput) {
+        if (formField.getFormFieldType() == FormFieldType.TextInput &&    formField.getName().equals("Text1")) {
             WTextFormField textField = (WTextFormField) formField;
             if (textField.getType() == TextFormFieldType.DateText) {
                 textField.setType(TextFormFieldType.RegularText);
                 textField.setStringFormat("");
                 textField.setDefaultText("Enter text");
                 textField.setCalculateOnExit(false);
+				textField.setText("Updated text value");
             }
         }
     }
@@ -175,9 +176,11 @@ for (Object obj : document.getSections()) {
 ```
 
 ### Placeholders
-- `textField.Type` → Replace with `TextFormFieldType.RegularText`, `TextFormFieldType.DateText`, or `TextFormFieldType.Number`
-- `textField.StringFormat` → Replace with `"{format}"` (e.g., "MM/DD/YY", "0.00")
-- `"DefaultText"` → Replace with `"{default-text}"`
+- `textField.getType` → Replace with `TextFormFieldType.RegularText`, `TextFormFieldType.DateText`, or `TextFormFieldType.Number`
+- `textField.setStringFormat` → Replace with `"{format}"` (e.g., "MM/DD/YY", "0.00")
+- `textField.setDefaultText` → Replace with `"{default-text}"`
+- `"Text1"` → Replace with `"{form-field-bookmark-name}"`
+- `textField.setText` → Use to get or set the current value of the text form field
 
 ---
 
@@ -227,6 +230,7 @@ section.addParagraph();
 para = section.addParagraph();
 WCheckBox checkbox = para.appendCheckBox();
 checkbox.setCheckBoxSize(10f);
+checkbox.setDefaultCheckBoxValue(true);
 para.appendText("I agree to the terms and conditions");
 
 // Save document
@@ -259,6 +263,7 @@ document.close();
 | `Checked` (Checkbox) | bool | Checkbox checked state |
 | `CheckBoxSize` | int | Size in points |
 | `SizeType` | CheckBoxSizeType | Fixed size or auto |
+| `DefaultCheckBoxValue` (Checkbox) | bool | Specifies whether the checkbox is checked by default |
 | `Help` | string | Help text on focus |
 | `CalculateOnExit` | bool | Trigger calculation when field exits |
 | `DropDownItems` | StringCollection | List of dropdown options |
@@ -268,4 +273,6 @@ document.close();
 | `StringFormat` | string | Format for date/number fields |
 | `DefaultText` | string | Initial text value |
 | `CharacterFormat` | ICharacterFormat | Font and text properties |
+| `Name` | string | Bookmark name of the form field |
+| `Text` (TextFormField) | string | Current value of the text form field |
 

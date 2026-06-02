@@ -35,6 +35,7 @@ document.Close();
 ```
 
 ### Using MemoryStream
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 var document = new WordDocument("Input.html", FormatType.Html);
@@ -57,6 +58,7 @@ document.Close();
 | `XHTMLValidationType.Strict` | Does not allow attributes inside tags |
 
 ### Validate HTML String
+
 #### Windows-Specific
 ```csharp
 string htmlString = "<p><b>Valid HTML content</b></p>";
@@ -72,6 +74,7 @@ if (isValid)
 ## Insert HTML into Word Document
 
 ### Insert at Paragraph Position
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 WordDocument document = new WordDocument("Template.docx");
@@ -87,6 +90,7 @@ document.Close();
 ```
 
 ### Append to Paragraph
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 string htmlString = "<p>Appended <b>HTML</b> content</p>";
@@ -95,28 +99,6 @@ if (document.LastSection.Body.IsValidXHTML(htmlString, XHTMLValidationType.Trans
 {
     document.Sections[0].Body.Paragraphs[0].AppendHTML(htmlString);
 }
-```
-
----
-
-## Customize Image Data (HTML to Word)
-
-### Common for Cross-Platform and Windows-Specific
-```csharp
-FileStream docStream = new FileStream("Input.html", FileMode.Open, FileAccess.Read);
-var document = new WordDocument();
-document.HTMLImportSettings.ImageNodeVisited += (s, e) =>
-{
-    // TODO:
-    // Implement secure image handling logic if required by the application.
-};
-document.Open(docStream, FormatType.Html);
-
-var outStream = new MemoryStream();
-document.Save(outStream, FormatType.Docx);
-outStream.Close();
-docStream.Close();
-document.Close();
 ```
 
 ---
@@ -170,6 +152,7 @@ document.Close();
 ```
 
 ### Using MemoryStream
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 var document = new WordDocument("Template.docx", FormatType.Docx);
@@ -195,6 +178,30 @@ using (FileStream fileStream = new FileStream("Input.docx", FileMode.Open, FileA
         document.SaveOptions.HtmlExportTextInputFormFieldAsText = false;
         document.SaveOptions.HtmlExportCssStyleSheetType = CssStyleSheetType.Inline;
         document.SaveOptions.HtmlExportOmitXmlDeclaration = false;
+
+        using (FileStream outputStream = new FileStream("Output.html", FileMode.Create, FileAccess.ReadWrite))
+        {
+            document.Save(outputStream, FormatType.Html);
+        }
+    }
+}
+```
+
+### HTML Export Settings
+
+#### Windows-Specific
+```csharp
+using (FileStream fileStream = new FileStream("Input.docx", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+{
+    using (WordDocument document = new WordDocument(fileStream, FormatType.Docx))
+    {
+        // Export CSS as an external file
+        document.SaveOptions.HtmlExportCssStyleSheetType = CssStyleSheetType.External;
+        document.SaveOptions.HtmlExportCssStyleSheetFileName = "UserDefinedFileName.css";
+        // Export images as Base64 inside HTML
+        document.SaveOptions.HtmlExportImagesAsBase64 = true;
+        // Specify folder for exported images
+        document.SaveOptions.HtmlExportImagesFolder = @"Output\Images\";
 
         using (FileStream outputStream = new FileStream("Output.html", FileMode.Create, FileAccess.ReadWrite))
         {

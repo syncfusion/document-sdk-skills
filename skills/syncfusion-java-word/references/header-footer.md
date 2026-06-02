@@ -106,17 +106,27 @@ para1.appendText("First section content");
 
 // Second section (links headers/footers to previous section)
 IWSection section2 = document.addSection();
-section2.getHeadersFooters().setLinkToPrevious(true);
+section2.getHeadersFooters().getHeader().addParagraph().appendText("[ Second Section Header ]");
+section2.getHeadersFooters().getFooter().addParagraph().appendText("[ Second Section Footer ]");
+section2.getHeadersFooters().setLinkToPrevious(true); // Inherit header/footer
 IWParagraph para2 = section2.addParagraph();
 para2.appendText("Second section content");
 
-// Third section
+// Third section (unlink from previous)
 IWSection section3 = document.addSection();
 section3.getHeadersFooters().getHeader().addParagraph().appendText("[ Third Section Header ]");
 section3.getHeadersFooters().getFooter().addParagraph().appendText("[ Third Section Footer ]");
 IWParagraph para3 = section3.addParagraph();
 para3.appendText("Third section content");
 ```
+
+### Options
+
+| API | Effect |
+|---|---|
+| getHeadersFooters().setLinkToPrevious | Links **all** headers & footers |
+| getHeadersFooters().getHeader().setLinkToPrevious | Links **only header** |
+| getHeadersFooters().getFooter().setLinkToPrevious | Links **only footer** |
 
 ---
 

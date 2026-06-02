@@ -33,6 +33,80 @@ document.dispose();
 - `'document.pdf'` → Replace with `'{filename}.pdf'`
 - Add drawing operations between page creation and save
 
+### Create and Modify a PDF Document with Security and Metadata Settings
+
+```dart
+final PdfDocument document = PdfDocument(
+    inputBytes: File('input.pdf').readAsBytesSync(),
+  )
+  // Correct signature: (PdfDocument, PdfPasswordArgs)
+  ..onPdfPassword = (PdfDocument sender, PdfPasswordArgs args) {
+    // Sets the value of PDF password.
+    args.attachmentOpenPassword = 'password123';
+  };
+
+//Set the type of the PDF cross reference.
+document.fileStructure.crossReferenceType =
+    PdfCrossReferenceType.crossReferenceStream;
+
+// Set compression level
+document.compressionLevel = PdfCompressionLevel.best;
+
+//Set the PDF document version.
+document.fileStructure.version = PdfVersion.version1_7;
+
+// Set document information (metadata)
+document.documentInformation
+  ..title = 'Sample PDF Document'
+  ..author = 'John'
+  ..subject = 'Minimal PDF creation'
+  ..keywords = 'PDF, Flutter, Syncfusion';
+
+// Configure file structure
+document.fileStructure.incrementalUpdate = true;
+// Add a page
+PdfPage page = document.pages.add();
+PdfGraphics graphics = page.graphics;
+  
+// Draw content
+graphics.drawString(
+  'Hello World!',
+  PdfStandardFont(PdfFontFamily.helvetica, 12),
+);
+
+File('document.pdf').writeAsBytes(await document.save());
+document.dispose();
+```
+
+### Available CompressionLevel
+```dart
+PdfCompressionLevel.none
+PdfCompressionLevel.bestSpeed
+PdfCompressionLevel.belowNormal
+PdfCompressionLevel.normal
+PdfCompressionLevel.aboveNormal
+PdfCompressionLevel.best
+```
+
+### Available CrossReferenceType
+```dart
+PdfCrossReferenceType.crossReferenceTable
+PdfCrossReferenceType.crossReferenceStream
+```
+
+### PdfVersion Options
+```dart
+PdfVersion.version1_0
+PdfVersion.version1_1
+PdfVersion.version1_2
+PdfVersion.version1_3
+PdfVersion.version1_4
+PdfVersion.version1_5
+PdfVersion.version1_6
+PdfVersion.version1_7
+PdfVersion.version2_0
+```
+
 ---
 
 ## Page Settings
@@ -129,6 +203,19 @@ List<int> bytes = await document.save();
 
 //Dispose the document
 document.dispose();
+```
+
+### Choose a Save Method Based on the Return Type
+
+```dart
+// Async Uint8List
+Uint8List asyncBytes = await document.saveAsBytes();
+
+// Sync Uint8List
+Uint8List syncBytes = document.saveAsBytesSync();
+
+// Sync List<int>
+List<int> listBytes = document.saveSync();
 ```
 
 ---

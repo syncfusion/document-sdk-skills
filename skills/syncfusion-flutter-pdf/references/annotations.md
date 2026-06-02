@@ -159,6 +159,14 @@ PdfTextMarkupAnnotation markupAnnotation = PdfTextMarkupAnnotation(
 page.annotations.add(markupAnnotation);
 ```
 
+### TextMarkupAnnotation Options
+```dart
+PdfTextMarkupAnnotationType.highlight
+PdfTextMarkupAnnotationType.squiggly
+PdfTextMarkupAnnotationType.strikethrough
+PdfTextMarkupAnnotationType.underline
+```
+
 ---
 
 ## Add a Popup Annotation and Configure a Bounds, Subject, Icon, Author and SetAppearance
@@ -202,6 +210,8 @@ PdfRectangleAnnotation annotation = PdfRectangleAnnotation(
     modifiedDate: DateTime.now());
 
 page.annotations.add(annotation);
+bool exists = page.annotations.contains(annotation);
+print('Annotation exists: $exists');
 
 File('output.pdf').writeAsBytes(await document.save());
 document.dispose();
@@ -265,6 +275,23 @@ PdfRectangleAnnotation annotation = PdfRectangleAnnotation(
     color: PdfColor(255, 0, 0),
     setAppearance: true,
     modifiedDate: DateTime.now());
+```
+
+---
+
+## Add appearance of an annotation
+
+```dart
+PdfRectangleAnnotation annotation = PdfRectangleAnnotation(
+  Rect.fromLTWH(40, 70, 80, 80),
+  'Added Annotation',
+  color: PdfColor(255, 0, 0),
+  setAppearance: true,
+  modifiedDate: DateTime.now(),
+);
+
+PdfAppearance appearance = PdfAppearance(annotation);
+appearance.pressed = PdfTemplate(50, 50);
 ```
 
 ### Available Flags

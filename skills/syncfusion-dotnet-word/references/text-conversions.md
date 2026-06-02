@@ -158,19 +158,6 @@ newDocument.Close();
 
 ---
 
-## Text Format Overview
-
-| Aspect | Details |
-|--------|---------|
-| **Format Name** | Plain Text File (.txt) |
-| **Human Readable** | Yes, plain text format |
-| **Use Case** | Simple text content without formatting |
-| **Encoding** | UTF-8 (default), ASCII |
-| **Content Retention** | Text content only; formatting removed |
-| **Compatibility** | Universal support across all platforms |
-
----
-
 ## Key Properties and Methods
 
 | Item | Type | Description |

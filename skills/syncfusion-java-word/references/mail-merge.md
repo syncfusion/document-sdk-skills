@@ -209,6 +209,22 @@ private void applyAlternateRecordsTextColor (Object sender, MergeFieldEventArgs 
 	{
 		args.getTextRange().getCharacterFormat().setTextColor(ColorSupport.fromArgb(255, 102, 0));
 	}
+	
+	if ("TotalAmount".equalsIgnoreCase(args.getFieldName())) {
+
+        if (args.getFieldValue() != null) {
+            try {
+                double amount = Double.parseDouble(args.getFieldValue().toString());
+                args.setText(String.format("%,.2f", amount));
+            } catch (NumberFormatException e) {
+                // Ignore if not numeric
+            }
+        }
+	}
+	// Conditional logic based on group
+	if ("Orders".equalsIgnoreCase(args.getGroupName())) {
+	    args.getCharacterFormat().setFontName("Calibri");
+	}
 }
 ```
 
@@ -219,36 +235,54 @@ private void applyAlternateRecordsTextColor (Object sender, MergeFieldEventArgs 
 ### Minimal Code
 
 ```java
-// Nested mail merge requires a relational DataSet
-Path templatePath = Paths.get(System.getProperty("user.dir"), "input", "{template-file}.docx");
-WordDocument doc = new WordDocument(templatePath.toString(), FormatType.Docx);
+WordDocument doc = new WordDocument();
+IWSection section = doc.addSection();
 
-// Create a new DataSet equivalent using Map of DataTables
-Map<String, DataTableSupport> dataSet = new HashMap<>();
+// Create merge fields
+section.addParagraph().appendField("BeginGroup:ProductList", FieldType.FieldMergeField);
+IWParagraph para = section.addParagraph();
+para.appendText("Product: ");
+para.appendField("ProductName", FieldType.FieldMergeField);
+// Child group → Customers
+section.addParagraph().appendField("BeginGroup:Customers", FieldType.FieldMergeField);
+para = section.addParagraph();
+para.appendText("Customer ID: ");
+para.appendField("CustomerId", FieldType.FieldMergeField);
+para = section.addParagraph();
+para.appendText("Customer Name: ");
+para.appendField("CustomerName", FieldType.FieldMergeField);
+section.addParagraph().appendField("EndGroup:Customers", FieldType.FieldMergeField);
+// End parent group
+section.addParagraph().appendField("EndGroup:ProductList", FieldType.FieldMergeField);
 
-// Master table (Orders)
-DataTableSupport masterTable = new DataTableSupport("Orders");
-masterTable.getColumns().add("OrderID");
-masterTable.getColumns().add("CustomerName");
-masterTable.getRows().add(new Object[] { "ORD-001", "Alice" });
-masterTable.getRows().add(new Object[] { "ORD-002", "Bob" });
-
-// Detail table (Items)
-DataTableSupport detailTable = new DataTableSupport("Items");
-detailTable.getColumns().add("OrderID");
-detailTable.getColumns().add("Product");
-detailTable.getColumns().add("Quantity");
-detailTable.getRows().add(new Object[] { "ORD-001", "Widget A", "10" });
-detailTable.getRows().add(new Object[] { "ORD-001", "Widget B", "5" });
-detailTable.getRows().add(new Object[] { "ORD-002", "Widget C", "20" });
-
+// Create DataSetSupport
+DataSetSupport dataSet = new DataSetSupport();
+// Customers table (child)
+DataTableSupport customers = new DataTableSupport("Customers");
+customers.getColumns().add("CustomerId");
+customers.getColumns().add("CustomerName");
+customers.getColumns().add("ProductName");
+customers.getRows().add(new Object[]{"1001", "Diego Roel", "Essential DocIO"});
+customers.getRows().add(new Object[]{"1002", "Maria Larsson", "Essential DocIO"});
+customers.getRows().add(new Object[]{"1003", "Pedro Afonso", "Essential XlsIO"});
+customers.getRows().add(new Object[]{"1009", "Bernardo Batista", "Essential PDF"});
+// ProductList table (parent)
+DataTableSupport products = new DataTableSupport("ProductList");
+products.getColumns().add("ProductName");
+products.getRows().add(new Object[]{"Essential DocIO"});
+products.getRows().add(new Object[]{"Essential XlsIO"});
+products.getRows().add(new Object[]{"Essential PDF"});
 // Add tables to dataset
-dataSet.put("Orders", masterTable);
-dataSet.put("Items", detailTable);
+dataSet.getTables().add(products);
+dataSet.getTables().add(customers);
+// Define relation commands
+ArrayList<Object> commands = new ArrayList<>();
+commands.add(new DictionaryEntry("ProductList", ""));
+commands.add(new DictionaryEntry("Customers",
+        "ProductName = %ProductList.ProductName%"));
 
 // Execute nested mail merge with dataSet
-doc.getMailMerge().executeNestedGroup((MailMergeDataTable) dataSet);
-
+doc.getMailMerge().executeNestedGroup(dataSet, commands);
 doc.close();
 ```
 
@@ -278,6 +312,36 @@ dt.getRows().add(new Object[] { "Jane Smith", "jane@example.com", "555-0002" });
 
 // Execute with DataTable
 doc.getMailMerge().execute(dt);
+doc.close();
+```
+
+---
+
+## Mail Merge with DataRow
+
+### Minimal Code
+
+```java
+WordDocument doc = new WordDocument();
+IWSection section = doc.addSection();
+
+// Add merge fields
+IWParagraph para = section.addParagraph();
+para.appendField("Name", FieldType.FieldMergeField);
+section.addParagraph().appendField("Email", FieldType.FieldMergeField);
+section.addParagraph().appendField("Phone", FieldType.FieldMergeField);
+
+// Create DataTable
+DataTableSupport dt = new DataTableSupport();
+dt.getColumns().add("Name");
+dt.getColumns().add("Email");
+dt.getColumns().add("Phone");
+dt.getRows().add(new Object[] { "John Doe", "john@example.com", "555-0001" });
+dt.getRows().add(new Object[] { "Jane Smith", "jane@example.com", "555-0002" });
+
+// Execute with single DataRow
+DataRowSupport row = dt.getRows().get(0);
+doc.getMailMerge().execute(row);
 doc.close();
 ```
 
@@ -435,6 +499,79 @@ section.addParagraph().appendField("Price", FieldType.FieldMergeField);
 
 // Execute merge with the first table's rows
 doc.getMailMerge().executeGroup((MailMergeDataTable) tableRows);
+doc.close();
+```
+
+---
+
+## Mail Merge with MailMergeDataTable 
+
+### Group Mail Merge
+
+```java
+WordDocument doc = new WordDocument();
+IWSection section = doc.addSection();
+// Add merge fields
+section.addParagraph().appendField("BeginGroup:Employees", FieldType.FieldMergeField);
+section.addParagraph().appendField("Name", FieldType.FieldMergeField);
+section.addParagraph().appendField("EndGroup:Employees", FieldType.FieldMergeField);
+// Create data source (List of Maps instead of dynamic)
+List<Map<String, Object>> employees = new ArrayList<>();
+Map<String, Object> emp1 = new HashMap<>();
+emp1.put("Name", "Alice");
+Map<String, Object> emp2 = new HashMap<>();
+emp2.put("Name", "Bob");
+employees.add(emp1);
+employees.add(emp2);
+// Convert to MailMergeDataTable
+MailMergeDataTable dataTable = new MailMergeDataTable("Employees", employees);
+// Execute group mail merge
+doc.getMailMerge().executeGroup(dataTable);
+doc.close();
+```
+
+### Nested Group Mail Merge
+
+```java
+WordDocument doc = new WordDocument();
+IWSection section = doc.addSection();
+// Parent group
+section.addParagraph().appendField("BeginGroup:Orders", FieldType.FieldMergeField);
+section.addParagraph().appendField("OrderID", FieldType.FieldMergeField);
+// Child group
+section.addParagraph().appendField("BeginGroup:Items", FieldType.FieldMergeField);
+section.addParagraph().appendField("Product", FieldType.FieldMergeField);
+section.addParagraph().appendField("EndGroup:Items", FieldType.FieldMergeField);
+// End parent group
+section.addParagraph().appendField("EndGroup:Orders", FieldType.FieldMergeField);
+// Create nested data
+List<Map<String, Object>> orders = new ArrayList<>();
+Map<String, Object> order1 = new HashMap<>();
+order1.put("OrderID", "ORD-001");
+// Child items
+List<Map<String, Object>> items1 = new ArrayList<>();
+Map<String, Object> item1 = new HashMap<>();
+item1.put("Product", "Laptop");
+Map<String, Object> item2 = new HashMap<>();
+item2.put("Product", "Mouse");
+items1.add(item1);
+items1.add(item2);
+order1.put("Items", items1);
+// Second order
+Map<String, Object> order2 = new HashMap<>();
+order2.put("OrderID", "ORD-002");
+List<Map<String, Object>> items2 = new ArrayList<>();
+Map<String, Object> item3 = new HashMap<>();
+item3.put("Product", "Keyboard");
+items2.add(item3);
+order2.put("Items", items2);
+// Add orders
+orders.add(order1);
+orders.add(order2);
+// Convert to MailMergeDataTable
+MailMergeDataTable dataTable = new MailMergeDataTable("Orders", orders);
+// Execute nested group mail merge
+doc.getMailMerge().executeNestedGroup(dataTable);
 doc.close();
 ```
 
@@ -600,6 +737,7 @@ public void remove(BeforeClearGroupFieldEventHandler delegate) throws Exception 
 doc.MailMerge.ExecuteGroup(GetDataTable());
 // Handle unmerged fields
 private static void beforeClearFields( Object sender,BeforeClearFieldEventArgs args) throws Exception {
+        String groupName = args.getGroupName();
         // Check if field has mapping in data source
         if (args.getHasMappedFieldInDataSource()) {     	
         	Object value = args.getFieldValue();
@@ -624,6 +762,7 @@ private static void beforeClearFields( Object sender,BeforeClearFieldEventArgs a
     }
 // Handle unmerged group fields
 private static void beforeClearGroupFields( Object sender,BeforeClearGroupFieldEventArgs args) throws Exception {
+    String[] fieldNames = args.getFieldNames();
     if (!args.getHasMappedGroupInDataSource()) {
         // Group not found in data source
         string groupName = args.GroupName;
@@ -726,4 +865,93 @@ doc.getMailMerge().execute(
 );
 
 doc.close();
+```
+
+---
+
+## Insert Each Record as a New Row
+
+### Minimal Code
+```java
+WordDocument doc = new WordDocument();
+IWSection section = doc.addSection();
+// Create table (2 rows, 1 column)
+WTable table = section.addTable();
+table.resetCells(2, 1);
+// Header row
+table.getRows().get(0).getCells().get(0)
+     .addParagraph().appendText("Word Version");
+// Template row (single cell required)
+WParagraph para = table.getRows().get(1).getCells().get(0).addParagraph();
+para.appendField("BeginGroup:Versions", FieldType.FieldMergeField);
+para.appendField("WordVersion", FieldType.FieldMergeField);
+para.appendField("EndGroup:Versions", FieldType.FieldMergeField);
+// Create DataTable using DataTableSupport
+DataTableSupport dataTable = new DataTableSupport("Versions");
+dataTable.getColumns().add("WordVersion");
+dataTable.getRows().add(new Object[]{"Word 2010"});
+dataTable.getRows().add(new Object[]{"Word 2013"});
+dataTable.getRows().add(new Object[]{"Word 2019"});
+// Enable option
+doc.getMailMerge().setInsertAsNewRow(true);
+// Execute group mail merge
+doc.getMailMerge().executeGroup(dataTable);
+doc.close();
+```
+
+---
+
+## Start Each Record on a New Page
+
+### Minimal Code
+```java
+WordDocument doc = new WordDocument();
+IWSection section = doc.addSection();
+// Add merge fields
+WParagraph para = section.addParagraph();
+para.appendField("BeginGroup:Employees", FieldType.FieldMergeField);
+para.appendText("Name: ");
+para.appendField("Name", FieldType.FieldMergeField);
+para.appendField("EndGroup:Employees", FieldType.FieldMergeField);
+// Create DataTable
+DataTableSupport dataTable = new DataTableSupport("Employees");
+dataTable.getColumns().add("Name");
+dataTable.getRows().add(new Object[]{"Alice"});
+dataTable.getRows().add(new Object[]{"Bob"});
+dataTable.getRows().add(new Object[]{"Charlie"});
+// Enable new page per record
+doc.getMailMerge().setStartAtNewPage(true);
+// Execute group mail merge
+doc.getMailMerge().executeGroup(dataTable);
+doc.close();
+```
+
+---
+
+## Mail Merge Settings (MailMergeSettings)
+
+## Remove the Mail Merge Settings
+
+```java
+FileInputStream stream = new FileInputStream("template.docx");
+WordDocument doc = new WordDocument(stream, FormatType.Docx);
+// Access MailMergeSettings
+MailMergeSettings settings = doc.getMailMerge().getSettings();
+// Check and remove data
+if (settings.hasData()) {
+    settings.removeData();
+}
+doc.Close();
+```
+
+## Change Mail Merge Data Source Path
+
+```java
+FileInputStream stream = new FileInputStream("template.docx");
+WordDocument doc = new WordDocument(stream, FormatType.Docx);
+//Access MailMergeSettings
+MailMergeSettings settings = doc.getMailMerge().getSettings();
+//DataSource (file path of merge data)
+settings.setDataSource("NewDataSource.txt");
+doc.Close();
 ```

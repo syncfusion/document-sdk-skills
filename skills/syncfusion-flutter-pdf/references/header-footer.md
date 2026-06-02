@@ -61,6 +61,10 @@ PdfCompositeField compositeField = PdfCompositeField(
     fields: <PdfAutomaticField>[pageNumber, count]);
 compositeField.bounds = footer.bounds;
 
+// Set string format
+compositefields.stringFormat =
+   PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle);
+
 //Draw the composite field into the footer template
 compositeField.draw(footer.graphics,
     Offset(250, 50 - PdfStandardFont(PdfFontFamily.timesRoman, 14).height));

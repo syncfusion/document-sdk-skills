@@ -114,6 +114,20 @@ picWatermark.Washout = true;
 
 ---
 
+## Identify Watermark Type
+
+### Common code for Cross-Platform and Windows-Specific
+```csharp
+WatermarkType watermarkType = document.Watermark.Type;
+```
+
+### WatermarkType Options
+- **Text** — Text watermark
+- **Picture** — Picture watermark
+- **NoWatermark** — No watermark applied
+
+---
+
 ## Remove Watermark
 
 ### Clear Watermark

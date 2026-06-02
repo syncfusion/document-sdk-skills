@@ -88,6 +88,9 @@ security.algorithm = PdfEncryptionAlgorithm.aesx256Bit;
 security.userPassword = 'userpassword';
 security.ownerPassword = 'ownerpassword';
 
+// Set the PDF Encryption Type
+security.encryptionOptions = PdfEncryptionOptions.encryptAllContents;
+
 //Grant permissions
 security.permissions.addAll(<PdfPermissionsFlags>[
     PdfPermissionsFlags.print,
@@ -99,6 +102,13 @@ document.pages.add().graphics.drawString(
     PdfStandardFont(PdfFontFamily.helvetica, 18),
     brush: PdfBrushes.black,
     bounds: Rect.fromLTWH(10, 10, 500, 50));
+```
+
+### Available EncryptionOptions
+```dart
+PdfEncryptionOptions.encryptAllContents
+PdfEncryptionOptions.encryptAllContentsExceptMetadata
+PdfEncryptionOptions.encryptOnlyAttachments
 ```
 
 ---

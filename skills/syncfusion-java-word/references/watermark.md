@@ -89,6 +89,20 @@ picWatermark.setWashout(true);
 
 ---
 
+## Identify Watermark Type
+
+### Common code for Cross-Platform and Windows-Specific
+```java
+WatermarkType watermarkType = document.getWatermark().getType();
+```
+
+### WatermarkType Options
+- **Text** — Text watermark
+- **Picture** — Picture watermark
+- **NoWatermark** — No watermark applied
+
+---
+
 ## Remove Watermark
 
 ### Clear Watermark

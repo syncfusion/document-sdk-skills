@@ -195,6 +195,18 @@ doc.Close();
          args.TextRange.CharacterFormat.Bold = true;
          args.TextRange.CharacterFormat.TextColor = Color.DarkBlue;
      }
+      
+     // Conditional formatting based on row index
+     if (args.RowIndex % 2 == 0)
+     {
+         args.CharacterFormat.Italic = true;
+     }
+
+     // Conditional logic based on group
+     if (string.Equals(args.GroupName, "Orders", StringComparison.OrdinalIgnoreCase))
+     {
+         args.CharacterFormat.FontName = "Calibri";
+     }
  };
 
  doc.MailMerge.Execute(fieldNames, fieldValues);
@@ -208,33 +220,54 @@ doc.Close();
 
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
+var doc = new WordDocument();
+var section = doc.AddSection();
+
+// Create merge fields
+section.AddParagraph().AppendField("BeginGroup:ProductList", FieldType.FieldMergeField);
+IWParagraph para = section.AddParagraph();
+para.AppendText("Product: ");
+para.AppendField("ProductName", FieldType.FieldMergeField);
+// Child group → Customers
+section.AddParagraph().AppendField("BeginGroup:Customers", FieldType.FieldMergeField);
+para = section.AddParagraph();
+para.AppendText("Customer ID: ");
+para.AppendField("CustomerId", FieldType.FieldMergeField);
+para = section.AddParagraph();
+para.AppendText("Customer Name: ");
+para.AppendField("CustomerName", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("EndGroup:Customers", FieldType.FieldMergeField);
+// End parent group
+section.AddParagraph().AppendField("EndGroup:ProductList", FieldType.FieldMergeField);
+
 // Nested mail merge requires a relational DataSet
 var dataSet = new System.Data.DataSet();
-
-// Master table
-var masterTable = new System.Data.DataTable("Orders");
-masterTable.Columns.Add("OrderID");
-masterTable.Columns.Add("CustomerName");
-masterTable.Rows.Add("ORD-001", "Alice");
-masterTable.Rows.Add("ORD-002", "Bob");
-
-// Detail table
-var detailTable = new System.Data.DataTable("Items");
-detailTable.Columns.Add("OrderID");
-detailTable.Columns.Add("Product");
-detailTable.Columns.Add("Quantity");
-detailTable.Rows.Add("ORD-001", "Widget A", "10");
-detailTable.Rows.Add("ORD-001", "Widget B", "5");
-detailTable.Rows.Add("ORD-002", "Widget C", "20");
-
-dataSet.Tables.Add(masterTable);
-dataSet.Tables.Add(detailTable);
-
-// Define relation between tables
-dataSet.Relations.Add("OrderItems", masterTable.Columns["OrderID"], detailTable.Columns["OrderID"]);
+// Customers (child)
+var customers = new DataTable("Customers");
+customers.Columns.Add("CustomerId");
+customers.Columns.Add("CustomerName");
+customers.Columns.Add("ProductName");
+customers.Rows.Add("1001", "Diego Roel", "Essential DocIO");
+customers.Rows.Add("1002", "Maria Larsson", "Essential DocIO");
+customers.Rows.Add("1003", "Pedro Afonso", "Essential XlsIO");
+customers.Rows.Add("1009", "Bernardo Batista", "Essential PDF");
+// ProductList (parent)
+var products = new DataTable("ProductList");
+products.Columns.Add("ProductName");
+products.Rows.Add("Essential DocIO");
+products.Rows.Add("Essential XlsIO");
+products.Rows.Add("Essential PDF");
+// Add to DataSet
+dataSet.Tables.Add(products);
+dataSet.Tables.Add(customers);
+var commands = new ArrayList
+{
+    new DictionaryEntry("ProductList", ""),
+    new DictionaryEntry("Customers", "ProductName = %ProductList.ProductName%")
+};
 
 // Execute nested mail merge
-doc.MailMerge.ExecuteNestedGroup(dataSet);
+doc.MailMerge.ExecuteNestedGroup(dataSet, commands);
 doc.Close();
 ```
 
@@ -265,6 +298,37 @@ dt.Rows.Add("Jane Smith", "jane@example.com", "555-0002");
 
 // Execute with DataTable
 doc.MailMerge.Execute(dt);
+doc.Close();
+```
+
+---
+
+## Mail Merge with DataRow
+
+### Minimal Code
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var doc = new WordDocument();
+var section = doc.AddSection();
+
+// Add merge fields
+var para = section.AddParagraph();
+para.AppendField("Name", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("Email", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("Phone", FieldType.FieldMergeField);
+
+// Create DataTable
+var dt = new System.Data.DataTable();
+dt.Columns.Add("Name");
+dt.Columns.Add("Email");
+dt.Columns.Add("Phone");
+dt.Rows.Add("John Doe", "john@example.com", "555-0001");
+dt.Rows.Add("Jane Smith", "jane@example.com", "555-0002");
+
+// Execute with single DataRow
+DataRow row = dt.Rows[0];
+doc.MailMerge.Execute(row);
 doc.Close();
 ```
 
@@ -386,6 +450,75 @@ doc.Close();
 
 ---
 
+## Mail Merge with MailMergeDataTable 
+
+### Group Mail Merge
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var doc = new WordDocument();
+var section = doc.AddSection();
+// Add merge fields
+section.AddParagraph().AppendField("BeginGroup:Employees", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("Name", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("EndGroup:Employees", FieldType.FieldMergeField);
+// Create data source (List of objects)
+var employees = new List<dynamic>
+{
+    new { Name = "Alice" },
+    new { Name = "Bob" }
+};
+// Convert to MailMergeDataTable
+var dataTable = new MailMergeDataTable("Employees", employees);
+// Execute group mail merge
+doc.MailMerge.ExecuteGroup(dataTable);
+doc.Close();
+
+```
+
+### Nested Group Mail Merge
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var doc = new WordDocument();
+var section = doc.AddSection();
+// Parent group
+section.AddParagraph().AppendField("BeginGroup:Orders", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("OrderID", FieldType.FieldMergeField);
+// Child group
+section.AddParagraph().AppendField("BeginGroup:Items", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("Product", FieldType.FieldMergeField);
+section.AddParagraph().AppendField("EndGroup:Items", FieldType.FieldMergeField);
+// End parent group
+section.AddParagraph().AppendField("EndGroup:Orders", FieldType.FieldMergeField);
+// Create nested data
+var orders = new List<dynamic>
+{
+    new {
+        OrderID = "ORD-001",
+        Items = new List<dynamic>
+        {
+            new { Product = "Laptop" },
+            new { Product = "Mouse" }
+        }
+    },
+    new {
+        OrderID = "ORD-002",
+        Items = new List<dynamic>
+        {
+            new { Product = "Keyboard" }
+        }
+    }
+};
+// Convert to MailMergeDataTable
+var dataTable = new MailMergeDataTable("Orders", orders);
+//Execute nested group mail merge
+doc.MailMerge.ExecuteNestedGroup(dataTable);
+doc.Close();
+```
+
+---
+
 ## Mail Merge with JSON
 
 ### Minimal Code
@@ -495,6 +628,7 @@ doc.MailMerge.Execute(fieldNames, fieldValues);
 doc.MailMerge.ClearFields = false;
 doc.MailMerge.BeforeClearField += (sender, args) =>
 {
+    string groupName = args.GroupName;
     // Check if field has mapping in data source
     if (args.HasMappedFieldInDataSource)
     {
@@ -516,6 +650,8 @@ doc.MailMerge.BeforeClearField += (sender, args) =>
 // Handle unmerged group fields
 doc.MailMerge.BeforeClearGroupField += (sender, args) =>
 {
+    //Access all field names inside the group
+    string[] fieldNames = args.FieldNames;
     if (!args.HasMappedGroupInDataSource)
     {
         // Group not found in data source
@@ -622,5 +758,111 @@ doc.MailMerge.Execute(
     new[] { "Value1" }
 );
 
+doc.Close();
+```
+
+---
+
+## Insert Each Record as a New Row
+
+### Minimal Code
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var doc = new WordDocument();
+var section = doc.AddSection();
+
+// Create table (2 rows, 1 column)
+var table = section.AddTable();
+table.ResetCells(2, 1);
+
+// Header row
+table.Rows[0].Cells[0].AddParagraph().AppendText("Word Version");
+
+// Template row (single cell required)
+var para = table.Rows[1].Cells[0].AddParagraph();
+para.AppendField("BeginGroup:Versions", FieldType.FieldMergeField);
+para.AppendField("WordVersion", FieldType.FieldMergeField);
+para.AppendField("EndGroup:Versions", FieldType.FieldMergeField);
+
+// Create data source
+var data = new DataTable("Versions");
+data.Columns.Add("WordVersion");
+data.Rows.Add("Word 2010");
+data.Rows.Add("Word 2013");
+data.Rows.Add("Word 2019");
+
+// Enable option
+doc.MailMerge.InsertAsNewRow = true;
+// Execute group mail merge
+doc.MailMerge.ExecuteGroup(data);
+doc.Close();
+```
+
+---
+
+## Start Each Record on a New Page
+
+### Minimal Code
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var doc = new WordDocument();
+var section = doc.AddSection();
+
+// Create merge fields in body (NOT table)
+var para = section.AddParagraph();
+para.AppendField("BeginGroup:Employees", FieldType.FieldMergeField);
+para.AppendText("Name: ");
+para.AppendField("Name", FieldType.FieldMergeField);
+para.AppendField("EndGroup:Employees", FieldType.FieldMergeField);
+
+// Create data source
+var data = new DataTable("Employees");
+data.Columns.Add("Name");
+data.Rows.Add("Alice");
+data.Rows.Add("Bob");
+data.Rows.Add("Charlie");
+
+// Enable option
+doc.MailMerge.StartAtNewPage = true;
+
+// Execute group mail merge
+doc.MailMerge.ExecuteGroup(data);
+
+doc.Close();
+
+```
+
+---
+
+## Mail Merge Settings (MailMergeSettings)
+
+## Remove the Mail Merge Settings
+
+### Common for Cross-Platform and Windows-Specific
+```csharp
+var stream = new FileStream("template.docx", FileMode.Open, FileAccess.Read);
+var doc = new WordDocument(stream, FormatType.Docx);
+// Access MailMergeSettings
+var settings = doc.MailMerge.Settings;
+//Check if document has mail merge settings
+bool hasData = settings.HasData;
+//Remove mail merge settings
+if (settings.HasData)
+    settings.RemoveData();
+doc.Close();
+```
+
+## Change Mail Merge Data Source Path
+
+### Common for Cross-Platform and Windows-Specific
+```csharp
+var stream = new FileStream("template.docx", FileMode.Open, FileAccess.Read);
+var doc = new WordDocument(stream, FormatType.Docx);
+//Access MailMergeSettings
+var settings = doc.MailMerge.Settings;
+//DataSource (file path of merge data)
+settings.DataSource = "NewDataSource.txt";
 doc.Close();
 ```

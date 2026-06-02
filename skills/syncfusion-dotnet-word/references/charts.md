@@ -81,6 +81,7 @@ doc.Close();
 ---
 
 ## Create Chart from Excel
+
 ### Common code for Cross-Platform and Windows-Specific
 ```csharp
 var doc = new WordDocument();
@@ -106,6 +107,7 @@ doc.Close();
 ---
 
 ## Create Custom Chart (Multiple Series Types)
+
 ### Common code for Cross-Platform and Windows-Specific
 ```csharp
 var doc = new WordDocument();
@@ -136,6 +138,7 @@ doc.Close();
 ---
 
 ## Modify Chart Data
+
 ### Common code for Cross-Platform and Windows-Specific
 ```csharp
 FileStream fileStream = new FileStream("Template.docx", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -157,6 +160,7 @@ doc.Close();
 ---
 
 ## Refresh Chart
+
 ### Common code for Cross-Platform and Windows-Specific
 ```csharp
 FileStream fileStream = new FileStream("Template.docx", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -181,24 +185,25 @@ chart.ChartTitle = "Sales Report";
 chart.ChartTitleArea.FontName = "Calibri";
 chart.ChartTitleArea.Size = 14;
 
-// Area
-#### Common code for Cross-Platform and Windows-Specific
-```csharp
+// Chart Area and Plot Area
 ```
 
 #### Cross-Platform
 ```csharp
 chart.ChartArea.Fill.ForeColor = Syncfusion.Drawing.Color.WhiteSmoke;
+chart.PlotArea.Fill.ForeColor = Syncfusion.Drawing.Color.WhiteSmoke;
 ```
 
 #### Windows-Specific
 ```csharp
 chart.ChartArea.Fill.ForeColor = System.Drawing.Color.WhiteSmoke;
+chart.PlotArea.Fill.ForeColor = System.Drawing.Color.WhiteSmoke;
 ```
 
 #### Common code for Cross-Platform and Windows-Specific
 ```csharp
 chart.ChartArea.Border.LinePattern = OfficeChartLinePattern.Solid;
+chart.PlotArea.Border.LinePattern = OfficeChartLinePattern.Solid;
 
 // Legend
 chart.HasLegend = true;
@@ -236,7 +241,7 @@ IOfficeChartSerie series = chart.Series[0];
 series.Name = "Sales";
 
 // Customize series border
-
+```
 #### Cross-Platform
 ```csharp
 series.SerieFormat.LineProperties.LineColor = Syncfusion.Drawing.Color.Red;
@@ -251,9 +256,9 @@ series.SerieFormat.LineProperties.LineColor = System.Drawing.Color.Red;
 ```csharp
 series.SerieFormat.LineProperties.LinePattern = OfficeChartLinePattern.Dot;
 series.SerieFormat.LineProperties.LineWeight = OfficeChartLineWeight.Hairline;
-```
 
 // Customize series fill
+```
 
 #### Cross-Platform
 ```csharp
@@ -287,7 +292,8 @@ WChart chart = doc.AddSection().AddParagraph().AppendChart(446, 270);
 chart.ChartType = OfficeChartType.Column_Clustered;
 chart.ChartData.SetValue(2, 1, "Item A"); chart.ChartData.SetValue(2, 2, 50);
 chart.ChartData.SetValue(3, 1, "Item B"); chart.ChartData.SetValue(3, 2, 75);
-
+chart.DataRange = chart.ChartData[1, 1, 3, 2];
+chart.IsSeriesInRows = false; // Data is in columns (default)
 chart.HasDataTable = true;
 IOfficeChartDataTable dataTable = chart.DataTable;
 dataTable.ShowSeriesKeys = true;
@@ -304,6 +310,54 @@ dataTable.HasBorders = true;
 
 ---
 
+## Create a Combo Chart (Two Chart Types)
+
+### Minimal Code
+```csharp
+WChart chart = paragraph.AppendChart(446, 270);
+chart.ChartType = OfficeChartType.Combination_Chart;
+// Category labels
+chart.ChartData.SetValue(1, 1, "Month");
+chart.ChartData.SetValue(2, 1, "Jan");
+chart.ChartData.SetValue(3, 1, "Feb");
+// Primary axis
+chart.ChartData.SetValue(1, 2, "Revenue");
+chart.ChartData.SetValue(2, 2, 500);
+chart.ChartData.SetValue(3, 2, 650);
+// Secondary axis
+chart.ChartData.SetValue(1, 3, "Growth %");
+chart.ChartData.SetValue(2, 3, 0.1);
+chart.ChartData.SetValue(3, 3, 0.15);
+
+// Series 1  Clustered Column
+IOfficeChartSerie serie1 = chart.Series.Add("Revenue");
+serie1.Values      = chart.ChartData[2, 2, 3, 2];
+serie1.SerieType   = OfficeChartType.Column_Clustered;
+
+// Series 2  Line on secondary axis
+IOfficeChartSerie serie2    = chart.Series.Add("Growth %");
+serie2.Values         = chart.ChartData[2, 3, 3, 3];
+serie2.SerieType      = OfficeChartType.Line;
+serie2.UsePrimaryAxis = false; // Use secondary Y axis
+```
+
+### Enable Secondary Axis
+```csharp
+chart.SecondaryCategoryAxis.Visible   = true;
+chart.SecondaryValueAxis.Visible      = true;
+chart.SecondaryValueAxis.Title        = "Growth (%)";
+chart.SecondaryValueAxis.NumberFormat = "0.0%";
+```
+
+### Placeholders
+- `446, 270` → Chart dimensions (width, height)
+- `"Revenue"`, `"Growth %"` → Replace with `"{series-name}"`
+- `500, 0.1` → Replace with numeric values
+- `UsePrimaryAxis` → Set to false to plot the series on the secondary Y axis
+- `OfficeChartType.Column_Clustered` and `OfficeChartType.Line` → Chart types used for each series (Column, Line, Bar_Clustered, etc.)
+
+---
+
 ## Apply 3D Formatting
 
 ```csharp
@@ -314,6 +368,8 @@ chart.Rotation = 20;
 chart.Elevation = 15;
 
 // Side wall
+```
+
 #### Common code for Cross-Platform and Windows-Specific
 ```csharp
 chart.SideWall.Fill.FillType = OfficeFillType.SolidColor;

@@ -143,11 +143,20 @@ Control how content is imported:
 destDoc.importContent(sourceDoc, ImportOptions.UseDestinationStyles);
 // Import keeping source formatting
 destDoc.importContent(sourceDoc, ImportOptions.KeepSourceFormatting);
+
+destDoc.importContent(sourceDoc, ImportOptions.KeepTextOnly);
+destDoc.importContent(sourceDoc, ImportOptions.ListContinueNumbering);
+destDoc.importContent(sourceDoc, ImportOptions.ListRestartNumbering);
+destDoc.importContent(sourceDoc, ImportOptions.MergeFormatting);
 ```
 
 ### Placeholders
 - `ImportOptions.UseDestinationStyles` → Use when you want merged content to match destination formatting
 - `ImportOptions.KeepSourceFormatting` → Use when you want to preserve source document formatting
+- `ImportOptions.KeepTextOnly` → Use when you want to import only plain text and remove all formatting, styles, lists, images, and fields
+- `ImportOptions.ListContinueNumbering` → Use when you want imported lists to continue numbering from the destination document
+- `ImportOptions.ListRestartNumbering` → Use when you want imported list numbering to restart from the beginning
+- `ImportOptions.MergeFormatting` → Use when you want to merge source document formatting with destination styles
 
 ---
 

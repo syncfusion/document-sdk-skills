@@ -82,6 +82,8 @@ var doc = new WordDocument(stream, FormatType.Docx);
 //   AllowOnlyReading    – read-only; no edits
 //   NoProtection        – removes all protection
 doc.Protect(ProtectionType.AllowOnlyFormFields, "password");
+// Optional: Gets the current protection type applied to the document
+ProtectionType protectionType = doc.ProtectionType;
 doc.Save(outputPath);
 stream.Close();
 doc.Close();
@@ -97,7 +99,9 @@ doc.Close();
 
 Allows a specific portion to remain editable when the rest is read-only.
 
-### Common for Cross-Platform and Windows-Specific
+### Minimal Code
+
+#### Common for Cross-Platform and Windows-Specific
 ```csharp
 var doc = new WordDocument();
 doc.EnsureMinimal();
@@ -108,18 +112,61 @@ var rangeStart = para.AppendEditableRangeStart();
 // rangeStart.EditorGroup = EditorType.Everyone;
 // rangeStart.SingleUser  = "user@domain.com";
 para.AppendText("Editable text.");
-para.AppendEditableRangeEnd(rangeStart);
+var rangeEnd = para.AppendEditableRangeEnd(rangeStart);
 doc.Protect(ProtectionType.AllowOnlyReading, "password");
 doc.Save(outputPath);
 doc.Close();
 ```
 
-### Options
+### Add Editable Range inside Table
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var doc = new WordDocument();
+doc.EnsureMinimal();
+WTable table = doc.LastSection.AddTable() as WTable;
+table.ResetCells(2, 3);
+// Add text and start the editable range at column 1
+table[0, 1].AddParagraph().AppendText("Editable content");
+EditableRangeStart rangeStart = table[0, 1].Paragraphs[0].AppendEditableRangeStart();
+rangeStart.FirstColumn = 1;
+// Add content inside the editable range
+table[1, 2].AddParagraph().AppendText("Editable Content");
+// End the editable range at column 2
+EditableRangeEnd rangeEnd = table[1, 2].Paragraphs[0].AppendEditableRangeEnd();
+rangeStart.LastColumn = 2;
+doc.Protect(ProtectionType.AllowOnlyReading, "password");
+doc.Save(outputPath);
+doc.Close();
+```
+
+### Editable Range Start and End Options
 
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 rangeStart.EditorGroup = EditorType.Everyone;   // group permission
 rangeStart.SingleUser  = "user@domain.com";     // single-user permission (mutually exclusive with EditorGroup)
+string rangeStartId = rangeStart.Id;   // ID of the editable range start
+string rangeEndId = rangeEnd.Id;   // ID of the editable range end
+
+// Restrict the editable range to specific table columns (zero-based)
+// Applicable only when the editable range is defined within a table
+rangeStart.FirstColumn = 1;
+rangeStart.LastColumn  = 2;
+
+```
+
+### Editable Range Properties (EditableRange)
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+doc.EditableRanges[0].EditorGroup = EditorType.Everyone;   // group permission
+doc.EditableRanges[0].SingleUser = "user@domain.com";   // single-user permission (mutually exclusive with EditorGroup)
+string editableRangeId = doc.EditableRanges[0].Id;   // ID of the editable range
+EditableRangeStart rangeStart = doc.EditableRanges[0].EditableRangeStart;   // Get  editable range start marker
+EditableRangeEnd rangeEnd = doc.EditableRanges[0].EditableRangeEnd;   // Get  editable range end marker
+document.EditableRanges[0].FirstColumn = 1; // First editable column
+document.EditableRanges[0].LastColumn = 2; // Last editable column
 ```
 
 ---

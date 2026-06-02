@@ -72,14 +72,14 @@ document.Close();
 ```csharp
 using (FileStream docStream = new FileStream("Input.md", FileMode.Open, FileAccess.Read))
 {
-    using (WordDocument document = new WordDocument(docStream, FormatType.Markdown))
+    using (WordDocument document = new WordDocument())
     {
         document.MdImportSettings.ImageNodeVisited += (sender, args) =>
         {
             if (args.Uri == "Image_1.png")
                 args.ImageStream = new FileStream("Image_1.png", FileMode.Open);
         };
-        
+        document.Open(docStream, FormatType.Markdown);
         MemoryStream outputStream = new MemoryStream();
         document.Save(outputStream, FormatType.Docx);
     }
@@ -213,19 +213,6 @@ document.Close();
 
 ---
 
-## Markdown Format Overview
-
-| Aspect | Details |
-|--------|---------|
-| **Format Name** | Markdown |
-| **Specification** | CommonMark and GitHub-flavored Markdown |
-| **Human Readable** | Yes, lightweight markup language |
-| **Use Case** | Documentation, readme files, structured text with formatting |
-| **Content Retention** | Preserves text formatting, lists, links, images, headings |
-| **Supported Conversions** | Bidirectional with DOCX, can also convert to HTML, PDF, Image |
-
----
-
 ## Supported Markdown Syntax
 
 | Element | Syntax | Description |
@@ -240,7 +227,7 @@ document.Close();
 | **Block Quote** | `> text` | Block quote |
 | **Code Span** | `` `code` `` | Inline code |
 | **Indented Code** | 4 spaces + code | Code block |
-| **Fenced Code** | ` ``` code ``` ` | Fenced code block |
+| **Fenced Code** |  ``` code ```  | Fenced code block |
 | **Ordered List** | `1. Item` | Numbered list |
 | **Unordered List** | `- Item` | Bulleted list |
 | **Links** | `[text](url)` | Hyperlink |
@@ -275,7 +262,7 @@ document.Close();
 |-----------|-----------------|
 | Heading 1-6 | `# Heading 1` through `###### Heading 6` |
 | Quote | `> Block quote` |
-| FencedCode | ` ``` Fenced code block ``` ` |
+| FencedCode | ``` Fenced code block ``` |
 | IndentedCode | Indented code block (4 spaces) |
 | InlineCode (character style) | `` `inline code` `` |
 

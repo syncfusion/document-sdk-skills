@@ -32,7 +32,7 @@ This skill supports one operational mode — generating C# code for the user's p
 **User:** "Write Program.cs code to extract the data from pdf and save as JSON using SmartDataExtractor."
 **Result:** C# code snippet displayed (no files created)
 
-## One Mode
+## One Mode 
 
 ### Mode 1: Generate C# Code for the User's Project *(default)*
 

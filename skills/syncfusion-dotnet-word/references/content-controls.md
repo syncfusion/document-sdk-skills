@@ -29,6 +29,9 @@ WTextBody textBody = section.Body;
 // Add block content control
 BlockContentControl blockControl = textBody.AddBlockContentControl(ContentControlType.RichText) as BlockContentControl;
 
+//Sets title of the block content control.
+blockControl.ContentControlProperties.Title = "Rich text content control";
+
 // Add paragraph
 WParagraph para = blockControl.TextBody.AddParagraph() as WParagraph;
 para.AppendText("Block content control content");
@@ -46,6 +49,45 @@ WParagraph imagePara = blockControl.TextBody.AddParagraph() as WParagraph;
 imagePara.AppendPicture(imageStream);
 // Windows-Specific
 imagePara.AppendPicture(Image.FromFile("Image.png"));
+```
+
+### Find and Replace Content inside Block Content Control
+
+#### Find first occurrence using string
+```csharp
+// Add block content control
+BlockContentControl blockControl = textBody.AddBlockContentControl(ContentControlType.RichText) as BlockContentControl;
+// Add paragraph
+WParagraph para = blockControl.TextBody.AddParagraph() as WParagraph;
+para.AppendText("{Block-content-control-content}");
+TextSelection sel = blockControl.Find("{find-text}", caseSensitive: false, wholeWord: true);
+if (sel != null)
+{
+    WTextRange r = sel.GetAsOneRange();
+    r.Text = "{new-text}"; // optional inline replace
+}
+```
+
+#### Find first occurrence using Regex
+```csharp
+var sel = blockControl.Find(new System.Text.RegularExpressions.Regex(@"{pattern}"));
+```
+
+#### Replace all occurrences (string → string)
+```csharp
+blockControl.Replace("{find-text}", "{replace-text}", caseSensitive: false, wholeWord: false);
+```
+
+#### Replace all occurrences (Regex → string)
+```csharp
+blockControl.Replace(new System.Text.RegularExpressions.Regex(@"{pattern}"), "{replace-text}");
+```
+
+#### Replace using selected content (keeps formatting)
+```csharp
+TextSelection replacement = blockControl.Find(new System.Text.RegularExpressions.Regex(@"{replacement-pattern}"));
+if (replacement != null)
+    blockControl.Replace("{find-text}", replacement, caseSensitive: false, wholeWord: false, saveFormatting: true);
 ```
 
 ---
@@ -93,6 +135,8 @@ InlineContentControl plainText = para.AppendInlineContentControl(ContentControlT
 WTextRange text = new WTextRange(document);
 text.Text = "Plain text only";
 plainText.ParagraphItems.Add(text);
+//Enables multiline for plain text control.
+plainText.ContentControlProperties.Multiline = true;
 ```
 
 ### Check Box
@@ -100,6 +144,29 @@ plainText.ParagraphItems.Add(text);
 InlineContentControl checkbox = para.AppendInlineContentControl(ContentControlType.CheckBox) as InlineContentControl;
 checkbox.ContentControlProperties.IsChecked = true;
 ```
+
+#### Apply checkbox state properties
+```csharp
+InlineContentControl checkbox = para.AppendInlineContentControl(ContentControlType.CheckBox) as InlineContentControl;
+//Get checked state of checkbox
+CheckBoxState checkBoxCheckedState = checkBox.ContentControlProperties.CheckedState;
+//Set font for checked state value
+checkBoxCheckedState.Font = "Calibri";
+//Set symbol for checked state value
+checkBoxCheckedState.Value = "C";
+//Get unchecked state of checkbox
+CheckBoxState checkBoxUncheckedState = checkBox.ContentControlProperties.UncheckedState;
+//Set font for unchecked state value
+checkBoxUncheckedState.Font = "Calibri";
+//Set symbol for unchecked state value
+checkBoxUncheckedState.Value = "U";
+//Set the state for checkbox
+checkBox.ContentControlProperties.IsChecked = true;
+```
+
+#### Placeholders
+- `"Calibri"` → Replace with `{font-name}`
+- `C` and `U` → Replace with `{checked-state-value}` and `{unchecked-state-value}`
 
 ### Date Picker
 ```csharp
@@ -110,7 +177,14 @@ datePicker.ParagraphItems.Add(text);
 datePicker.ContentControlProperties.DateCalendarType = CalendarType.Gregorian;
 datePicker.ContentControlProperties.DateDisplayFormat = "M/d/yyyy";
 datePicker.ContentControlProperties.DateDisplayLocale = LocaleIDs.en_US;
+//Sets the storage format used in document XML.
+datePicker.ContentControlProperties.DateStorageFormat = ContentControlDateStorageFormat.DateStorageDate;
 ```
+
+#### DateStorageFormat Options
+- **DateStorageDate** — Stores only the date value in the document XML
+- **DateStorageDateTime** — Stores both the date and time value in the document XML
+- **DateStorageText** — Stores the value as plain text in the document XML
 
 ### Dropdown List
 ```csharp
@@ -179,6 +253,9 @@ control.ContentControlProperties.IsTemporary = false;            // Remove on ed
 
 // Get control type
 ContentControlType type = control.ContentControlProperties.Type;
+
+// Check whether the placeholder text for the content control is displayed or not
+bool hasPlaceholder = control.ContentControlProperties.HasPlaceHolderText;
 ```
 
 ### Appearance Options

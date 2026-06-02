@@ -50,6 +50,8 @@ para.AppendText("Formatted paragraph");
 // Spacing and indentation
 para.ParagraphFormat.BeforeSpacing = 18f;
 para.ParagraphFormat.AfterSpacing = 18f;
+para.ParagraphFormat.LeftIndent = 36f;
+para.ParagraphFormat.RightIndent = 18f;
 para.ParagraphFormat.FirstLineIndent = 10f;  // Positive = first line, Negative = hanging
 para.ParagraphFormat.LineSpacing = 10f;
 
@@ -101,7 +103,7 @@ para.ApplyStyle(BuiltinStyle.Heading1);
 
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
-var customStyle = doc.AddParagraphStyle("CustomStyle");
+var customStyle = doc.AddParagraphStyle("CustomStyle") as WParagraphStyle;
 customStyle.CharacterFormat.FontName = "Calibri";
 customStyle.CharacterFormat.FontSize = 14;
 customStyle.CharacterFormat.Italic = true;
@@ -110,7 +112,8 @@ customStyle.ParagraphFormat.BackColor = Syncfusion.Drawing.Color.LightGray;
 customStyle.ParagraphFormat.BeforeSpacing = 18f;
 customStyle.ParagraphFormat.AfterSpacing = 18f;
 customStyle.ParagraphFormat.Borders.BorderType = BorderStyle.DotDash;
-
+//Optional: Add ListFormat to style
+customStyle.ListFormat.ApplyDefBulletStyle();
 var para = section.AddParagraph();
 para.AppendText("Styled paragraph");
 para.ApplyStyle("CustomStyle");
@@ -154,6 +157,7 @@ style.Remove();
 ## Working with Text
 
 ### Append Text
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 var para = section.AddParagraph();
@@ -191,6 +195,7 @@ foreach (var item in para.ChildEntities)
 ```
 
 ### Text Formatting Options
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 textRange.CharacterFormat.Bold = true;
@@ -198,6 +203,7 @@ textRange.CharacterFormat.Italic = true;
 textRange.CharacterFormat.UnderlineStyle = UnderlineStyle.Single;
 textRange.CharacterFormat.Shadow = true;
 textRange.CharacterFormat.SmallCaps = true;
+textRange.CharacterFormat.Bidi = true; // RTL character formatting
 ```
 #### Cross-Platform
 ```csharp
@@ -236,6 +242,13 @@ para.AppendText("First\tSecond\tThird");
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 para.ParagraphFormat.Tabs.RemoveByTabPosition(11);
+```
+
+### Remove all Tabs
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+para.ParagraphFormat.Tabs.Clear();
 ```
 
 ### Placeholders

@@ -36,6 +36,7 @@ if (sel != null)
 ---
 
 ## Find all occurrences (and optionally format)
+
 ### Common for Cross-Platform and Windows-Specific
 ```csharp
 TextSelection[] hits = doc.FindAll("{find-text}", caseSensitive: true, wholeWord: true);
@@ -78,6 +79,36 @@ TextSelection next = doc.FindNext(prev.OwnerParagraph, "{find-text}", caseSensit
 
 ### Notes
 - `FindNext` starts searching after the provided `TextBodyItem` (e.g., a paragraph/table).
+
+---
+
+## Find multi-paragraph / multi-line text
+
+Use these when the find text can span across paragraph boundaries.
+### Common for Cross-Platform and Windows-Specific
+```csharp
+TextSelection[] hits = doc.FindSingleLine("{multiline-find}", caseSensitive: true, wholeWord: false);
+
+// Regex variant
+// TextSelection[] hits = doc.FindSingleLine(new Regex(@"{pattern}"));
+```
+
+---
+
+## Find next multi-paragraph / multi-line text
+
+### Common for Cross-Platform and Windows-Specific
+```csharp
+// After a previous match
+WTextRange prev = sel.GetAsOneRange();
+TextSelection[] next = doc.FindNextSingleLine(prev.OwnerParagraph, "{multiline-find}", caseSensitive: false, wholeWord: true);
+
+// Regex variant
+// TextSelection[] next = doc.FindNextSingleLine(prev.OwnerParagraph, new Regex(@"{pattern}"));
+```
+
+### Notes
+- `FindNextSingleLine` starts searching after the provided `TextBodyItem` (e.g., a paragraph/table).
 
 ---
 

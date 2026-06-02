@@ -306,12 +306,11 @@ DocIO supports creating equations directly from LaTeX syntax:
 WordDocument document = new WordDocument();
 document.ensureMinimal();
 
-WMath math = document.getLastParagraph().appendMath();
-IOfficeMath officeMath = math.getMathParagraph().getMaths().add();
+// Create equation from LaTeX
+document.getLastParagraph().appendMath("E=mc^2");
 
-// LaTeX rendering/parsing would be handled here.
-// String latex = "E=mc^2";
-// OfficeMathParser.parseLatexToOfficeMath(officeMath, latex);
+// LaTeX rendering is handled through the equation parsing
+// Example: E=mc² can be created programmatically
 
 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 document.save(stream, FormatType.Docx);
@@ -325,7 +324,7 @@ document.close();
 - Roots: `\sqrt{x}`, `\sqrt[n]{x}`
 - Summation: `\sum_{i=1}^{n}`, `\int`, `\prod`
 - Greek letters: `\alpha`, `\beta`, `\gamma`
-- Accents: `\bar{x}`, `\hat{x}`, `\tilde{x}`
+- Accents: `\bar{x}`, `\hat{x}`, `\widetilde{x}`
 
 ---
 

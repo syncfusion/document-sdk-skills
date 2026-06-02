@@ -47,6 +47,33 @@ document.attachments.add(PdfAttachment(
 
 ---
 
+## Get Attachments details
+
+```dart
+PdfDocument document =
+    PdfDocument(inputBytes: File('input.pdf').readAsBytesSync());
+
+//Add a new attachment
+document.attachments.add(PdfAttachment(
+    'report.xlsx',
+    File('report.xlsx').readAsBytesSync(),
+    description: 'Monthly Report',
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'));
+// Gets number of attachments in the document
+int countOfAttachments = document.attachments.count;
+print('Total attachments: $countOfAttachments');
+
+// Check whether a specific attachment exists
+bool exists = document.attachments.contains(attachment);
+print('Attachment exists: $exists');
+
+// Find the index of an attachment
+int index = document.attachments.indexOf(attachment);
+print('Attachment index: $index');
+```
+
+---
+
 ## Remove Attachments from an Existing PDF
 
 ```dart
@@ -56,6 +83,9 @@ document.attachments.remove(attachment);
 
 //Remove an attachment by index
 document.attachments.removeAt(1);
+
+//Remove all attachments from the document
+document.attachments.clear();
 ```
 
 ---

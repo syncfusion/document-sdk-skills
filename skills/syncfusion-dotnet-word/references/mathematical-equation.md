@@ -301,10 +301,8 @@ DocIO supports creating equations directly from LaTeX syntax:
 ```csharp
 WordDocument document = new WordDocument();
 document.EnsureMinimal();
-WMath math = document.LastParagraph.AppendMath();
-
 // Create equation from LaTeX
-IOfficeMath officeMath = math.MathParagraph.Maths.Add();
+document.LastParagraph.AppendMath(@"E=mc^2");
 // LaTeX rendering is handled through the equation parsing
 // Example: E=mc² can be created programmatically
 
@@ -320,7 +318,7 @@ document.Close();
 - Roots: `\sqrt{x}`, `\sqrt[n]{x}`
 - Summation: `\sum_{i=1}^{n}`, `\int`, `\prod`
 - Greek letters: `\alpha`, `\beta`, `\gamma`
-- Accents: `\bar{x}`, `\hat{x}`, `\tilde{x}`
+- Accents: `\bar{x}`, `\hat{x}`, `\widetilde{x}`
 
 ---
 

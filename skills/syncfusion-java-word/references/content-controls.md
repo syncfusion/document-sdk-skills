@@ -19,29 +19,74 @@ import com.syncfusion.javahelper.system.drawing.ColorSupport;
 ### Add Block Content Control
 ```java
 WordDocument document = new WordDocument();
-IWSection section = document.AddSection();
-WTextBody textBody = section.Body;
+IWSection section = document.addSection();
+WTextBody textBody = section.getBody();
 
 // Add block content control
-BlockContentControl blockControl = textBody.AddBlockContentControl(ContentControlType.RichText) as BlockContentControl;
+BlockContentControl blockControl =
+    (BlockContentControl) textBody.addBlockContentControl(ContentControlType.RichText);
+
+//Sets title of the block content control.
+blockControl.getContentControlProperties().setTitle("Rich text content control");
 
 // Add paragraph
-WParagraph para = blockControl.TextBody.AddParagraph() as WParagraph;
-para.AppendText("Block content control content");
+WParagraph para = blockControl.getTextBody().addParagraph();
+para.appendText("Block content control content");
 
 // Add table
-WTable table = blockControl.TextBody.AddTable() as WTable;
-table.ResetCells(2, 3);
+WTable table = blockControl.getTextBody().addTable();
+table.resetCells(2, 3);
 
 // Add image
-// Cross-Platform
-FileStream imageStream = new FileStream("image.png", FileMode.Open, FileAccess.Read);
-// Common for Cross-Platform and Windows-Specific
-WParagraph imagePara = blockControl.TextBody.AddParagraph() as WParagraph;
-// Cross-Platform
-imagePara.AppendPicture(imageStream);
-// Windows-Specific
-imagePara.AppendPicture(Image.FromFile("Image.png"));
+WParagraph imagePara = (WParagraph)blockControl.getTextBody().addParagraph();
+imagePara.appendPicture(new FileInputStream("Image.png"));
+```
+
+### Find and Replace Content inside Block Content Control
+
+#### Find first occurrence using string
+```java
+// Add block content control
+BlockContentControl blockControl = (BlockContentControl)textBody.addBlockContentControl(ContentControlType.RichText);
+// Add paragraph
+WParagraph para = (WParagraph)blockControl.getTextBody().addParagraph();
+para.appendText("{Block-content-control-content}");
+TextSelection sel = blockControl.find("{find-text}", false, true);
+if (sel != null) {
+    WTextRange range = sel.getAsOneRange();
+    range.setText("{new-text}"); // optional inline replace
+}
+```
+
+#### Find first occurrence using Regex
+```java
+import java.util.regex.Pattern;
+
+Pattern pattern = Pattern.compile("{pattern}");
+TextSelection sel = blockControl.find(pattern);
+```
+
+#### Replace all occurrences (string → string)
+```java
+blockControl.replace("{find-text}", "{replace-text}", false, false);
+```
+
+#### Replace all occurrences (Regex → string)
+```java
+import java.util.regex.Pattern;
+
+blockControl.replace(Pattern.compile("{pattern}"), "{replace-text}");
+```
+
+#### Replace using selected content (keeps formatting)
+```java
+import java.util.regex.Pattern;
+
+TextSelection replacement =
+blockControl.find(Pattern.compile("{replacement-pattern}"));
+if (replacement != null) {
+    blockControl.replace("{find-text}", replacement, false, false, true);
+}
 ```
 
 ---
@@ -80,6 +125,7 @@ WPicture picture = new WPicture(document);
 try (FileInputStream fis = new FileInputStream("image.png")) {
     picture.loadImage(fis);
 }
+richText.getParagraphItems().add(picture);
 ```
 
 ### Plain Text
@@ -88,6 +134,8 @@ InlineContentControl plainText = (InlineContentControl) para.appendInlineContent
 WTextRange text = new WTextRange(document);
 text.setText("Plain text only");
 plainText.getParagraphItems().add(text);
+// Enables multiline for plain text control
+plainText.getContentControlProperties().setMultiline(true);
 ```
 
 ### Check Box
@@ -95,6 +143,30 @@ plainText.getParagraphItems().add(text);
 InlineContentControl checkBox = (InlineContentControl)paragraph.appendInlineContentControl(ContentControlType.CheckBox);
 checkBox.getContentControlProperties().setIsChecked(true);
 ```
+
+#### Apply checkbox state properties
+```java
+InlineContentControl checkbox = (InlineContentControl)para.appendInlineContentControl(ContentControlType.CheckBox);
+// Get checked state of checkbox
+CheckBoxState checkBoxCheckedState = checkbox.getContentControlProperties().getCheckedState();
+// Set font for checked state value
+checkBoxCheckedState.setFont("Calibri");
+// Set symbol for checked state value
+checkBoxCheckedState.setValue("C");
+// Get unchecked state of checkbox
+CheckBoxState checkBoxUncheckedState = checkbox.getContentControlProperties().getUncheckedState();
+// Set font for unchecked state value
+checkBoxUncheckedState.setFont("Calibri");
+// Set symbol for unchecked state value
+checkBoxUncheckedState.setValue("U");
+// Set the state for checkbox
+checkbox.getContentControlProperties().setChecked(true);
+```
+
+#### Placeholders
+- `"Calibri"` → Replace with `{font-name}`
+- `C` and `U` → Replace with `{checked-state-value}` and `{unchecked-state-value}`
+
 
 ### Date Picker
 ```java
@@ -108,7 +180,14 @@ datePicker.getParagraphItems().add(text);
 datePicker.getContentControlProperties().setDateCalendarType(CalendarType.Gregorian);
 datePicker.getContentControlProperties().setDateDisplayFormat("M/d/yyyy");
 datePicker.getContentControlProperties().setDateDisplayLocale(LocaleIDs.en_US);
+//Sets the storage format used in document XML.
+datePicker.getContentControlProperties().setDateStorageFormat(ContentControlDateStorageFormat.DateStorageDate);
 ```
+
+#### DateStorageFormat Options
+- **DateStorageDate** — Stores only the date value in the document XML
+- **DateStorageDateTime** — Stores both the date and time value in the document XML
+- **DateStorageText** — Stores the value as plain text in the document XML
 
 ### Dropdown List
 ```java
@@ -177,6 +256,9 @@ control.getContentControlProperties().setIsTemporary(false);       // Remove on 
 
 // Get control type
 ContentControlType type = control.getContentControlProperties().getType();
+
+// Check whether the placeholder text for the content control is displayed or not
+boolean hasPlaceholder = control.getContentControlProperties().hasPlaceHolderText();
 ```
 
 ### Appearance Options

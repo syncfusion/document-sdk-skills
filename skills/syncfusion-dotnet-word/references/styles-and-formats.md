@@ -141,6 +141,10 @@ var subItem = section.AddParagraph();
 subItem.AppendText("Sub item");
 subItem.ListFormat.ApplyDefNumberedStyle();
 subItem.ListFormat.IncreaseIndentLevel(); // Indent level
+
+subItem = section.AddParagraph();
+subItem.AppendText("Sub item 2");
+subItem.ListFormat.ContinueListNumbering(); // Continues the list numbering from the previous list.
 ```
 
 ### Placeholders

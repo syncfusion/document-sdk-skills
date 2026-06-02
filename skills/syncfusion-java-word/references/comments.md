@@ -174,6 +174,10 @@ if (doc.getComments().getCount() > 1) {
     doc.getComments().removeAt(1);
 }
 
+WComment comment = doc.getComments().get(3);
+// Remove by instance
+doc.getComments().remove(comment);
+
 // Save modified document
 FileOutputStream outputStream = new FileOutputStream("output.docx");
 doc.save(outputStream, FormatType.Docx);
@@ -184,7 +188,7 @@ doc.close();
 
 ### Placeholders
 - `"document.docx"` → Replace with `"{input-file-path}"`
-- `1` → Replace with `"{comment-index}"`
+- `1`, `3` → Replace with `"{comment-index}"`
 - `"output.docx"` → Replace with `"{output-file-path}"`
 
 ---
@@ -269,6 +273,86 @@ doc.close();
 
 ---
 
+## Remove or Replace Commented Items
+
+Remove or replace the paragraph items (text, images, etc.) that are within a comment.
+
+### Remove Commented Items
+
+#### Common for Cross-Platform and Windows-Specific
+```java
+FileInputStream stream = new FileInputStream("document.docx");
+WordDocument doc = new WordDocument(stream, FormatType.Docx);
+
+// Iterate through comments
+for (Object obj : doc.getComments()) {
+    WComment comment = (WComment) obj;
+    // Remove all items associated with the comment
+    comment.removeCommentedItems();
+}
+
+// Save document
+FileOutputStream outputStream = new FileOutputStream("output.docx");
+doc.save(outputStream, FormatType.Docx);
+outputStream.close();
+stream.close();
+doc.close();
+```
+
+### Replace Commented Items using TextBodyPart
+
+#### Common for Cross-Platform and Windows-Specific
+```java
+FileInputStream stream = new FileInputStream("document.docx");
+WordDocument doc = new WordDocument(stream, FormatType.Docx);
+
+// Create replacement content
+TextBodyPart replacementPart = new TextBodyPart(doc);
+WParagraph para = replacementPart.AddParagraph();
+para.AppendText("Updated content for the comment.");
+
+// Replace commented items
+for (Object obj : doc.getComments()) {
+    WComment comment = (WComment) obj;
+    comment.replaceCommentedItems(replacementPart);
+}
+
+// Save document
+FileOutputStream outputStream = new FileOutputStream("output.docx");
+doc.save(outputStream, FormatType.Docx);
+outputStream.close();
+stream.close();
+doc.close();
+```
+
+###  Replace Commented Items using String
+
+#### Common for Cross-Platform and Windows-Specific
+```java
+FileInputStream stream = new FileInputStream("document.docx");
+WordDocument doc = new WordDocument(stream, FormatType.Docx);
+
+// Replace commented items with plain text
+for (Object obj : doc.getComments()) {
+    WComment comment = (WComment) obj;
+    comment.replaceCommentedItems("This content has been replaced.");
+}
+
+// Save document
+FileOutputStream outputStream = new FileOutputStream("output.docx");
+doc.save(outputStream, FormatType.Docx);
+outputStream.close();
+stream.close();
+doc.close();
+```
+
+### Placeholders
+- `document.docx` → Replace with `{input-file-path}`
+- `Updated content for the comment.` and `This content has been replaced.` → Replace with `{replacement-text}`
+- `output.docx` → Replace with `{output-file-path}`
+
+---
+
 ## List All Comments
 
 Retrieve and display all comments in a document with metadata.
@@ -288,6 +372,7 @@ for (int i = 0; i < doc.getComments().getCount(); i++) {
     System.out.println("Initials: " + comment.getFormat().getUserInitials());
     System.out.println("Date: " + comment.getFormat().getDateTime());
     System.out.println("Text: " + comment.getTextBody().getLastParagraph().getText());
+    System.out.println("Resolved: " + comment.getDone());
 
     // Check if it's a reply
     WComment parent = comment.getAncestor();

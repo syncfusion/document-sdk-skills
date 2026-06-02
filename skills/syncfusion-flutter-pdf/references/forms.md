@@ -195,6 +195,8 @@ if (field is PdfTextBoxField) {
   field.spellCheck = false;
   field.defaultValue = 'Default';
   field.scrollable = false;
+  field.canExport = true;
+  field.tabIndex = 1;
 }
 ```
 

@@ -50,19 +50,6 @@ document.close();
 
 ---
 
-## RTF Format Overview
-
-| Aspect | Details |
-|--------|---------|
-| **Format Name** | Rich Text Format (RTF) |
-| **Version** | Last updated in 2008 (v1.9.1) |
-| **Human Readable** | Yes, text-based format |
-| **Use Case** | Interchange formatted text between applications |
-| **Status** | Legacy format; Microsoft discontinued enhancements |
-| **Content Retention** | Retains most formatting and all content |
-
----
-
 ## Key Properties and Methods
 
 | Item | Type | Description |

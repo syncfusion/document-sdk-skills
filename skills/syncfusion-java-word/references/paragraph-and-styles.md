@@ -46,6 +46,8 @@ para.AppendText("Formatted paragraph");
 // Spacing and indentation
 para.getParagraphFormat().setBeforeSpacing(18f);
 para.getParagraphFormat().setAfterSpacing(18f);
+para.getParagraphFormat().setLeftIndent(36f);
+para.getParagraphFormat().setRightIndent(18f);
 para.getParagraphFormat().setFirstLineIndent(10f);  // Positive = first line, Negative = hanging
 para.getParagraphFormat().setLineSpacing(10f);
 
@@ -100,7 +102,8 @@ customStyle.getParagraphFormat().setBackColor(ColorSupport.getLightGray()); // L
 customStyle.getParagraphFormat().setBeforeSpacing(18f);
 customStyle.getParagraphFormat().setAfterSpacing(18f);
 customStyle.getCharacterFormat().getBorder().setBorderType(BorderStyle.DotDash);
-
+// Optional: Add ListFormat to style
+customStyle.getListFormat().applyDefBulletStyle();
 WParagraph para = (WParagraph) section.addParagraph();
 para.appendText("Styled paragraph");
 para.applyStyle("CustomStyle");
@@ -162,6 +165,7 @@ textRange.getCharacterFormat().setItalic(true);
 textRange.getCharacterFormat().setUnderlineStyle(UnderlineStyle.Single);
 textRange.getCharacterFormat().setShadow(true);
 textRange.getCharacterFormat().setSmallCaps(true);
+textRange.getCharacterFormat().setBidi(true); // RTL character formatting
 textRange.getCharacterFormat().setHighlightColor(ColorSupport.getYellow());
 // Superscript and subscript
 textRange.getCharacterFormat().setSubSuperScript(SubSuperScript.SuperScript);  // or SubScript
@@ -187,6 +191,12 @@ para.appendText("First\tSecond\tThird");
 
 ```java
 para.getParagraphFormat().getTabs().removeByTabPosition(11);
+```
+
+### Remove all Tabs
+
+```java
+para.getParagraphFormat().getTabs().clear();
 ```
 
 ### Placeholders

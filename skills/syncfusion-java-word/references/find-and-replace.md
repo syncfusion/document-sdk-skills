@@ -66,6 +66,36 @@ TextSelection next = doc.findNext(prev.getOwnerParagraph(), "{find-text}", false
 
 ---
 
+## Find multi-paragraph / multi-line text
+
+Use these when the find text can span across paragraph boundaries.
+### Common for Cross-Platform and Windows-Specific
+```java
+TextSelection[] hits = doc.findSingleLine("{multiline-find}", true, false);
+
+// Regex variant
+// TextSelection[] hits = doc.findSingleLine(Pattern.compile("{pattern}"));
+```
+
+---
+
+## Find next multi-paragraph / multi-line text
+
+### Common for Cross-Platform and Windows-Specific
+```java
+// After a previous match
+WTextRange prev = sel.getAsOneRange();
+TextSelection[] next = doc.findNextSingleLine(prev.getOwnerParagraph(), "{multiline-find}", false, true);
+
+// Regex variant
+// TextSelection[] next = doc.findNextSingleLine(prev.getOwnerParagraph(), Pattern.compile("{pattern}"));
+```
+
+### Notes
+- `FindNextSingleLine` starts searching after the provided `TextBodyItem` (e.g., a paragraph/table).
+
+---
+
 ## Replace all occurrences (string → string)
 
 ```java

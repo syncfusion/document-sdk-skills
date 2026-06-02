@@ -234,6 +234,32 @@ page.graphics.drawString(
         paragraphIndent: 35));
 ```
 
+### Available TextDirection
+```dart
+PdfTextDirection.none
+PdfTextDirection.leftToRight
+PdfTextDirection.rightToLeft
+```
+
+---
+
+## Set a text wrapping type.
+
+```dart
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawString(
+      'Hello World!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+      format: PdfStringFormat(wordWrap: PdfWordWrapType.word));
+```
+
+### Available WordWrapType
+```dart
+PdfWordWrapType.none
+PdfWordWrapType.word
+PdfWordWrapType.wordOnly
+PdfWordWrapType.character
+```
+
 ---
 
 ## Draw Text with Custom Pen and Brush

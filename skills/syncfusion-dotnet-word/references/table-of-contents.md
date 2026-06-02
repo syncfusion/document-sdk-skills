@@ -206,6 +206,12 @@ toc.IncludeCaptionLabelsAndNumbers = false;
 
 ### Placeholders
 - `"Figure"` → Replace with `"Table"` or `"Chart"`
+- `CaptionNumberingFormat.Number` → Replace with:
+  - `CaptionNumberingFormat.Number` (1, 2, 3)
+  - `CaptionNumberingFormat.Roman` (I, II, III)
+  - `CaptionNumberingFormat.LowerRoman` (A, B, C)
+  - `CaptionNumberingFormat.Alphabetic` (a, b, c)
+- `CaptionPosition.AfterImage` → Replace with `CaptionPosition.AfterImage` (caption below the object) or `CaptionPosition.AboveImage` (caption above the object)
 
 ---
 

@@ -128,6 +128,10 @@ WParagraph subItem = (WParagraph) section.addParagraph();
 subItem.appendText("Sub item");
 subItem.getListFormat().applyDefNumberedStyle();
 subItem.getListFormat().increaseIndentLevel(); // Indent level
+
+subItem = (WParagraph)section.addParagraph();
+subItem.appendText("Sub item 2");
+subItem.getListFormat().continueListNumbering(); // Continues the list numbering from the previous list.
 ```
 
 ### Placeholders

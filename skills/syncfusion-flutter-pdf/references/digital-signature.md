@@ -48,6 +48,44 @@ field.signature = PdfSignature(
 
 ---
 
+## Retrieve Certificate Details
+
+```dart
+PdfDocument document =
+    PdfDocument(inputBytes: File('input.pdf').readAsBytesSync());
+
+//Get the first signature field
+PdfSignatureField field = document.form.fields[0] as PdfSignatureField;
+
+// Create certificate
+PdfCertificate certificate =
+    PdfCertificate(File('PDF.pfx').readAsBytesSync(), 'password123');
+
+String issuerName = certificate.issuerName;
+List<int> serialNumber = certificate.serialNumber;
+String subjectName = certificate.subjectName;
+DateTime validFrom = certificate.validFrom;
+DateTime validTo = certificate.validTo;
+int version = certificate.version;
+
+// Assign signature
+field.signature = PdfSignature(
+  certificate: certificate,
+  contactInfo: 'johndoe@owned.us',
+  locationInfo: 'Honolulu, Hawaii',
+  reason: 'I am author of this document.',
+  digestAlgorithm: DigestAlgorithm.sha512,
+  cryptographicStandard: CryptographicStandard.cades,
+);
+
+// Set the Signature Date and Signer Name
+field.signature!.signedDate = DateTime.now();
+field.signature!.signedName = 'John Doe';
+```
+
+---
+
+
 ## Add a Signature Appearance (Image)
 
 ```dart

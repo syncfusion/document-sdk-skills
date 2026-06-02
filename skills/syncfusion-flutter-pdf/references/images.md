@@ -105,6 +105,40 @@ page.graphics.restore(state);
 
 ---
 
+## Add height and width of an image
+
+```dart
+PdfImage image = PdfBitmap(imageData);
+//Draw the image.
+doc.pages
+  .add()
+  .graphics
+  .drawImage(PdfBitmap(imageData), Rect.fromLTWH(0, 0, image.width, image.height));
+
+//Gets the size of an image
+Size size = image.physicalDimension;
+
+//Draw the image with image's width and height.
+doc.pages
+  .add()
+  .graphics
+  .drawImage(image, Rect.fromLTWH(0, 0, size.width, size.height));
+```
+
+---
+
+## Get the Resolution of an image
+
+```dart
+//Gets horizontal resolution
+double horizontalResolution = image.horizontalResolution;
+
+//Gets vertical resolution
+double verticalResolution = image.verticalResolution;
+```
+
+---
+
 ## Apply Transparency and Rotation Together
 
 ```dart

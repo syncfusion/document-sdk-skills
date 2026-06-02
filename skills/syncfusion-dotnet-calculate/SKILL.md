@@ -22,7 +22,7 @@ Parses and evaluates formulas using the Syncfusion dotnet Calculate. It generate
 ### Example 2
 **User:** "Add custom formula to the calculate control to compare two strings"
 
-**Result:** C# code generated to create a custom function
+**Result:** C# code generated to create a custom function 
 
 ---
 

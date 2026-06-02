@@ -157,7 +157,7 @@ doc.close();
 ```
 
 ### Placeholders
-- `@"image.jpg"` → Replace with `@"{image-path}"`
+- `@"Image.png"` → Replace with `@"{image-path}"`
 - `"http://www.syncfusion.com"` → Replace with `"{hyperlink-url}"`
 
 ### Image Hyperlink to File
@@ -234,6 +234,30 @@ for (Object secObj : doc.getSections()) {
                             link.setUri("http://www.newurl.com");
                             link.setTextToDisplay("New Link");
                         }
+						
+						//Optional: Retrieve other hyperlink properties					
+						if (link.getType() == HyperlinkType.Bookmark) {
+    						// Get bookmark name
+    						String bookmarkName = link.getBookmarkName();
+    						// Set bookmark name
+    						link.setBookmarkName("NewBookmarkName");
+    						// Get local reference (anchor)
+    						String localReference = link.getLocalReference();
+						}
+						else if (link.getType() == HyperlinkType.FileLink) {
+    						// Get file path
+    						String filePath = link.getFilePath();
+    						// Set file path
+    						link.setFilePath("Template.pdf");
+						}
+						else if (link.getType() == HyperlinkType.WebLink
+        						&& link.getPictureToDisplay() != null) {
+    						// Image hyperlink (Picture used as display content)
+
+    						// Get picture used for hyperlink display
+    						WPicture picture = link.getPictureToDisplay();
+
+						}
                     }
                 }
             }
@@ -249,6 +273,8 @@ doc.close();
 - `"http://www.google.com"` → Replace with `"{new-url}"`
 - `"Google"` → Replace with `"{new-display-text}"`
 - `"oldurl"` → Replace with `"{search-url-pattern}"`
+- `"NewBookmarkName"` → Replace with `"{new-bookmark-name}"`
+- `@"Template.pdf"` → Replace with `@"{new-file-path}"`
 
 ---
 

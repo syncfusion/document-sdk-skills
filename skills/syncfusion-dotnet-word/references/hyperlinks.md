@@ -95,6 +95,7 @@ doc.Close();
 - `"File"` → Replace with `"{display-text}"`
 
 ### File with Full Path
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 // Absolute file path
@@ -162,7 +163,7 @@ WPicture picture = new WPicture(doc);
 ```
 ### Cross-Platform
 ```csharp
-var imageStream = new FileStream(@"image.jpg", FileMode.Open, FileAccess.Read);
+var imageStream = new FileStream(@"Image.png", FileMode.Open, FileAccess.Read);
 picture.LoadImage(imageStream);
 imageStream.Close();
 ```
@@ -180,10 +181,11 @@ doc.Close();
 ```
 
 ### Placeholders
-- `@"image.jpg"` → Replace with `@"{image-path}"`
+- `@"Image.png"` → Replace with `@"{image-path}"`
 - `"http://www.syncfusion.com"` → Replace with `"{hyperlink-url}"`
 
 ### Image Hyperlink to File
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 WPicture picture = new WPicture(doc);
@@ -242,6 +244,7 @@ doc.Close();
 ```
 
 ### Modify Hyperlink in Document Body
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 var doc = new WordDocument(fileStream, FormatType.Docx);
@@ -264,6 +267,29 @@ foreach (WSection section in doc.Sections)
                         link.Uri = "http://www.newurl.com";
                         link.TextToDisplay = "New Link";
                     }
+
+                    //Optional: Retrieve other hyperlink properties
+                    if (link.Type == HyperlinkType.Bookmark)
+                    {
+                        // Get or set bookmark name
+                        string bookmarkName = link.BookmarkName;
+                        link.BookmarkName = "NewBookmarkName";
+                        // Get local reference (anchor)
+                        string localReference = link.LocalReference;
+                    }
+                    else if (link.Type == HyperlinkType.FileLink)
+                    {
+                        // Get or set file path
+                        string filePath = link.FilePath;
+                        link.FilePath = @"Template.pdf";
+                    }
+                    else if (link.Type == HyperlinkType.WebLink && link.PictureToDisplay != null)
+                    {
+                        // Image hyperlink (Picture is used as display content)
+   
+                        // Get or set picture used for hyperlink display
+                        WPicture picture = link.PictureToDisplay;
+                    }
                 }
             }
         }
@@ -277,6 +303,8 @@ doc.Close();
 - `"http://www.google.com"` → Replace with `"{new-url}"`
 - `"Google"` → Replace with `"{new-display-text}"`
 - `"oldurl"` → Replace with `"{search-url-pattern}"`
+- `"NewBookmarkName"` → Replace with `"{new-bookmark-name}"`
+- `@"Template.pdf"` → Replace with `@"{new-file-path}"`
 
 ---
 
@@ -344,7 +372,9 @@ doc.Close();
 ---
 
 ## Complete Example: Hyperlink Operations
+
 ### Full Example
+
 #### Common for Cross-Platform and Windows-Specific
 ```csharp
 var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "HyperlinkOperations.docx");

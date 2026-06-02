@@ -40,6 +40,80 @@ document.dispose();
 
 ---
 
+## Draw Graphicspath, Apply skewTransform, and Set Clipping in a PDF
+
+```dart
+// Draw a GraphicsPath
+PdfDocument document = PdfDocument();
+  ..pages
+      .add()
+      .graphics
+      .drawPath(
+          PdfPath()
+            ..addRectangle(Rect.fromLTWH(10, 10, 100, 100))
+            ..addEllipse(Rect.fromLTWH(100, 100, 100, 100)),
+          pen: PdfPens.black,
+          brush: PdfBrushes.red);
+
+//Set skew transform
+PdfDocument document = PdfDocument();
+document.pages.add().graphics
+  ..save()
+  ..skewTransform(10, 10)
+  ..drawString('Hello world!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+      pen: PdfPens.red)
+  ..restore();
+
+// Set the clipping region of the Graphics
+document.pages.add().graphics
+  ..setClip(bounds: Rect.fromLTWH(0, 0, 50, 12), mode: PdfFillMode.alternate)
+  ..drawString('Hello world!', PdfStandardFont(PdfFontFamily.helvetica, 12),
+      pen: PdfPens.red);
+```
+
+---
+
+## Customize Pen Appearance Using Dash and Line Properties
+
+```dart
+//Set pen dash offset.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(255, 0, 0))..dashOffset = 0.5,
+      bounds: Rect.fromLTWH(10, 10, 200, 100));
+
+//Set pen dash pattern.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(255, 0, 0))..dashPattern = [4, 2, 1, 3],
+      bounds: Rect.fromLTWH(10, 10, 200, 100));
+
+//Set pen dash style and line join
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(255, 0, 0),
+          dashStyle: PdfDashStyle.custom, lineJoin: PdfLineJoin.bevel)
+        ..dashPattern = [4, 2, 1, 3],
+      bounds: Rect.fromLTWH(0, 0, 200, 100));
+
+//Set line cap of the pen.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(255, 0, 0),
+          dashStyle: PdfDashStyle.custom, lineCap: PdfLineCap.round)
+        ..dashPattern = [4, 2, 1, 3],
+      bounds: Rect.fromLTWH(0, 0, 200, 100));
+
+//Set miter limit.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(255, 0, 0), width: 4)
+        ..miterLimit = 2,
+      bounds: Rect.fromLTWH(10, 10, 200, 100));
+```
+
+---
+
 ## Get Page Count from an Existing PDF
 
 ```dart
@@ -75,6 +149,61 @@ document.dispose();
 
 ---
 
+## Set a Specific Color Channel in a PDF
+
+```dart
+//sets the blue channel value.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(0, 0, 0)..b = 255),
+      bounds: Rect.fromLTWH(10, 10, 200, 100));
+
+//sets the green channel value.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(0, 0, 0)..g = 255),
+      bounds: Rect.fromLTWH(10, 10, 200, 100));
+
+//sets the red channel value.
+PdfDocument document = PdfDocument()
+  ..pages.add().graphics.drawRectangle(
+      pen: PdfPen(PdfColor(0, 0, 0)..r = 255),
+      bounds: Rect.fromLTWH(10, 10, 200, 100));
+```
+
+---
+
+## Get whether the PDFColor is Empty or not.
+
+```dart
+//Create a new PDF pen instance.
+PdfColor color = PdfColor.empty;
+//Draw rectangle with the pen.
+document.pages.add().graphics.drawString('Color present: ${color.isEmpty}',
+    PdfStandardFont(PdfFontFamily.helvetica, 12),
+    pen: PdfPen(color));
+```
+
+---
+
+## Get the default layer of the page (Read only)
+
+```dart
+//Create a new PDF page and gets the default layer
+PdfPageLayer defaultLayer = document.pages.add().defaultLayer;
+```
+
+---
+
+## Get the index of the default layer (Read only).
+
+```dart
+//Create a new PDF page and gets the default layer index
+int layerIndex = document.pages.add().defaultLayerIndex;
+```
+
+---
+
 ## Rotate a Page
 
 ```dart
@@ -93,6 +222,55 @@ section.pages.add().graphics.drawString(
 File('Output.pdf').writeAsBytes(await document.save());
 document.dispose();
 ```
+
+---
+
+## Apply a Section Template to PDF Pages
+
+```dart
+PdfSection section = document.sections!.add();
+//Sets the page settings of the section
+section.pageSettings =
+    PdfPageSettings(PdfPageSize.a4, PdfPageOrientation.portrait);
+//Sets the template for the page in the section
+section.template = PdfSectionTemplate();
+//Create a new PDF page and draw the text
+section.pages.add().graphics.drawString(
+    'Hello World!!!', PdfStandardFont(PdfFontFamily.helvetica, 27),
+    brush: PdfBrushes.darkBlue, bounds: const Rect.fromLTWH(170, 100, 0, 0));
+```
+
+---
+
+## Configure a Page Template for a PDF Section
+
+```dart
+PdfSection section = document.sections!.add();
+// Create a section template
+// Bottom page template
+PdfSectionTemplate template = PdfSectionTemplate()..bottomTemplate = false;
+// Left page template
+PdfSectionTemplate template = PdfSectionTemplate()..leftTemplate = false;
+// Right page template
+PdfSectionTemplate template = PdfSectionTemplate()..rightTemplate = false;
+// Top page template
+PdfSectionTemplate template = PdfSectionTemplate()..topTemplate = false;
+
+// Sets the template for the page in the section
+section.template = template;
+```
+
+---
+
+## Get the rotation of PDF page.
+
+```dart
+//Rotation of the PDF page
+PdfPageRotateAngle rotation = document.pages[0].rotation;
+```
+
+---
+
 
 ### Rotation Angles
 ```dart
@@ -162,6 +340,31 @@ section.pages.add().graphics.drawString(
     'Rotated by 270 degrees', font,
     brush: PdfBrushes.black,
     bounds: const Rect.fromLTWH(20, 20, 0, 0));
+```
+
+---
+
+## Create a document using the page template element.
+
+```dart
+//Set margins.
+document.pageSettings.setMargins(25);
+//Create the page template with specific bounds
+PdfPageTemplateElement custom = PdfPageTemplateElement(
+    Rect.fromLTWH(0, 0, 100, 100), document.pages.add());
+document.template.stamps.add(custom);
+//Gets or sets  X co-ordinate.
+custom.x = 10.10;
+//Gets or sets  Y co-ordinate.
+custom.y = 10.10;
+//Gets or sets  location.
+custom.location = Offset(5, 5);
+//Draw template into pdf page.
+custom.graphics.drawRectangle(
+    pen: PdfPen(PdfColor(255, 165, 0), width: 3),
+    brush: PdfSolidBrush(PdfColor(173, 255, 47)),
+    bounds: Rect.fromLTWH(0, 0, 100, 100));
+
 ```
 
 ---

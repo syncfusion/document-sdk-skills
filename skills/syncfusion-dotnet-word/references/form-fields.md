@@ -175,7 +175,8 @@ foreach (WSection section in document.Sections)
     {
         foreach (WFormField formField in textBody.FormFields)
         {
-            if (formField.FormFieldType == FormFieldType.TextInput)
+            if (formField.FormFieldType == FormFieldType.TextInput &&
+                 formField.Name == "Text1")
             {
                 WTextFormField textField = formField as WTextFormField;
                 if (textField.Type == TextFormFieldType.DateText)
@@ -184,6 +185,7 @@ foreach (WSection section in document.Sections)
                     textField.StringFormat = "";
                     textField.DefaultText = "Enter text";
                     textField.CalculateOnExit = false;
+                    textField.Text = "Updated text value";
                 }
             }
         }
@@ -194,7 +196,9 @@ foreach (WSection section in document.Sections)
 ### Placeholders
 - `textField.Type` → Replace with `TextFormFieldType.RegularText`, `TextFormFieldType.DateText`, or `TextFormFieldType.Number`
 - `textField.StringFormat` → Replace with `"{format}"` (e.g., "MM/DD/YY", "0.00")
-- `"DefaultText"` → Replace with `"{default-text}"`
+- `textField.DefaultText` → Replace with `"{default-text}"`
+- `"Text1"` → Replace with `"{form-field-bookmark-name}"`
+- `textField.Text` → Use to get or set the current value of the text form field
 
 ---
 
@@ -243,6 +247,7 @@ section.AddParagraph();
 para = section.AddParagraph() as WParagraph;
 WCheckBox checkbox = para.AppendCheckBox();
 checkbox.CheckBoxSize = 10;
+checkbox.DefaultCheckBoxValue = true;
 para.AppendText("I agree to the terms and conditions");
 
 var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "FormDocument.docx");
@@ -271,6 +276,7 @@ document.Close();
 | `Checked` (Checkbox) | bool | Checkbox checked state |
 | `CheckBoxSize` | int | Size in points |
 | `SizeType` | CheckBoxSizeType | Fixed size or auto |
+| `DefaultCheckBoxValue` (Checkbox) | bool | Specifies whether the checkbox is checked by default |
 | `Help` | string | Help text on focus |
 | `CalculateOnExit` | bool | Trigger calculation when field exits |
 | `DropDownItems` | StringCollection | List of dropdown options |
@@ -280,4 +286,6 @@ document.Close();
 | `StringFormat` | string | Format for date/number fields |
 | `DefaultText` | string | Initial text value |
 | `CharacterFormat` | ICharacterFormat | Font and text properties |
+| `Name` | string | Bookmark name of the form field |
+| `Text` (TextFormField) | string | Current value of the text form field |
 

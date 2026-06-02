@@ -69,6 +69,12 @@ bookmark.destination = PdfDestination(document.pages[0], Offset(20, 20));
 bookmark.color = PdfColor(255, 0, 0);
 bookmark.textStyle = [PdfTextStyle.bold];
 
+//Set the bookmark action.
+bookmark.action = PdfUriAction('http://www.google.com');
+
+//Get if is expanded.
+bool expand = bookmark.isExpanded;
+
 File('output.pdf').writeAsBytes(await document.save());
 document.dispose();
 ```
@@ -85,6 +91,45 @@ bookmark.destination = PdfDestination(document.pages[0], Offset(40, 40));
 
 ---
 
+## Create a bookmark with a named destination in the outline. 
+
+```dart
+//Create a named destination.
+PdfNamedDestination namedDestination = PdfNamedDestination('Page 1')
+  ..destination = PdfDestination(document.pages.add(), Offset(100, 300));
+//Add the named destination
+document.namedDestinationCollection.add(namedDestination);
+document.bookmarks.add('Page 1')
+  //Set the named destination.
+  ..namedDestination = namedDestination
+  ..color = PdfColor(255, 0, 0);
+```
+
+---
+
+## Get bookmarks count.
+
+```dart
+PdfDocument document = PdfDocument(inputBytes: inputBytes);
+//get the bookmark count.
+int count = document.bookmarks.count;
+```
+
+---
+
+## Checks if the bookmark is in the collection.
+
+```dart
+PdfDocument document = PdfDocument(inputBytes: inputBytes);
+//Add bookmarks to the document.
+PdfBookmark bookmark = document.bookmarks.add('Page 1')
+  ..destination = PdfDestination(document.pages.add(), Offset(20, 20));
+//check whether the specified bookmark present in the collection
+bool contains = document.bookmarks.contains(bookmark);
+```
+
+---
+
 ## Remove Bookmarks from Existing PDF
 
 ```dart
@@ -95,6 +140,9 @@ bookmarks.removeAt(1);
 
 //Remove by bookmark title
 bookmarks.remove('Page 1');
+
+//Clear all the bookmarks.
+document.bookmarks.clear();
 ```
 
 ---

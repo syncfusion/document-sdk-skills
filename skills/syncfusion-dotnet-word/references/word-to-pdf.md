@@ -180,6 +180,25 @@ var converter = new DocToPDFConverter();
 converter.Settings.PdfConformanceLevel = PdfConformanceLevel.Pdf_A1B;
 ```
 
+### Image quality and Resolution 
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+//Sets the image quality to reduce the Pdf file size
+converter.Settings.ImageQuality = 100;
+//Sets the image resolution
+converter.Settings.ImageResolution = 640;
+```
+
+### Recreate Nested Metafile
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+converter.Settings.RecreateNestedMetafile = true;
+```
+
 ### Optimize Memory for Identical Images
 
 #### Cross-Platform
@@ -194,9 +213,135 @@ var converter = new DocToPDFConverter();
 converter.Settings.OptimizeIdenticalImages = true;
 ```
 
+### Exclude Alternate Chunks
+
+#### Cross-Platform
+```csharp
+var renderer = new DocIORenderer();
+renderer.Settings.EnableAlternateChunks = false;
+```
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+converter.Settings.EnableAlternateChunks = false;
+```
+
+### Hyphenation
+
+#### Cross-Platform
+```csharp
+var renderer = new DocIORenderer();
+//Reads the language dictionary for hyphenation
+FileStream dictionaryStream = new FileStream("hyphen_en_US.dic", FileMode.Open, FileAccess.Read);
+//Adds the hyphenation dictionary of the specified language
+Hyphenator.Dictionaries.Add("en-US", dictionaryStream);
+//Converts Word document into PDF document
+PdfDocument pdfDocument = renderer.ConvertToPDF(wordDocument);
+```
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+//Reads the language dictionary for hyphenation
+FileStream dictionaryStream = new FileStream("hyphen_en_US.dic", FileMode.Open, FileAccess.Read);
+//Adds the hyphenation dictionary of the specified language
+Hyphenator.Dictionaries.Add("en-US", dictionaryStream);
+//Converts Word document into PDF document
+PdfDocument pdfDocument = converter.ConvertToPDF(wordDocument);
+```
+
+### Track changes and Comments
+
+#### Cross-Platform
+```csharp
+using var fs = new FileStream("document.docx", FileMode.Open, FileAccess.Read);
+using var wordDoc = new WordDocument(fs, Syncfusion.DocIO.FormatType.Docx);
+```
+
+#### Windows-Specific
+```csharp
+WordDocument wordDoc = new WordDocument("document.docx", Syncfusion.DocIO.FormatType.Docx);
+```
+
+#### Common code for Cross-Platform and Windows-Specific
+```csharp
+//Sets revision types to preserve track changes in  Word when converting to PDF.
+wordDocument.RevisionOptions.ShowMarkup = RevisionType.Deletions | RevisionType.Formatting | RevisionType.Insertions;
+
+//Optional: Change the Track Changes Color.
+//Sets the color to be used for revision bars that identify document lines containing revised information
+wordDocument.RevisionOptions.RevisionBarsColor = RevisionColor.Blue;
+//Sets the color to be used for inserted content Insertion
+wordDocument.RevisionOptions.InsertedTextColor = RevisionColor.ClassicBlue;
+//Sets the color to be used for deleted content Deletion
+wordDocument.RevisionOptions.DeletedTextColor = RevisionColor.ClassicRed;
+//Sets the color to be used for content with changes of formatting properties
+wordDocument.RevisionOptions.RevisedPropertiesColor = RevisionColor.DarkYellow;
+
+//Optional: Show or Hide Revisions in Balloons.
+//Hides showing revisions in balloons when converting Word documents to PDF
+wordDocument.RevisionOptions.ShowInBalloons = RevisionType.None;
+
+//Sets ShowInBalloons to render a document comments in converted PDF document.
+wordDoc.RevisionOptions.CommentDisplayMode = CommentDisplayMode.ShowInBalloons;
+
+//Optional: Change the Comment Color.
+//Sets the color to be used for Comment Balloon.
+wordDoc.RevisionOptions.CommentColor = RevisionColor.Blue;
+```
+
+#### Cross-Platform
+```csharp
+var renderer = new DocIORenderer();
+var pdfDoc = renderer.ConvertToPDF(wordDoc);
+```
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+var pdfDocument = converter.ConvertToPDF(wordDoc);
+```
+
+### Preserve Ole Equation as bitmap image
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+converter.Settings.PreserveOleEquationAsBitmap = true;
+```
+
+### Apply Matte color to Transparent Images
+
+#### Cross-Platform
+```csharp
+var renderer = new DocIORenderer();
+renderer.Settings.ApplyMatteToTransparentImages = true;
+```
+
+#### Windows-Specific
+```csharp
+var converter = new DocToPDFConverter();
+converter.Settings.ApplyMatteToTransparentImages = true;
+```
+
 ### Placeholders
 - `PdfConformanceLevel.Pdf_A1B` → Replace with desired PDF/A level or omit for standard PDF
 - `ExportBookmarkType.Headings` → Replace with `ExportBookmarkType.Bookmarks` or both using `|` operator
+- `EnableAlternateChunks` → true to enable alternate content chunk processing (default), false to disable it
+- `document.docx` → Replace with `{input-path}`
+- `RevisionType.Deletions` or `RevisionType.Insertions` or `RevisionType.Formatting` → Includes deleted content or inserted content, or formatting changes in track changes (combine multiple values using the | operator)
+- `RevisionColor.Blue` → Replace with desired revision color
+- `RevisionType.None` → Hides revisions in balloons
+(Replace with desired `RevisionType` to show revisions in balloons)
+- CommentDisplayMode.ShowInBalloons → Displays comments in PDF as balloons
+(Replace with desired comment display mode)
+- `RevisionColor.Blue` (CommentColor) → Replace with desired comment balloon color
+- `100` → Replace with `{image-quality-value}` (for example: 50, 75, 100)
+- `640` → Replace with `{image-resolution-value}` (for example: 150, 300, 600, 640)
+- `hyphen_en_US.dic` → Replace with `{hyphenation-dictionary-path}`
+- `en-US` → Replace with `{language-culture-code}`
+- ApplyMatteToTransparentImages → Set to false if matte background is not required
 
 ---
 
