@@ -3,7 +3,7 @@ name: syncfusion-javascript-pdf
 description: "Provides comprehensive guidance for implementing the Syncfusion JavaScript PDF library (@syncfusion/ej2-pdf) to create and manipulate PDF documents programmatically across TypeScript, JavaScript, Angular, React, Vue, and ASP.NET platforms. Use this when working with PDF creation, form filling, annotations, document merging/splitting, text or image extraction, or digital signatures."
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Processing PDF Documents

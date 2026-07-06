@@ -3,7 +3,7 @@ name: syncfusion-dotnet-excel
 description: Create, edit, and convert Excel workbooks (.xlsx/.xls) using Syncfusion XlsIO. Supports two modes — generate C# code for the user's project, or execute a temporary CSX script. Use when the user mentions Excel, xlsx, workbook, template markers, Syncfusion XlsIO, or PDF conversion.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Excel (XLSX / XLS) Document Processing

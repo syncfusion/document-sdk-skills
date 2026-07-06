@@ -3,7 +3,7 @@ name: syncfusion-dotnet-word
 description: Create, edit, format, and convert Word (.docx) documents using Syncfusion DocIO for .NET. Use this skill for Word processing and DOCX automation when the user asks to generate Word files, modify document content, insert tables or images, apply formatting, automate document workflows, or convert Word to PDF using C# code or CSX execution.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Word (DOCX) Document Processing

@@ -3,7 +3,7 @@ name: syncfusion-dotnet-powerpoint
 description: Create, edit, format, and convert PowerPoint (.pptx) presentations using Syncfusion Presentation for .NET. Use this skill for PowerPoint processing and presentation automation when the user asks to generate slides, modify PPTX content, insert text or images, build presentations programmatically, or convert PowerPoint to PDF using C# code or CSX execution.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # PowerPoint (PPTX) Presentation Processing

@@ -3,7 +3,7 @@ name: syncfusion-java-word
 description: Create, edit, and convert Word documents (.docx) using Syncfusion DocIO. Supports to generate java code for the user's project. Use when the user mentions docx, Word processing, document generation, Syncfusion DocIO, or syncfusion java word.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Word (DOCX) Document Processing

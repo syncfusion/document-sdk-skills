@@ -3,7 +3,7 @@ name: syncfusion-dotnet-calculate
 description: Implements the Syncfusion dotnet Calculate Library for parsing and evaluating formulas using CalcEngine, ICalcData, CalcQuickBase, and ExcelLikeComputations. Supports formula computation, custom functions, cross-sheet references, and XlsIO formula evaluation. Trigger when implementing formula calculations, expression parsing, workbook formula evaluation, or custom function registration.
 metadata:
   author: "Syncfusion Inc"
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Syncfusion dotnet Calculate

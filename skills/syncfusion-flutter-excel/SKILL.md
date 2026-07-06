@@ -3,7 +3,7 @@ name: syncfusion-flutter-excel
 description: Create and manipulate Excel workbooks using Syncfusion Flutter XlsIO library. Supports two modes — generate Dart code for the user's Flutter project or provide code snippets. Use when the user mentions Excel creation, worksheets, cells, formatting, filtering, hyperlinks, or Syncfusion Flutter XlsIO.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Excel Document Processing Using Syncfusion Flutter XlsIO Library

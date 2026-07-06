@@ -4,7 +4,7 @@ description: Create and manipulate PDF documents using Syncfusion Flutter PDF li
 compatibility: Requires Flutter SDK and the syncfusion_flutter_pdf pub package. Designed for Flutter Mobile, Web, and Desktop platforms.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # PDF Document Processing Using Syncfusion Flutter PDF Library

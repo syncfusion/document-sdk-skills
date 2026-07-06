@@ -3,7 +3,7 @@ name: syncfusion-dotnet-markdown
 description: Create, edit, format, and convert Markdown (.md) documents using Syncfusion Markdown for .NET. Use this skill for Markdown processing and document automation when the user asks to generate Markdown files, modify or format Markdown content, build structured documentation programmatically, automate Markdown workflows, or convert Markdown to other formats using C# code or CSX execution.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Markdown Document Processing

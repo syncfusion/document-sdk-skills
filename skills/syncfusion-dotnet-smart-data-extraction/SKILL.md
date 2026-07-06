@@ -3,7 +3,7 @@ name: syncfusion-dotnet-smart-data-extraction
 description: Extract tables, form fields, and document layout from PDFs or images (scanned PDFs, PNG/JPG) using Syncfusion Smart Data Extractor. Trigger when users ask to parse/extract/convert document data (invoices, receipts, KYC/forms) into structured output and want C#/.NET integration code using the extractor. 
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Smart Data Extractor — Syncfusion

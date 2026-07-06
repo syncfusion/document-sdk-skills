@@ -4,7 +4,7 @@ description: Convert PDF files to images with customization options (output form
 compatibility: Requires .NET SDK 8+. Designed for Windows, macOS, and Linux.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 # Pdf To Image Converter Using Syncfusion .NET PDF Library

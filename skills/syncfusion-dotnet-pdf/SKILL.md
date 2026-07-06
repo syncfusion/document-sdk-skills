@@ -3,7 +3,7 @@ name: syncfusion-dotnet-pdf
 description: Create, read, edit, secure, sign, and convert PDF documents (.pdf) using Syncfusion PDF Library for .NET. Use this skill for PDF processing and document automation when the user asks to generate PDF files, modify PDF content, add security or signatures, extract text or images, merge or split PDFs, or perform PDF/A conversion using C# code or CSX execution.
 metadata:
   author: Syncfusion Inc
-  version: "33.1.44"
+  version: "34.1.29"
 ---
 
 ## PDF Document Processing
