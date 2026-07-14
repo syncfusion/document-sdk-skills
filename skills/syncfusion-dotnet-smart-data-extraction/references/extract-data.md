@@ -30,7 +30,7 @@ extractor.ConfidenceThreshold = 0.6; // drop low-confidence results
 // extractor.PageRange = new int[,] { { 1, 3 } };
 ```
 
-## Quick extract — sync (one-line)
+## 2. Quick extract — sync (one-line)
 
 ```csharp
 // After configuring `extractor` (above), perform a single-file extraction:
@@ -39,7 +39,7 @@ string json = extractor.ExtractDataAsJson(fs);
 File.WriteAllText("output.json", json, Encoding.UTF8);
 ```
 
-## 2. Configure `TableExtractionOptions`
+## 3. Configure `TableExtractionOptions`
 
 ```csharp
 var tableOptions = new TableExtractionOptions();
@@ -51,7 +51,7 @@ tableOptions.ConfidenceThreshold = 0.6;
 extractor.TableExtractionOptions = tableOptions;
 ```
 
-## 3. Configure `FormRecognizeOptions`
+## 4. Configure `FormRecognizeOptions`
 
 ```csharp
 var formOptions = new FormRecognizeOptions();
@@ -63,7 +63,7 @@ formOptions.DetectRadioButtons = true;
 extractor.FormRecognizeOptions = formOptions;
 ```
 
-## 4. Process multiple files — synchronous JSON output
+## 5. Process multiple files — synchronous JSON output
 
 ```csharp
 var inputFolderPath = @"D:\Data\Files";
@@ -79,8 +79,24 @@ foreach (var filename in imageFiles)
 	File.WriteAllText(outputPath, data, Encoding.UTF8);
 }
 ```
+## 6. Process multiple files — synchronous Markdown output
 
-## 5. Async JSON extraction (with timeout)
+```csharp
+var inputFolderPath = @"D:\Data\Files";
+var imageFiles = Directory.GetFiles(inputFolderPath).ToList();
+
+foreach (var filename in imageFiles)
+{
+	Console.WriteLine("Processing file: " + filename);
+	using var stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+	string data = extractor.ExtractDataAsMarkdown(stream);
+	var outputName = Path.GetFileNameWithoutExtension(filename);
+	string outputPath = Path.Combine("Output_", outputName + ".md");
+	File.WriteAllText(outputPath, data, Encoding.UTF8);
+}
+```
+
+## 7. Async JSON extraction (with timeout)
 
 ```csharp
 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
@@ -89,7 +105,25 @@ string asyncJson = await extractor.ExtractDataAsJsonAsync(stream, cts.Token);
 File.WriteAllText("output_async.json", asyncJson, Encoding.UTF8);
 ```
 
-## 6. Extract annotated PDF stream (sync & async)
+## 8. Async Markdown extraction (with timeout)
+
+```csharp
+var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+using var stream = new FileStream("Data/Input.pdf", FileMode.Open, FileAccess.Read);
+string asyncMarkdown = await extractor.ExtractDataAsMarkdownAsync(stream, cts.Token);
+File.WriteAllText("output_async.md", asyncMarkdown, Encoding.UTF8);
+```
+
+## 9. Extract `MarkdownDocument` (sync)
+
+```csharp
+// sync
+using var docStream = new FileStream("Data/Input.pdf", FileMode.Open, FileAccess.Read);
+MarkdownDocument markdown = dataExtractor.ExtractDataAsMarkdownDocument(docStream);
+markdown.Save("output.md");
+```
+
+## 10. Extract annotated PDF stream (sync & async)
 
 ```csharp
 // sync
@@ -106,7 +140,7 @@ using var outFs2 = new FileStream("annotated_async.pdf", FileMode.Create, FileAc
 annotatedAsync.CopyTo(outFs2);
 ```
 
-## 7. Extract `PdfLoadedDocument` (sync & async)
+## 11. Extract `PdfLoadedDocument` (sync & async)
 
 ```csharp
 // sync
@@ -132,14 +166,19 @@ pdfDocAsync.Close(true);
 	- `int[,] PageRange` — optional 1-based page ranges to restrict processing
 	- `TableExtractionOptions TableExtractionOptions` — table-specific options
 	- `FormRecognizeOptions FormRecognizeOptions` — form recognition options
+	- `OCRProcessor OCRProcessor` — Configurable OCR settings
+	- `SaveOptions SaveOptions` — Customize Image saving
 
 - Synchronous methods:
 	- `string ExtractDataAsJson(Stream input)` — extract structured JSON
+	- `string ExtractDataAsMarkdown(Stream input)` — extract structured Markdown;
 	- `Stream ExtractDataAsPdfStream(Stream input)` — annotated PDF bytes (caller disposes)
 	- `PdfLoadedDocument ExtractDataAsPdfDocument(Stream input)` — annotated PDF document
+	- `MarkdownDocument ExtractDataAsMarkdownDocument(Stream input)` — extract structured Markdown document
 
 - Asynchronous methods:
 	- `Task<string> ExtractDataAsJsonAsync(Stream input, CancellationToken cancellationToken = default)`
+	- `Task<string> ExtractDataAsMarkdownAsync(Stream input, CancellationToken cancellationToken = default)`
 	- `Task<Stream> ExtractDataAsPdfStreamAsync(Stream input, CancellationToken cancellationToken = default)`
 	- `Task<PdfLoadedDocument> ExtractDataAsPdfDocumentAsync(Stream input, CancellationToken cancellationToken = default)`
 

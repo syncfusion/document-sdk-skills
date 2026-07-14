@@ -66,6 +66,25 @@ document.Save("Output.docx", FormatType.Docx);
 document.Close();
 ```
 
+### Import Markdown Instance to Word
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+    MarkdownDocument markdownDocument = new MarkdownDocument("Input.md");
+    // Create a WordDocument instance
+    WordDocument document = new WordDocument();
+    // Open the Markdown document as Word document
+    document.Open(markdownDocument);
+    // Create file stream to save
+    FileStream fileStream = new FileStream("Output.docx", FileMode.Create);
+    // Save the Word document
+    document.Save(fileStream, Syncfusion.DocIO.FormatType.Docx);
+    // Dispose the objects
+    markdownDocument.Dispose();
+    document.Dispose();
+```
+
+
 ### Customize Image During Import
 
 #### Cross-Platform
@@ -150,6 +169,25 @@ WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
 document.Save("Output.md", FormatType.Markdown);
 document.Close();
 ```
+
+### Export Markdown Instance from Word
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+    // Open a Word document from file stream
+    FileStream fileStream = new FileStream("Input.docx", FileMode.Open);
+    // Open a WordDocument instance 
+    WordDocument wordDoc = new WordDocument(fileStream, Syncfusion.DocIO.FormatType.Docx);
+    // Convert the Word document to Markdown
+    MarkdownDocument markdownDocument = wordDoc.GetMarkdownDocument();
+    // Save or process the Markdown document as needed
+    markdownDocument.Save("Output.md");
+    // Dispose the object
+    markdownDocument.Dispose();
+
+```
+
+
 
 ### Export Images to Folder
 

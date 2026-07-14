@@ -45,7 +45,21 @@ using (FileStream stream = new FileStream(inputPath, FileMode.Open, FileAccess.R
 }
 ```
 
-## 4. Async extract (with timeout)
+## 4. Quick extract — synchronous MarkDown
+
+```csharp
+string inputPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Data\SampleInput.pdf"));
+using (FileStream stream = new FileStream(inputPath, FileMode.Open, FileAccess.Read))
+{
+    // extract table as Markdown
+    string data = tableExtractor.ExtractTableAsMarkdown(stream);
+    var outputName = Path.GetFileNameWithoutExtension(inputPath);
+    string outputPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Output_", $"{outputName}.md"));
+    File.WriteAllText(outputPath, data, Encoding.UTF8);
+}
+```
+
+## 5. Async extract JSON (with timeout)
 
 ```csharp
 using (FileStream stream = new FileStream(inputPath, FileMode.Open, FileAccess.Read))
@@ -59,6 +73,19 @@ using (FileStream stream = new FileStream(inputPath, FileMode.Open, FileAccess.R
 }
 ```
 
+## 6. Async extract Markdown (with timeout)
+
+```csharp
+using (FileStream stream = new FileStream(inputPath, FileMode.Open, FileAccess.Read))
+{
+    var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+    // extract table as Markdown (async)
+    string data = await tableExtractor.ExtractTableAsMarkdownAsync(stream, cts.Token);
+    var outputName = Path.GetFileNameWithoutExtension(inputPath);
+    string outputPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Output_", $"{outputName}.md"));
+    File.WriteAllText(outputPath, data, Encoding.UTF8);
+}
+```
 
 ## Public API reference
 
@@ -67,7 +94,9 @@ using (FileStream stream = new FileStream(inputPath, FileMode.Open, FileAccess.R
 
 - Methods (public):
     - `string ExtractTableAsJson(Stream input)` — synchronous extraction to JSON
-    - `Task<string> ExtractTableAsJsonAsync(Stream input, CancellationToken cancellationToken = default)` — async variant
+    - `string ExtractTableAsMarkdown(Stream input)` — synchronous extraction to Markdown
+    - `Task<string> ExtractTableAsJsonAsync(Stream input, CancellationToken cancellationToken = default)` — JSON async variant
+    - `Task<string> ExtractTableAsMarkdownAsync(Stream input, CancellationToken cancellationToken = default)` — Markdown async variant
 
 ## Common table options
 

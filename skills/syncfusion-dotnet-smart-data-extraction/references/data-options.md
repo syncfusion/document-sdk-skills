@@ -84,6 +84,27 @@ extractor.FormRecognizeOptions = new FormRecognizeOptions
 };
 ```
 
+## Configurable OCR settings
+
+Usage: 
+
+```csharp
+using (FileStream stream = new FileStream(@"Data/input.pdf", FileMode.Open, FileAccess.Read))
+{
+    //Initialize the Data Extractor.
+    DataExtractor extractor = new DataExtractor();
+    //Initialize the OCR processor.
+    OCRProcessor processor = new OCRProcessor();
+    //Set OCR language.
+    processor.Settings.Language = Languages.English;
+    //Assign the configured OCR processor to the Data Extractor.
+    extractor.OCRProcessor = processor;
+    //Extract data and return as a loaded PDF document.
+    PdfLoadedDocument pdf = extractor.ExtractDataAsPdfDocument(stream);
+    
+}
+```
+
 ---
 ---
 

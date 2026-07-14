@@ -61,6 +61,12 @@ string json = extractor.ExtractDataAsJson(input);
 File.WriteAllText("extracted.json", json, Encoding.UTF8);
 ```
 
+## Extract structure as Markdown (synchronous)
+```csharp
+string data = extractor.ExtractDataAsMarkdown(input);
+File.WriteAllText("output.md", data, Encoding.UTF8);
+```
+
 ## Extract annotated PDF stream (synchronous)
 ```csharp
 using var pdfOut = extractor.ExtractDataAsPdfStream(input);
@@ -75,9 +81,18 @@ doc.Save("annotated_doc.pdf");
 doc.Close(true);
 ```
 
+## Extract as a `MarkdownDocument`
+
+```csharp
+using var docStream = new FileStream("Data/Input.pdf", FileMode.Open, FileAccess.Read);
+MarkdownDocument markdown = dataExtractor.ExtractDataAsMarkdownDocument(docStream);
+markdown.Save("output.md");
+```
+
 ## Async equivalents
 ```csharp
 string json = await extractor.ExtractDataAsJsonAsync(input, cancellationToken);
 using Stream pdf = await extractor.ExtractDataAsPdfStreamAsync(input, cancellationToken);
 PdfLoadedDocument doc = await extractor.ExtractDataAsPdfDocumentAsync(input, cancellationToken);
+string data = await extractor.ExtractDataAsMarkdownAsync(input, cancellationToken);
 ```

@@ -21,7 +21,7 @@ Always consult this file during **Step 1** of Mode 1 to determine the correct pa
 
 ---
 
-## Presentation — PowerPoint Read / Write / Edit
+## Presentation — PowerPoint Read, Write, Edit, and Markdown Conversion
 
 | Application Type | NuGet Package | Install Command |
 |---|---|---|

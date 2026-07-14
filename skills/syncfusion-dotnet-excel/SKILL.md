@@ -144,6 +144,7 @@ All templates and snippets are in the `references/` folder:
 | **macros.md** | Create, edit, and manage VBA macros in Excel workbooks |
 | **custom-xml.md** | Add and read custom XML parts to store arbitrary XML data in workbooks |
 | **worksheet-move-copy.md** | Move and copy worksheets, rows, columns, and cell ranges |
+| **markdown-conversion.md** | Convert Excel workbooks/worksheets to Markdown format and import Markdown files into Excel |
 
 ---
 

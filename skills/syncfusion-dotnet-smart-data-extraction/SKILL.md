@@ -64,10 +64,10 @@ All templates and snippets are in the `references/` folder:
 | File | Contents |
 |---|---|
 | **document-structure.md** | Quick extractor setup and usage snippets |
-| **extract-data.md** | Examples: ExtractDataAsJson, ExtractDataAsPdfStream,ExtractDataAsPdfDocument, async variants |
-| **extract-table.md** | Table extraction examples (ExtractTableAsJson)|
+| **extract-data.md** | Examples: ExtractDataAsJson, ExtractDataAsMarkdown, ExtractDataAsPdfStream, ExtractDataAsPdfDocument, ExtractDataAsMarkdownDocument, async variants |
+| **extract-table.md** | Table extraction examples (ExtractTableAsJson, ExtractTableAsMarkdown)|
 | **recognize-forms.md** | recognize form fields examples : FormRecognizeOptions, RecognizeFormAsPdfDocument,RecognizeFormAsPdfStream, RecognizeFormAsJson async variants |
-| **data-options.md** | Explanation of `TableExtractionOptions`, `FormRecognizeOptions`, `ConfidenceThreshold` , `PageRange`|
+| **data-options.md** | Explanation of `TableExtractionOptions`, `FormRecognizeOptions`, `ConfidenceThreshold` , `PageRange` , `ExtractDataAsPdfDocument` |
 
 ---
 

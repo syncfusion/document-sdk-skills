@@ -87,6 +87,33 @@ imageStream.Dispose();
 
 ---
 
+## Place Picture in Cell
+
+### Minimal Code
+```csharp
+IPictureShape shape = worksheet.Pictures.AddPicture(1, 1, imageStream);
+shape.PlaceInCell = true;
+```
+
+### Place Picture Inside Cell Boundaries
+```csharp
+FileStream imageStream = new FileStream("Image.png", FileMode.Open, FileAccess.Read);
+IPictureShape shape = worksheet.Pictures.AddPicture(2, 3, imageStream);
+
+// When enabled, picture is placed within the cell boundaries
+shape.PlaceInCell = true;
+
+// The picture will be contained within the dimensions of cell C2
+// If the cell is resized, the picture position may adjust accordingly
+
+imageStream.Dispose();
+```
+
+### Placeholders
+- `true` → Replace with `"{placement-option}"` (true to place inside cell, false for absolute positioning)
+
+---
+
 ## Align Picture in Cell
 
 ### Minimal Code

@@ -114,6 +114,7 @@ All templates and snippets are in the `references/` folder:
 | **smartart.md** |  Create a SmartArt, Add, Edit, Remove nodes in SmartArt in a PowerPoint Presentation|
 | **hyperlinks.md** | Add or Modify Web, Email, Bookmark, File, Image hyperlinks |
 | **macros.md** | Load, Save, Remove and manage macros in presentations |
+| **markdown-conversion.md** | Convert PowerPoint presentations to and from Markdown, customize image export paths, and configure Markdown encoding options |
 ---
 
 ## Rules
