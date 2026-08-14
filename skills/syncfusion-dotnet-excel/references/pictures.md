@@ -4,7 +4,7 @@
 
 ---
 
-> **Required common usings:** `Syncfusion.XlsIO`, `System`, `System.IO`
+> **Required common usings:** `Syncfusion.XlsIO`, `Syncfusion.XlsIO.Implementation`, `System`, `System.IO`
 > **Required usings for .NET Core / .NET 5+ / ASP.NET Core:** (No additional usings required)
 > **Required usings for .NET Framework (Windows):** (No additional usings required)
 

@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using Syncfusion.XlsIO;
 using Syncfusion.XlsIORenderer;
-using Syncfusion.PDF;
+using Syncfusion.Pdf;
 using Syncfusion.Drawing;
 
 // Register Syncfusion License

@@ -44,49 +44,165 @@ chart1.Width = 500;
 
 ## Chart Types
 
-### Common Chart Types
+XlsIO supports **99 distinct chart types** covering 2D, 3D, geometric shapes, and modern Excel 2016+ chart types.
+
+### Column Charts (7 types)
 ```csharp
-// Column charts
 chart.ChartType = ExcelChartType.Column_Clustered;
 chart.ChartType = ExcelChartType.Column_Stacked;
 chart.ChartType = ExcelChartType.Column_Stacked_100;
 chart.ChartType = ExcelChartType.Column_Clustered_3D;
+chart.ChartType = ExcelChartType.Column_Stacked_3D;
+chart.ChartType = ExcelChartType.Column_Stacked_100_3D;
+chart.ChartType = ExcelChartType.Column_3D;
+```
 
-// Bar charts
+### Bar Charts (6 types)
+```csharp
 chart.ChartType = ExcelChartType.Bar_Clustered;
 chart.ChartType = ExcelChartType.Bar_Stacked;
 chart.ChartType = ExcelChartType.Bar_Stacked_100;
+chart.ChartType = ExcelChartType.Bar_Clustered_3D;
+chart.ChartType = ExcelChartType.Bar_Stacked_3D;
+chart.ChartType = ExcelChartType.Bar_Stacked_100_3D;
+```
 
-// Line charts
+### Line Charts (7 types)
+```csharp
 chart.ChartType = ExcelChartType.Line;
-chart.ChartType = ExcelChartType.Line_Markers;
 chart.ChartType = ExcelChartType.Line_Stacked;
+chart.ChartType = ExcelChartType.Line_Stacked_100;
+chart.ChartType = ExcelChartType.Line_Markers;
 chart.ChartType = ExcelChartType.Line_Markers_Stacked;
+chart.ChartType = ExcelChartType.Line_Markers_Stacked_100;
+chart.ChartType = ExcelChartType.Line_3D;
+```
 
-// Pie charts
+### Pie Charts (6 types)
+```csharp
 chart.ChartType = ExcelChartType.Pie;
 chart.ChartType = ExcelChartType.Pie_3D;
-chart.ChartType = ExcelChartType.PieOfPie;
 chart.ChartType = ExcelChartType.Pie_Exploded;
+chart.ChartType = ExcelChartType.Pie_Exploded_3D;
+chart.ChartType = ExcelChartType.PieOfPie;
+chart.ChartType = ExcelChartType.Pie_Bar;
+```
 
-// Area charts
+### Area Charts (6 types)
+```csharp
 chart.ChartType = ExcelChartType.Area;
 chart.ChartType = ExcelChartType.Area_Stacked;
 chart.ChartType = ExcelChartType.Area_Stacked_100;
+chart.ChartType = ExcelChartType.Area_3D;
+chart.ChartType = ExcelChartType.Area_Stacked_3D;
+chart.ChartType = ExcelChartType.Area_Stacked_100_3D;
+```
 
-// Scatter / XY charts
+### Scatter / XY Charts (5 types)
+```csharp
 chart.ChartType = ExcelChartType.Scatter_Markers;
-chart.ChartType = ExcelChartType.Scatter_Line;
+chart.ChartType = ExcelChartType.Scatter_SmoothedLine_Markers;
+chart.ChartType = ExcelChartType.Scatter_SmoothedLine;
 chart.ChartType = ExcelChartType.Scatter_Line_Markers;
+chart.ChartType = ExcelChartType.Scatter_Line;
+```
 
-// Doughnut
+### Bubble Charts (2 types)
+```csharp
+chart.ChartType = ExcelChartType.Bubble;
+chart.ChartType = ExcelChartType.Bubble_3D;
+```
+
+### Doughnut Charts (2 types)
+```csharp
 chart.ChartType = ExcelChartType.Doughnut;
 chart.ChartType = ExcelChartType.Doughnut_Exploded;
+```
 
-// Radar
+### Radar Charts (3 types)
+```csharp
 chart.ChartType = ExcelChartType.Radar;
 chart.ChartType = ExcelChartType.Radar_Markers;
 chart.ChartType = ExcelChartType.Radar_Filled;
+```
+
+### Surface Charts (4 types)
+```csharp
+chart.ChartType = ExcelChartType.Surface_3D;
+chart.ChartType = ExcelChartType.Surface_NoColor_3D;
+chart.ChartType = ExcelChartType.Surface_Contour;
+chart.ChartType = ExcelChartType.Surface_NoColor_Contour;
+```
+
+### Stock Charts (4 types)
+```csharp
+chart.ChartType = ExcelChartType.Stock_HighLowClose;
+chart.ChartType = ExcelChartType.Stock_OpenHighLowClose;
+chart.ChartType = ExcelChartType.Stock_VolumeHighLowClose;
+chart.ChartType = ExcelChartType.Stock_VolumeOpenHighLowClose;
+```
+
+### Cylinder Charts (7 types)
+```csharp
+chart.ChartType = ExcelChartType.Cylinder_Clustered;
+chart.ChartType = ExcelChartType.Cylinder_Stacked;
+chart.ChartType = ExcelChartType.Cylinder_Stacked_100;
+chart.ChartType = ExcelChartType.Cylinder_Bar_Clustered;
+chart.ChartType = ExcelChartType.Cylinder_Bar_Stacked;
+chart.ChartType = ExcelChartType.Cylinder_Bar_Stacked_100;
+chart.ChartType = ExcelChartType.Cylinder_Clustered_3D;
+```
+
+### Cone Charts (7 types)
+```csharp
+chart.ChartType = ExcelChartType.Cone_Clustered;
+chart.ChartType = ExcelChartType.Cone_Stacked;
+chart.ChartType = ExcelChartType.Cone_Stacked_100;
+chart.ChartType = ExcelChartType.Cone_Bar_Clustered;
+chart.ChartType = ExcelChartType.Cone_Bar_Stacked;
+chart.ChartType = ExcelChartType.Cone_Bar_Stacked_100;
+chart.ChartType = ExcelChartType.Cone_Clustered_3D;
+```
+
+### Pyramid Charts (7 types)
+```csharp
+chart.ChartType = ExcelChartType.Pyramid_Clustered;
+chart.ChartType = ExcelChartType.Pyramid_Stacked;
+chart.ChartType = ExcelChartType.Pyramid_Stacked_100;
+chart.ChartType = ExcelChartType.Pyramid_Bar_Clustered;
+chart.ChartType = ExcelChartType.Pyramid_Bar_Stacked;
+chart.ChartType = ExcelChartType.Pyramid_Bar_Stacked_100;
+chart.ChartType = ExcelChartType.Pyramid_Clustered_3D;
+```
+
+### Modern Chart Types - Excel 2016+ (7 types)
+```csharp
+// Funnel chart for hierarchical data visualization (e.g., sales funnels)
+chart.ChartType = ExcelChartType.Funnel;
+
+// Waterfall chart for cumulative change visualization (e.g., financial variance)
+chart.ChartType = ExcelChartType.WaterFall;
+
+// Box and Whisker chart for statistical distribution showing quartiles and outliers
+chart.ChartType = ExcelChartType.BoxAndWhisker;
+
+// Histogram chart for frequency distribution analysis
+chart.ChartType = ExcelChartType.Histogram;
+
+// Pareto chart for 80/20 principle analysis with cumulative percentage line
+chart.ChartType = ExcelChartType.Pareto;
+
+// TreeMap chart for hierarchical data as sized rectangles
+chart.ChartType = ExcelChartType.TreeMap;
+
+// SunBurst chart for circular hierarchical visualization
+chart.ChartType = ExcelChartType.SunBurst;
+```
+
+### Combination Chart
+```csharp
+// Allows combining multiple chart types in a single chart
+chart.ChartType = ExcelChartType.Combination_Chart;
 ```
 
 ---

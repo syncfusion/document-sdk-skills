@@ -25,6 +25,30 @@ The `ITemplateMarkersProcessor` scans the workbook, finds all markers, binds the
 
 ---
 
+## Key Principle: Variable Name Matching
+
+**CRITICAL**: The variable name passed to `AddVariable()` must **exactly match** the marker variable name in your template cells.
+
+```
+Template Marker:         %VariableName.Property%
+AddVariable Call:        marker.AddVariable("VariableName", data);
+                                              ↑ MUST MATCH ↑
+```
+
+✅ **Correct**:
+```csharp
+// Template cell: %Employees.Name%
+marker.AddVariable("Employees", employeeList);
+```
+
+❌ **Incorrect**:
+```csharp
+// Template cell: %Employees.Name%
+marker.AddVariable("Staff", employeeList);  // Name mismatch!
+```
+
+---
+
 ## Basic Setup
 
 ### Minimal Code
@@ -55,30 +79,32 @@ marker.ApplyMarkers();
 
 ### Template Cell Content
 ```
-%ReportTitle%
-%GeneratedDate%
-%CompanyName%
+Sales Performance Report - %ReportTitle%
+Generated: %ReportDate%
+Company: %CompanyName%
+Reporting Period: %ReportPeriod%
 ```
 
 ### Code
 ```csharp
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("ReportTitle",   "Annual Sales Report");
-marker.AddVariable("GeneratedDate", DateTime.Now.ToString("dd/MM/yyyy"));
+// Bind simple variables for report metadata
+marker.AddVariable("ReportTitle",   "Q4 2026 Performance");
+marker.AddVariable("ReportDate",    DateTime.Now.ToString("dd/MM/yyyy"));
 marker.AddVariable("CompanyName",   "Contoso Ltd.");
-marker.AddVariable("TotalSales",    98500.75);
-marker.AddVariable("Region",        "North America");
+marker.AddVariable("ReportPeriod",  "October - December 2026");
 
 marker.ApplyMarkers();
 
-workbook.SaveAs("output/report.xlsx");
+workbook.SaveAs("output/sales-report.xlsx");
 ```
 
 ### Placeholders
-- `"Annual Sales Report"`, `"Contoso Ltd."`, `"North America"` → Replace with `"{variable-content}"`
-- `98500.75` → Replace with `"{numeric-value}"`
+- `"Q4 2026 Performance"`, `"Contoso Ltd."` → Replace with `"{variable-content}"`
+- `DateTime.Now.ToString("dd/MM/yyyy")` → Replace with `"{date-value}"`
 
 ---
 
@@ -86,31 +112,37 @@ workbook.SaveAs("output/report.xlsx");
 
 ### Template Cell Content (row 1 = headers already in template, row 2 = marker)
 ```
-%Employees.Name%   %Employees.Department%   %Employees.Salary%
+Salesperson Name     Department          Total Sales
+%Sales.SalesPersonName%  %Sales.Department%  %Sales.TotalSales%
 ```
 
 ### Code
 ```csharp
-DataTable dt = new DataTable("Employees");
-dt.Columns.Add("Name",       typeof(string));
-dt.Columns.Add("Department", typeof(string));
-dt.Columns.Add("Salary",     typeof(double));
+// Create DataTable with sales performance data
+DataTable sales = new DataTable("Sales");
+sales.Columns.Add("SalesPersonName", typeof(string));
+sales.Columns.Add("Department",      typeof(string));
+sales.Columns.Add("TotalSales",      typeof(double));
 
-dt.Rows.Add("Alice", "Engineering", 75000.00);
-dt.Rows.Add("Bob",   "Marketing",   52000.50);
-dt.Rows.Add("Carol", "HR",          48000.00);
-dt.Rows.Add("David", "Finance",     61000.75);
+sales.Rows.Add("Alice Johnson",  "North America", 125000.00);
+sales.Rows.Add("Bob Smith",      "Europe",       98500.50);
+sales.Rows.Add("Carol Williams", "Asia Pacific", 112000.00);
+sales.Rows.Add("David Brown",    "North America", 135500.75);
 
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("Employees", dt);
+// Variable name "Sales" matches the marker variable in template
+marker.AddVariable("Sales", sales);
 marker.ApplyMarkers();
+
+workbook.SaveAs("output/sales-report.xlsx");
+```
+
 ### Placeholders
-- `"Employees"` → Replace with `"{datatable-name}"`
-
-
-workbook.SaveAs("output/employees.xlsx");
+- `"Sales"` → Replace with `"{datatable-name}"`
+- Column names must match exactly: `SalesPersonName`, `Department`, `TotalSales`
 ```
 
 ---
@@ -119,37 +151,41 @@ workbook.SaveAs("output/employees.xlsx");
 
 ### Define the Class
 ```csharp
-public class Product
+public class SalesPerson
 {
-    public string ProductName { get; set; }
-    public string Category    { get; set; }
-    public double Price       { get; set; }
-    public int    Stock       { get; set; }
+    public int    Id                { get; set; }
+    public string SalesPersonName   { get; set; }
+    public string Department        { get; set; }
+    public double TotalSales        { get; set; }
 }
 ```
 
 ### Template Cell Content
 ```
-%Products.ProductName%   %Products.Category%   %Products.Price%   %Products.Stock%
+Salesperson Name     Department          Total Sales
+%Sales.SalesPersonName%  %Sales.Department%  %Sales.TotalSales%
 ```
 
 ### Code
 ```csharp
-List<Product> products = new List<Product>
+// Create a list of SalesPerson objects with the same sales data
+List<SalesPerson> sales = new List<SalesPerson>
 {
-    new Product { ProductName = "Laptop",  Category = "Electronics", Price = 999.99,  Stock = 50  },
-    new Product { ProductName = "Monitor", Category = "Electronics", Price = 299.99,  Stock = 120 },
-    new Product { ProductName = "Desk",    Category = "Furniture",   Price = 149.50,  Stock = 30  },
-    new Product { ProductName = "Chair",   Category = "Furniture",   Price = 89.00,   Stock = 75  },
+    new SalesPerson { Id = 1, SalesPersonName = "Alice Johnson",  Department = "North America", TotalSales = 125000.00 },
+    new SalesPerson { Id = 2, SalesPersonName = "Bob Smith",      Department = "Europe",       TotalSales = 98500.50  },
+    new SalesPerson { Id = 3, SalesPersonName = "Carol Williams", Department = "Asia Pacific", TotalSales = 112000.00 },
+    new SalesPerson { Id = 4, SalesPersonName = "David Brown",    Department = "North America", TotalSales = 135500.75 },
 };
 
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("Products", products);
+// Variable name "Sales" matches the marker variable in template
+marker.AddVariable("Sales", sales);
 marker.ApplyMarkers();
 
-workbook.SaveAs("output/products.xlsx");
+workbook.SaveAs("output/sales-report.xlsx");
 ```
 
 ---
@@ -157,37 +193,42 @@ workbook.SaveAs("output/products.xlsx");
 ## Bind DataSet (Multiple Sheets)
 
 ### Template Setup
-- Sheet1 contains: `%Sales.Region%`  `%Sales.Amount%`
-- Sheet2 contains: `%Expenses.Category%`  `%Expenses.Amount%`
+- Sheet1 (Sales Summary) contains: `%SalesByRegion.Department%`  `%SalesByRegion.TotalSales%`
+- Sheet2 (Quarterly Breakdown) contains: `%QuarterlySales.Quarter%`  `%QuarterlySales.Amount%`
 
 ### Code
 ```csharp
 DataSet ds = new DataSet();
 
-DataTable sales = new DataTable("Sales");
-sales.Columns.Add("Region", typeof(string));
-sales.Columns.Add("Amount", typeof(double));
-sales.Rows.Add("North", 45000.00);
-sales.Rows.Add("South", 38000.50);
-sales.Rows.Add("East",  52000.75);
-ds.Tables.Add(sales);
+// Sheet 1: Sales by Region/Department
+DataTable salesByRegion = new DataTable("SalesByRegion");
+salesByRegion.Columns.Add("Department",  typeof(string));
+salesByRegion.Columns.Add("TotalSales",  typeof(double));
+salesByRegion.Rows.Add("North America", 260500.75);
+salesByRegion.Rows.Add("Europe",        98500.50);
+salesByRegion.Rows.Add("Asia Pacific",  112000.00);
+ds.Tables.Add(salesByRegion);
 
-DataTable expenses = new DataTable("Expenses");
-expenses.Columns.Add("Category", typeof(string));
-expenses.Columns.Add("Amount",   typeof(double));
-expenses.Rows.Add("Salaries",  30000.00);
-expenses.Rows.Add("Marketing", 8000.00);
-expenses.Rows.Add("Logistics", 5500.00);
-ds.Tables.Add(expenses);
+// Sheet 2: Quarterly breakdown for tracking
+DataTable quarterlySales = new DataTable("QuarterlySales");
+quarterlySales.Columns.Add("Quarter", typeof(string));
+quarterlySales.Columns.Add("Amount",  typeof(double));
+quarterlySales.Rows.Add("Q1 2026", 135500.00);
+quarterlySales.Rows.Add("Q2 2026", 140250.50);
+quarterlySales.Rows.Add("Q3 2026", 125000.75);
+quarterlySales.Rows.Add("Q4 2026", 170250.00);
+ds.Tables.Add(quarterlySales);
 
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("Sales",    ds.Tables["Sales"]);
-marker.AddVariable("Expenses", ds.Tables["Expenses"]);
+// Add both DataTables as separate sheets
+marker.AddVariable("SalesByRegion",  ds.Tables["SalesByRegion"]);
+marker.AddVariable("QuarterlySales", ds.Tables["QuarterlySales"]);
 marker.ApplyMarkers();
 
-workbook.SaveAs("output/report.xlsx");
+workbook.SaveAs("output/sales-report.xlsx");
 ```
 
 ---
@@ -196,55 +237,75 @@ workbook.SaveAs("output/report.xlsx");
 
 ### Define Classes
 ```csharp
-public class Order
+public class SalesPerson
 {
-    public int      OrderID    { get; set; }
-    public string   CustomerName { get; set; }
-    public DateTime OrderDate  { get; set; }
-    public Address  ShipTo     { get; set; }
+    public int    Id                { get; set; }
+    public string SalesPersonName   { get; set; }
+    public string Department        { get; set; }
+    public List<SalesRecord> Records { get; set; }
 }
 
-public class Address
+public class SalesRecord
 {
-    public string Street  { get; set; }
-    public string City    { get; set; }
-    public string Country { get; set; }
+    public string Quarter { get; set; }
+    public double Amount  { get; set; }
 }
 ```
 
 ### Template Cell Content
 ```
-%Orders.OrderID%   %Orders.CustomerName%   %Orders.OrderDate%   %Orders.ShipTo.City%   %Orders.ShipTo.Country%
+Salesperson: %Sales.SalesPersonName%    Department: %Sales.Department%
+Quarter              Amount
+%Sales.Records.Quarter%  %Sales.Records.Amount%
 ```
 
 ### Code
 ```csharp
-List<Order> orders = new List<Order>
+List<SalesPerson> sales = new List<SalesPerson>
 {
-    new Order
+    new SalesPerson
     {
-        OrderID      = 1001,
-        CustomerName = "Alice Johnson",
-        OrderDate    = new DateTime(2026, 1, 15),
-        ShipTo       = new Address { Street = "123 Main St", City = "New York",  Country = "USA" }
+        Id = 1,
+        SalesPersonName = "Alice Johnson",
+        Department = "North America",
+        Records = new List<SalesRecord>
+        {
+            new SalesRecord { Quarter = "Q1 2026", Amount = 30000.00 },
+            new SalesRecord { Quarter = "Q2 2026", Amount = 32000.00 },
+            new SalesRecord { Quarter = "Q3 2026", Amount = 31000.00 },
+            new SalesRecord { Quarter = "Q4 2026", Amount = 32000.75 }
+        }
     },
-    new Order
+    new SalesPerson
     {
-        OrderID      = 1002,
-        CustomerName = "Bob Smith",
-        OrderDate    = new DateTime(2026, 2, 20),
-        ShipTo       = new Address { Street = "456 High Rd", City = "London",    Country = "UK"  }
+        Id = 2,
+        SalesPersonName = "Bob Smith",
+        Department = "Europe",
+        Records = new List<SalesRecord>
+        {
+            new SalesRecord { Quarter = "Q1 2026", Amount = 24000.00 },
+            new SalesRecord { Quarter = "Q2 2026", Amount = 25000.50 },
+            new SalesRecord { Quarter = "Q3 2026", Amount = 24500.00 },
+            new SalesRecord { Quarter = "Q4 2026", Amount = 25000.00 }
+        }
     }
 };
 
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("Orders", orders);
+// Variable name "Sales" matches the marker variable in the template
+marker.AddVariable("Sales", sales);
 marker.ApplyMarkers();
 
-workbook.SaveAs("output/orders.xlsx");
+workbook.SaveAs("output/sales-report.xlsx");
 ```
+
+### Key Point
+- Template marker: `%Sales.SalesPersonName%`, `%Sales.Records.Quarter%`
+- Variable name passed: `"Sales"` ← **Must match template marker variable**
+- The `.` notation allows deep property access: `Sales.Records.Quarter` accesses nested collection's property
 
 ---
 
@@ -252,49 +313,64 @@ workbook.SaveAs("output/orders.xlsx");
 
 ### Template Cell Content
 ```
-%Months%
+Report Generated Quarters:
+%Quarters%
 ```
 
 ### Code
 ```csharp
-string[] months = { "January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December" };
+// Create array of quarterly values to fill vertically
+string[] quarters = { "Q1 2026", "Q2 2026", "Q3 2026", "Q4 2026" };
 
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("Months", months);
+// Variable name "Quarters" matches the marker in template
+marker.AddVariable("Quarters", quarters);
 marker.ApplyMarkers();
 
-workbook.SaveAs("output/months.xlsx");
+workbook.SaveAs("output/sales-report.xlsx");
 ```
 
 ---
 
 ## Marker with Horizontal Fill Direction
 
-### Template Cell Content (markers placed in a row instead of a column)
+### Template Cell Content (markers placed in a row for horizontal filling)
 ```
-%Sales.Q1%    %Sales.Q2%    %Sales.Q3%    %Sales.Q4%
+Quarter Performance: 2026
+
+Q1          Q2          Q3          Q4
+%SalesData.Q1Sales%    %SalesData.Q2Sales%    %SalesData.Q3Sales%    %SalesData.Q4Sales%
 ```
 
 ### Code
 ```csharp
-DataTable sales = new DataTable("Sales");
-sales.Columns.Add("Q1", typeof(double));
-sales.Columns.Add("Q2", typeof(double));
-sales.Columns.Add("Q3", typeof(double));
-sales.Columns.Add("Q4", typeof(double));
-sales.Rows.Add(12000.0, 15000.0, 13500.0, 18000.0);
+// Create DataTable with quarterly sales in columns (horizontal layout)
+DataTable salesData = new DataTable("SalesData");
+salesData.Columns.Add("Q1Sales", typeof(double));
+salesData.Columns.Add("Q2Sales", typeof(double));
+salesData.Columns.Add("Q3Sales", typeof(double));
+salesData.Columns.Add("Q4Sales", typeof(double));
 
-IWorkbook workbook = application.Workbooks.Open("templates/template.xlsx");
+// Quarterly totals across all regions
+salesData.Rows.Add(135500.00, 140250.50, 125000.75, 170250.00);
+
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-marker.AddVariable("Sales", sales);
+// Variable name "SalesData" matches marker variable; data fills horizontally
+marker.AddVariable("SalesData", salesData);
 marker.ApplyMarkers(UnknownVariableAction.Skip);
 
-workbook.SaveAs("output/quarterly.xlsx");
+workbook.SaveAs("output/sales-report.xlsx");
 ```
+
+### Key Point
+- Markers are placed in a **row** instead of a column: `%SalesData.Q1Sales%`, `%SalesData.Q2Sales%`, etc.
+- Data fills **horizontally** across columns instead of vertically down rows
 
 ---
 
@@ -313,42 +389,91 @@ marker.ApplyMarkers(UnknownVariableAction.ReplaceBlank);
 
 ## Full End-to-End Example
 
+### Template Cell Content (sales-template.xlsx)
+```
+═══════════════════════════════════════════════════════════════
+Sales Performance Report - %ReportTitle%
+Generated: %ReportDate%     Company: %CompanyName%
+Reporting Period: %ReportPeriod%
+═══════════════════════════════════════════════════════════════
+
+SALES BY SALESPERSON:
+Salesperson Name         Department              Total Sales
+%Sales.SalesPersonName%      %Sales.Department%     %Sales.TotalSales%
+
+QUARTERLY BREAKDOWN:
+Quarter         Amount
+%QuarterlySales.Quarter%     %QuarterlySales.Amount%
+
+Available Regions:
+%Regions%
+```
+
+### Code
 ```csharp
 using Syncfusion.XlsIO;
+using System;
+using System.Collections.Generic;
 using System.Data;
 
-ExcelEngine excelEngine     = new ExcelEngine();
-IApplication application    = excelEngine.Excel;
-application.DefaultVersion  = ExcelVersion.Xlsx;
+// Define classes for nested objects
+public class SalesPerson
+{
+    public int    Id              { get; set; }
+    public string SalesPersonName { get; set; }
+    public string Department      { get; set; }
+    public double TotalSales      { get; set; }
+}
 
-// Open the template
-IWorkbook workbook = application.Workbooks.Open("templates/invoice-template.xlsx");
+// Main example
+ExcelEngine excelEngine    = new ExcelEngine();
+IApplication application   = excelEngine.Excel;
+application.DefaultVersion = ExcelVersion.Xlsx;
+
+// Open the sales template
+IWorkbook workbook = application.Workbooks.Open("templates/sales-template.xlsx");
+
 ITemplateMarkersProcessor marker = workbook.CreateTemplateMarkersProcessor();
 
-// Simple variables
-marker.AddVariable("InvoiceNo",   "INV-2026-001");
-marker.AddVariable("InvoiceDate", DateTime.Now.ToString("dd/MM/yyyy"));
-marker.AddVariable("CustomerName","Alice Johnson");
-marker.AddVariable("DueDate",     DateTime.Now.AddDays(30).ToString("dd/MM/yyyy"));
+// 1. Bind simple variables (report metadata)
+marker.AddVariable("ReportTitle",  "Q4 2026 Performance");
+marker.AddVariable("ReportDate",   DateTime.Now.ToString("dd/MM/yyyy"));
+marker.AddVariable("CompanyName",  "Contoso Ltd.");
+marker.AddVariable("ReportPeriod", "October - December 2026");
 
-// Line items (DataTable)
-DataTable items = new DataTable("Items");
-items.Columns.Add("Description", typeof(string));
-items.Columns.Add("Quantity",    typeof(int));
-items.Columns.Add("UnitPrice",   typeof(double));
-items.Columns.Add("Total",       typeof(double));
+// 2. Bind List of SalesPerson objects (list binding)
+List<SalesPerson> sales = new List<SalesPerson>
+{
+    new SalesPerson { Id = 1, SalesPersonName = "Alice Johnson",  Department = "North America", TotalSales = 125000.00 },
+    new SalesPerson { Id = 2, SalesPersonName = "Bob Smith",      Department = "Europe",       TotalSales = 98500.50  },
+    new SalesPerson { Id = 3, SalesPersonName = "Carol Williams", Department = "Asia Pacific", TotalSales = 112000.00 },
+    new SalesPerson { Id = 4, SalesPersonName = "David Brown",    Department = "North America", TotalSales = 135500.75 }
+};
+marker.AddVariable("Sales", sales);
 
-items.Rows.Add("Product A", 5,  200.00, 1000.00);
-items.Rows.Add("Product B", 3,  450.00, 1350.00);
-items.Rows.Add("Product C", 10, 75.50,   755.00);
+// 3. Bind DataTable for quarterly summary (DataTable binding)
+DataTable quarterlySales = new DataTable("QuarterlySales");
+quarterlySales.Columns.Add("Quarter", typeof(string));
+quarterlySales.Columns.Add("Amount",  typeof(double));
+quarterlySales.Rows.Add("Q1 2026", 135500.00);
+quarterlySales.Rows.Add("Q2 2026", 140250.50);
+quarterlySales.Rows.Add("Q3 2026", 125000.75);
+quarterlySales.Rows.Add("Q4 2026", 170250.00);
+marker.AddVariable("QuarterlySales", quarterlySales);
 
-marker.AddVariable("Items", items);
+// 4. Bind array of region values (array binding)
+string[] regions = { "North America", "Europe", "Asia Pacific" };
+marker.AddVariable("Regions", regions);
 
-// Process and save
+// Process all markers and fill data
 marker.ApplyMarkers();
-workbook.SaveAs("output/invoice.xlsx");
+
+// Save the completed report
+workbook.SaveAs("output/sales-report.xlsx");
 workbook.Close();
 excelEngine.Dispose();
+
+Console.WriteLine("Sales report generated successfully!");
 ```
 
 

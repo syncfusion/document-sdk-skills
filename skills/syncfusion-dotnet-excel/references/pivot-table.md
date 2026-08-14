@@ -4,7 +4,7 @@
 
 ---
 
-> **Required common usings:** `Syncfusion.XlsIO`, `System`
+> **Required common usings:** `Syncfusion.XlsIO`, `Syncfusion.XlsIO.Implementation`, `System`
 > **Required usings for .NET Core / .NET 5+ / ASP.NET Core:** `Syncfusion.Drawing`
 > **Required usings for .NET Framework (Windows):** `System.Drawing`
 
