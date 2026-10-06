@@ -10,12 +10,18 @@
 using Syncfusion.DocIO;
 using Syncfusion.DocIO.DLS;
 ```
+## Required using for Cross-Platform
+
+```csharp
+using Syncfusion.DocIORenderer;
+```
 
 ## Required usings for Windows-Specific
 
 ```csharp
 using System;
 using System.IO;
+using Syncfusion.OfficeChartToImageConverter;
 ```
 
 ## Convert Markdown to Word
@@ -132,8 +138,13 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 {
     using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
     {
-        MemoryStream outputStream = new MemoryStream();
-        document.Save(outputStream, FormatType.Markdown);
+        // Initialize DocIORenderer to preserve Word elements (including charts) as images
+        using (DocIORenderer renderer = new DocIORenderer())
+        {
+            MemoryStream outputStream = new MemoryStream();
+            document.Save(outputStream, FormatType.Markdown);
+            // Renderer is properly disposed here
+        }
     }
 }
 ```
@@ -141,6 +152,7 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 #### Windows-Specific
 ```csharp
 WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.ChartToImageConverter = new ChartToImageConverter();
 MemoryStream outputStream = new MemoryStream();
 document.Save(outputStream, FormatType.Markdown);
 document.Close();
@@ -154,10 +166,15 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 {
     using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
     {
-        var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "Output.md");
-        using (FileStream outStream = new FileStream(outputPath, FileMode.Create, FileAccess.ReadWrite))
+        // Initialize DocIORenderer to preserve Word elements (including charts) as images
+        using (DocIORenderer renderer = new DocIORenderer())
         {
-            document.Save(outStream, FormatType.Markdown);
+            var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "Output.md");
+            using (FileStream outStream = new FileStream(outputPath, FileMode.Create, FileAccess.ReadWrite))
+            {
+                document.Save(outStream, FormatType.Markdown);
+            }
+            // Renderer is properly disposed here
         }
     }
 }
@@ -166,18 +183,44 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 #### Windows-Specific
 ```csharp
 WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.ChartToImageConverter = new ChartToImageConverter();
 document.Save("Output.md", FormatType.Markdown);
 document.Close();
 ```
 
 ### Export Markdown Instance from Word
 
-#### Common for Cross-Platform and Windows-Specific
+#### Cross-Platform
+```csharp
+    // Open a Word document from file stream
+    using (FileStream fileStream = new FileStream("Input.docx", FileMode.Open))
+    {
+        // Open a WordDocument instance 
+        using (WordDocument wordDoc = new WordDocument(fileStream, Syncfusion.DocIO.FormatType.Docx))
+        {
+            // Initialize DocIORenderer to preserve Word elements (including charts) as fallback images
+            using (DocIORenderer renderer = new DocIORenderer())
+            {
+                // Convert the Word document to Markdown
+                using (MarkdownDocument markdownDocument = wordDoc.GetMarkdownDocument())
+                {
+                    // Save or process the Markdown document as needed
+                    markdownDocument.Save("Output.md");
+                    // All resources are properly disposed here
+                }
+            }
+        }
+    }
+```
+
+#### Windows-Specific
 ```csharp
     // Open a Word document from file stream
     FileStream fileStream = new FileStream("Input.docx", FileMode.Open);
     // Open a WordDocument instance 
     WordDocument wordDoc = new WordDocument(fileStream, Syncfusion.DocIO.FormatType.Docx);
+    // Initialize ChartToImageConverter to preserve charts as fallback images
+    wordDoc.ChartToImageConverter = new ChartToImageConverter();
     // Convert the Word document to Markdown
     MarkdownDocument markdownDocument = wordDoc.GetMarkdownDocument();
     // Save or process the Markdown document as needed
@@ -197,9 +240,14 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 {
     using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
     {
-        document.SaveOptions.MarkdownExportImagesFolder = "D:\\WordToMdImages";
-        MemoryStream outputStream = new MemoryStream();
-        document.Save(outputStream, FormatType.Markdown);
+        // Initialize DocIORenderer to preserve Word elements (including charts) as images
+        using (DocIORenderer renderer = new DocIORenderer())
+        {
+            document.SaveOptions.MarkdownExportImagesFolder = "D:\\WordToMdImages";
+            MemoryStream outputStream = new MemoryStream();
+            document.Save(outputStream, FormatType.Markdown);
+            // Renderer is properly disposed here
+        }
     }
 }
 ```
@@ -207,6 +255,7 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 #### Windows-Specific
 ```csharp
 WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.ChartToImageConverter = new ChartToImageConverter();
 document.SaveOptions.MarkdownExportImagesFolder = "D:\\WordToMdImages";
 document.Save("Output.md", FormatType.Markdown);
 document.Close();
@@ -220,16 +269,21 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 {
     using (WordDocument document = new WordDocument(docStream, FormatType.Docx))
     {
-        document.SaveOptions.ImageNodeVisited += (sender, args) =>
+        // Initialize DocIORenderer to preserve Word elements (including charts) as images
+        using (DocIORenderer renderer = new DocIORenderer())
         {
-            string imagePath = @"D:\Output\" + Path.GetFileName(args.Uri);
-            using (FileStream fs = File.Create(imagePath))
-                args.ImageStream.CopyTo(fs);
-            args.Uri = imagePath;
-        };
-        
-        MemoryStream outputStream = new MemoryStream();
-        document.Save(outputStream, FormatType.Markdown);
+            document.SaveOptions.ImageNodeVisited += (sender, args) =>
+            {
+                string imagePath = @"D:\Output\" + Path.GetFileName(args.Uri);
+                using (FileStream fs = File.Create(imagePath))
+                    args.ImageStream.CopyTo(fs);
+                args.Uri = imagePath;
+            };
+            
+            MemoryStream outputStream = new MemoryStream();
+            document.Save(outputStream, FormatType.Markdown);
+            // Renderer is properly disposed here
+        }
     }
 }
 ```
@@ -237,6 +291,7 @@ using (FileStream docStream = new FileStream("Input.docx", FileMode.Open, FileAc
 #### Windows-Specific
 ```csharp
 WordDocument document = new WordDocument("Input.docx", FormatType.Docx);
+document.ChartToImageConverter = new ChartToImageConverter();
 document.SaveOptions.ImageNodeVisited += (sender, args) =>
 {
     string imagePath = @"D:\Output\" + Path.GetFileName(args.Uri);

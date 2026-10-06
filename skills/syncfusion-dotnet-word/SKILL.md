@@ -15,10 +15,10 @@ This skill supports two operational modes — generating C# code for the user's 
 
 ## Key Capabilities
 
-- **Create & Edit:** Documents (.docx, .doc, .rtf, .txt, .xml), paragraphs, headings, styles, lists, tables, charts, shapes, images, hyperlinks, bookmarks, watermarks, headers/footers, form fields, content controls, SmartArt, OLE objects
+- **Create & Edit:** Documents (.docx, .doc, .rtf, .txt, .xml), paragraphs, headings, styles, lists, tables, charts, shapes, images, hyperlinks, bookmarks, watermarks, headers/footers, form fields, content controls, SmartArt, OLE objects, embed fonts while saving Word documents
 - **Advanced Features:** Mail merge (DataTable, JSON, XML, custom objects), track changes, comments, mathematical equations (LaTeX), compare/split/merge documents, table of contents
-- **Conversion:** Word to PDF (font embedding, PDF/A, accessibility), Word to Image (PNG, JPEG, BMP, TIFF), HTML ↔ DOCX, RTF ↔ DOCX, Text ↔ DOCX, XML ↔ DOCX
-- **Security:** Password encryption/decryption, document protection with editable ranges, macro management
+- **Conversion:** Word to PDF (font embedding, custom font registration, PDF/A, accessibility), Word to Image (PNG, JPEG, BMP, TIFF, custom font registration), HTML ↔ DOCX, RTF ↔ DOCX, Text ↔ DOCX, XML ↔ DOCX
+- **Security:** Password encryption/decryption, document protection with editable ranges, macro management, and digital signatures
 
 ## Prerequisites
 
@@ -106,7 +106,7 @@ All templates and snippets are in the `references/` folder:
 | File | Contents |
 |---|---|
 | **template.csx** | Base CSX script structure (Mode 2 only) |
-| **document-structure.md** | Create/load document, add sections, page setup, save to file or stream, supported formats |
+| **document-structure.md** | Create/load document, add sections, page setup, save to file or stream, embed fonts while saving DOCX, supported formats |
 | **styles-and-formats.md** | Paragraphs, headings, bullet & numbered lists |
 | **paragraph-and-styles.md** | Add paragraphs, paragraph formatting, styles (built-in/custom), text formatting, tab stops, breaks, symbols, text boxes |
 | **tables.md** | Create tables, cell formatting, merge cells |
@@ -126,10 +126,11 @@ All templates and snippets are in the `references/` folder:
 | **markdown-conversion.md** | Convert Markdown to DOCX, convert DOCX to Markdown, customize images, CommonMark and GitHub-flavored syntax support |
 | **text-conversions.md** | Convert Text to DOCX, convert DOCX to Text, extract plain text, preserve text content |
 | **xml-conversions.md** | Convert Word to XML (WordML), convert XML to Word, Word Processing XML format (2007+) |
-| **word-to-pdf.md** | Convert DOCX to PDF, embed fonts, PDF/A conformance, accessible PDF, preserve form fields, font substitution, fallback fonts by script type and Unicode ranges |
-| **word-to-image.md** | Convert DOCX to Image | Convert specific page to image | Convert Page range to image |
+| **word-to-pdf.md** | Convert DOCX to PDF, embed fonts, custom font registration, PDF/A conformance, accessible PDF, preserve form fields, font substitution, fallback fonts by script type and Unicode ranges |
+| **word-to-image.md** | Convert DOCX to Image, custom font registration, convert specific page or page range to image |
 | **word-to-odt.md** | Convert Word to ODT, preserve formatting and content, supported document elements, text formatting |
 | **encryption.md** | Encrypt with password, open encrypted doc, remove encryption, protect from editing, editable ranges |
+| **digital-signature.md** | Add invisible digital signatures, insert and sign one or multiple visible signature lines, specify the signature standard, validate, inspect, and remove signatures; snippets are common to cross-platform and Windows-specific apps |
 | **watermark.md** | Text and picture watermarks, watermark layout, scaling, washout effect, remove watermark |
 | **find-and-replace.md** | Find/FindAll/FindNext, Replace (string/regex), ReplaceSingleLine, and FindItem* APIs |
 | **footnotes-and-endnotes.md** | Add footnotes and endnotes, set positions (bottom of page/end of section), numbering formats, separators, modify content, remove notes |

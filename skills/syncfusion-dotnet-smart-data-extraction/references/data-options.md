@@ -7,7 +7,7 @@ Explanation of common `DataExtractor` properties and option classes used to cont
 ## ConfidenceThreshold
 - Type: `double` (0.0 — 1.0)
 - Default: `0.6` (library default)
-- What: A property on `DataExtractor` that filters out detected objects (tables, forms, etc.) whose detection score is below the threshold. Higher values favor precision; lower values favor recall.
+- What: A property on `DataExtractor` that filters out detected objects (tables, forms, barcodes, etc.) whose detection score is below the threshold. Higher values favor precision; lower values favor recall.
 Usage:
 ```csharp
 var extractor = new DataExtractor();

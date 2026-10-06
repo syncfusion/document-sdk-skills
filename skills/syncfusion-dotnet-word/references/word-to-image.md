@@ -189,10 +189,119 @@ using (WordDocument wordDocument = new WordDocument(@"Template.docx", FormatType
     }
 }
 ```
+## Custom Font Registration
+
+Register custom fonts for Word-to-Image conversion when they are not installed on the system.
+
+### Required common usings
+
+```csharp
+using Syncfusion.Drawing.Fonts;
+```
+
+### Supported Font Formats
+
+- TrueType Fonts (.ttf)
+- OpenType Fonts (.otf)
+
+### Register Fonts from a Folder
+
+```csharp
+//Specify the path to the folder containing font files.
+FontManager.RegisterFonts(@"C:\CustomFonts");
+```
+
+> Supported in .NET 8.0 and later. The folder must be accessible; otherwise this method throws `DirectoryNotFoundException`.
+
+### Full Example
+
+#### Cross-Platform
+
+```csharp
+//Register custom fonts before conversion
+FontManager.RegisterFonts(@"C:\CustomFonts");
+
+using (FileStream docStream = new FileStream(inputPath, FileMode.Open, FileAccess.Read))
+{
+    using (WordDocument wordDocument = new WordDocument(docStream, FormatType.Docx))
+    {
+        using (DocIORenderer render = new DocIORenderer())
+        {
+            Stream[] imageStreams = wordDocument.RenderAsImages();
+            for (int i = 0; i < imageStreams.Length; i++)
+            {
+                var imageOutputPath = Path.Combine(outputPath, $"WordToImage_{i}.jpeg");
+                using (FileStream fileStreamOutput = File.Create(imageOutputPath))
+                {
+                    imageStreams[i].CopyTo(fileStreamOutput);
+                }
+            }
+        }
+    }
+}
+
+//Clear all registered fonts after conversion
+FontManager.ClearRegisteredFonts(true);
+```
+
+#### Windows-Specific
+
+```csharp
+//Register custom fonts before conversion
+FontManager.RegisterFonts(@"C:\CustomFonts");
+
+using (WordDocument wordDocument = new WordDocument("Template.docx", FormatType.Docx))
+{
+    wordDocument.ChartToImageConverter = new ChartToImageConverter();
+    wordDocument.ChartToImageConverter.ScalingMode = ScalingMode.Normal;
+    Image[] images = wordDocument.RenderAsImages(ImageType.Bitmap);
+    for (int i = 0; i < images.Length; i++)
+    {
+        images[i].Save("WordToImage_" + i + ".jpeg", ImageFormat.Jpeg);
+    }
+}
+
+//Clear all registered fonts after conversion
+FontManager.ClearRegisteredFonts(true);
+```
+
+### Register Custom Fonts from Streams
+
+```csharp
+List<Stream> fontStreams = new List<Stream>();
+fontStreams.Add(File.OpenRead("Arial.ttf"));
+fontStreams.Add(File.OpenRead("Calibri.ttf"));
+
+FontManager.RegisterFonts(fontStreams);
+```
+
+### Get Registered Font Names
+
+```csharp
+List<string> registeredFontNames = FontManager.RegisteredFontNames;
+foreach (string registeredFontName in registeredFontNames)
+{
+    Console.WriteLine(registeredFontName);
+}
+```
+
+### Clear Registered Fonts
+
+```csharp
+// Clear all registered fonts and dispose the associated font streams.
+FontManager.ClearRegisteredFonts(true);
+```
+
+### Placeholders
+- `@"C:\CustomFonts"` → Replace with `"{font-folder-path}"`
+- `"Arial.ttf"`, `"Calibri.ttf"` → Replace with `"{font-file-path}"`
+- `"Fonts"` → Replace with `"{font-folder-path}"`
+
 ### Key Features
 - **Convert entire document** to multiple image files
 - **Convert specific page** to single image (useful for thumbnails)
 - **Convert page range** to multiple images
+- **Custom font registration** for fonts not installed on the system
 - **Custom image resolution** support
 - **Multiple formats** supported: JPEG, PNG, BMP, TIFF
 - **Fallback fonts** for missing glyphs

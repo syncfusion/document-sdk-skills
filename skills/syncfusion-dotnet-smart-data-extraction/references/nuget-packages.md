@@ -64,13 +64,15 @@ Always consult this file during **Step 1** of Mode 1 to determine the correct pa
 
 ---
 
-> Required **additionally** during for extracting the structure date from PDF or Image conversion.
+> Required **additionally** for extracting document structure from PDF or Image conversion (layout detection + barcode recognition).
 
-| Application Type | NuGet Package | Install Command |
+| Application Type | NuGet Packages | Install Commands |
 |---|---|---|
-| Windows Forms / Console (.NET Framework) | `Microsoft.ML.OnnxRuntime` v1.18.0 | `Install-Package Microsoft.ML.OnnxRuntime` |
-| WPF | `Microsoft.ML.OnnxRuntime` v1.18.0 | `Install-Package Microsoft.ML.OnnxRuntime` |
-| ASP.NET MVC5 | `Microsoft.ML.OnnxRuntime` v1.18.0 | `Install-Package Microsoft.ML.OnnxRuntime` |
+| Windows Forms / Console (.NET Framework) | `Microsoft.ML.OnnxRuntime` v1.18.0; `ZXing.Net` v0.16.11 | `Install-Package Microsoft.ML.OnnxRuntime`; `Install-Package ZXing.Net -Version 0.16.11` |
+| WPF | `Microsoft.ML.OnnxRuntime` v1.18.0; `ZXing.Net` v0.16.11 | `Install-Package Microsoft.ML.OnnxRuntime`; `Install-Package ZXing.Net -Version 0.16.11` |
+| ASP.NET MVC5 | `Microsoft.ML.OnnxRuntime` v1.18.0; `ZXing.Net` v0.16.11 | `Install-Package Microsoft.ML.OnnxRuntime`; `Install-Package ZXing.Net -Version 0.16.11` |
+| ASP.NET Core / Console (.NET Core) | `Microsoft.ML.OnnxRuntime` v1.18.0; `ZXing.Net` v0.16.11 | `Install-Package Microsoft.ML.OnnxRuntime`; `Install-Package ZXing.Net -Version 0.16.11` |
+| Blazor / MAUI / WinUI / Xamarin | `Microsoft.ML.OnnxRuntime` v1.18.0; `ZXing.Net` v0.16.11 | `Install-Package Microsoft.ML.OnnxRuntime`; `Install-Package ZXing.Net -Version 0.16.11` |
 
 ---
 

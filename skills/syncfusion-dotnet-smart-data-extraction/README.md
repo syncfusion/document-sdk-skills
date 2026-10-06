@@ -33,9 +33,10 @@ dotnet add package Syncfusion.SmartDataExtractor.Net.Core
 
 A concise overview of the primary API surface for the Smart Data Extractor.
 
-- **DataExtractor**: Identify text elements, images, headers, footers, and tables (including regions, header rows, columns, cell boundaries, and merged cells).
+- **DataExtractor**: Identify text elements, images, headers, footers, barcodes, and tables (including regions, header rows, columns, cell boundaries, and merged cells).
 - **Table extraction**: Specialized capability to extract tabular data.
 - **Form recognition**: Detects and processes structured form data.
+- **Barcode detection**: Identifies and decodes barcodes with confidence scoring.
 - **Page-level control**: Extract data from specific pages or defined page ranges.
 - **Confidence threshold**: Results are filtered based on a configurable confidence score (0.0–1.0).
 

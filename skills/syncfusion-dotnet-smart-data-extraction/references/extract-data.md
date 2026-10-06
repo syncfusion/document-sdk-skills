@@ -8,6 +8,7 @@ Quick, copy-pasteable examples showing the primary `DataExtractor` usage pattern
 ```csharp
 using System.IO;
 using System.Text;
+using Syncfusion.DocIO;
 using Syncfusion.SmartDataExtractor;
 using Syncfusion.SmartTableExtractor;
 using Syncfusion.SmartFormRecognizer;
@@ -157,6 +158,25 @@ pdfDocAsync.Save("annotated_doc_async.pdf");
 pdfDocAsync.Close(true);
 ```
 
+## 12. Convert PDF to Word Document
+
+```csharp
+// sync - Extract as Word Document with table and form detection
+using var docStream = new FileStream("Data/Input.pdf", FileMode.Open, FileAccess.Read);
+WordDocument document = extractor.ExtractDataAsWordDocument(docStream);
+using MemoryStream stream = new MemoryStream();
+document.Save(stream, FormatType.Docx);
+document.Close();
+```
+
+## 13. Convert PDF to HTML
+
+```csharp
+// sync - Extract document content as formatted HTML string
+using var docStream = new FileStream("Data/Input.pdf", FileMode.Open, FileAccess.Read);
+string htmlContent = extractor.ExtractDataAsHtml(docStream);
+File.WriteAllText("output.html", htmlContent, Encoding.UTF8);
+```
 ## Public API reference
 
 - Properties (on `DataExtractor`):
@@ -175,6 +195,8 @@ pdfDocAsync.Close(true);
 	- `Stream ExtractDataAsPdfStream(Stream input)` — annotated PDF bytes (caller disposes)
 	- `PdfLoadedDocument ExtractDataAsPdfDocument(Stream input)` — annotated PDF document
 	- `MarkdownDocument ExtractDataAsMarkdownDocument(Stream input)` — extract structured Markdown document
+	- `WordDocument ExtractDataAsWordDocument(Stream input)` — convert extracted document content to a Word document
+	- `string ExtractDataAsHtml(Stream input)` — convert extracted document content to HTML string
 
 - Asynchronous methods:
 	- `Task<string> ExtractDataAsJsonAsync(Stream input, CancellationToken cancellationToken = default)`

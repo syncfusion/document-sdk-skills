@@ -155,6 +155,35 @@ doc.Save(stream, FormatType.Docx);
 stream.Position = 0;
 ```
 
+### Embed Fonts in Word Document
+
+Embed the fonts used in a Word document directly into the saved DOCX file so the document keeps the same appearance on another machine.
+
+#### Cross-Platform
+```csharp
+using Syncfusion.DocIORenderer;
+
+using (WordDocument document = new WordDocument("Input.docx", FormatType.Docx))
+{
+    using DocIORenderer renderer = new DocIORenderer();
+    document.SaveOptions.EmbedFonts = true;
+    document.Save("Output.docx", FormatType.Docx);
+    document.Close();
+}
+```
+
+#### Windows-Specific
+```csharp
+using (WordDocument document = new WordDocument("Input.docx", FormatType.Docx))
+{
+    document.SaveOptions.EmbedFonts = true;
+    document.Save("Output.docx", FormatType.Docx);
+    document.Close();
+}
+```
+
+> This feature is supported for DOCX documents. For cross-platform applications, initialize `DocIORenderer` before saving with embedded fonts.
+
 ### Supported Formats
 
 #### Common for Cross-Platform and Windows-Specific

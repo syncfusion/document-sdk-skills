@@ -23,6 +23,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 
 ### JavaScript
 - **PDF** - Create, read and edit PDF files with support for forms, annotations, digital signatures, merge/split, text/image extraction, redaction, and watermarks across TypeScript, JavaScript, Angular, React, Vue, and ASP.NET platforms.
+- **PowerPoint (PPTX)** - Create, open, modify, and save PowerPoint presentations with support for slides, text boxes, paragraphs, and text formatting across TypeScript, JavaScript, Angular, React, Vue, and Node.js platforms.
 
 ### Flutter
 - **PDF** - Create, edit, and convert PDF files with support for forms, digital signatures, encryption and conformance standards (PDF/A-1b, PDF/A-2b and PDF/A-3b).
@@ -34,7 +35,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 
 **Step 1: Checkout and copy the required skills**
 
-Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-javascript-pdf`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
+Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-javascript-pdf`, `syncfusion-javascript-powerpoint`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
 
 **Step 2: Install the skills**
 
@@ -62,6 +63,8 @@ your-workspace/
 │   ├── syncfusion-javascript-pdf/
 │   │   └── SKILL.md
 │   ├── syncfusion-flutter-pdf/
+│   │   └── SKILL.md
+│   ├── syncfusion-javascript-powerpoint/
 │   │   └── SKILL.md
 │   ├── syncfusion-flutter-excel/
 │   │   └── SKILL.md
@@ -160,6 +163,13 @@ npm install @syncfusion/ej2-pdf --save
 npm install @syncfusion/ej2-pdf-data-extract --save
 ```
 
+### npm Packages (JavaScript PowerPoint)
+
+```bash
+# PowerPoint library
+npm install @syncfusion/ej2-pptx --save
+```
+
 ### Flutter Packages
 
 Add to your `pubspec.yaml`:
@@ -200,6 +210,7 @@ For skills that explicitly document execution mode, creates a temporary script, 
 | .NET PDF to Image Converter | ✅ | ❌ | Code generation only |
 | Java Word | ✅ | ❌ | Code generation only |
 | JavaScript PDF | ✅ | ❌ | Code generation only |
+| JavaScript PowerPoint | ✅ | ❌ | Code generation only |
 | Flutter PDF | ✅ | ❌ | Code generation only |
 | Flutter Excel | ✅ | ❌ | Code generation only |
 
@@ -319,6 +330,17 @@ Generate a React example to merge two PDF files using Syncfusion JavaScript PDF 
 Show me how to extract text from a PDF using @syncfusion/ej2-pdf-data-extract.
 ```
 
+### JavaScript PowerPoint
+
+```
+# Mode 1 — Code generation
+Show me TypeScript code to create a PowerPoint presentation with a blank slide using Syncfusion JavaScript PowerPoint Library.
+How do I open an existing .pptx file and add a new slide using @syncfusion/ej2-pptx?
+Generate a React example to create and download a PowerPoint presentation using Syncfusion.
+How do I add a text box with bold, centered text to a slide using @syncfusion/ej2-pptx?
+Show me how to open a presentation from a Uint8Array, modify it, and save it back using ej2-pptx.
+```
+
 ### Flutter Excel
 
 ```
@@ -353,6 +375,7 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 - [Syncfusion XlsIO Documentation](https://help.syncfusion.com/document-processing/excel/excel-library/net/overview)
 - [Syncfusion PDF Documentation](https://help.syncfusion.com/document-processing/pdf/pdf-library/net/overview)
 - [Syncfusion PdfToImageConverter Documentation](https://help.syncfusion.com/document-processing/pdf/conversions/pdf-to-image/net/convert-pdf-to-image)
+- [Syncfusion Calculate Documentation](https://help.syncfusion.com/windowsforms/calculation-engine/overview)
 - [Syncfusion Smart Data Extractor Documentation](https://help.syncfusion.com/document-processing/data-extraction/overview)
 
 
@@ -361,6 +384,7 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 
 ### JavaScript
 - [Syncfusion JavaScript PDF Documentation](https://help.syncfusion.com/document-processing/pdf/pdf-library/javascript/overview)
+- [Syncfusion JavaScript PowerPoint Documentation](https://help.syncfusion.com/document-processing/powerpoint/powerpoint-library/javascript/overview)
 
 ### Flutter
 - [Syncfusion Flutter PDF Documentation](https://help.syncfusion.com/document-processing/pdf/pdf-library/flutter/overview)

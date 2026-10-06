@@ -26,7 +26,7 @@ using var disk = new FileStream("Data/Input.pdf", FileMode.Open);
 
 # SmartDataExtractor — Quick Reference
 
-Common tasks and concise code examples for using `DataExtractor` to extract document structure, tables and forms.
+Common tasks and concise code examples for using `DataExtractor` to extract document structure, tables, barcodes and forms.
 
 ---
 

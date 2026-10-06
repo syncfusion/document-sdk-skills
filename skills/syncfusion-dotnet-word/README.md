@@ -11,10 +11,10 @@ See **[SKILL.md](SKILL.md)** for the full intent-routing guide and rules.
 
 ## Key Capabilities
 
-- **Create & Edit:** Documents (.docx, .doc, .rtf, .txt, .xml), paragraphs, headings, styles, lists, tables, charts, shapes, images, hyperlinks, bookmarks, watermarks, headers/footers, form fields, content controls, SmartArt, OLE objects
+- **Create & Edit:** Documents (.docx, .doc, .rtf, .txt, .xml), paragraphs, headings, styles, lists, tables, charts, shapes, images, hyperlinks, bookmarks, watermarks, headers/footers, form fields, content controls, SmartArt, OLE objects, embed fonts while saving Word documents
 - **Advanced Features:** Mail merge (DataTable, JSON, XML, custom objects), track changes, comments, mathematical equations (LaTeX), compare/split/merge documents, table of contents
-- **Conversion:** Word to PDF (font embedding, PDF/A, accessibility), Word to Image (PNG, JPEG, BMP, TIFF), HTML ↔ DOCX, RTF ↔ DOCX, Text ↔ DOCX, XML ↔ DOCX
-- **Security:** Password encryption/decryption, document protection with editable ranges, macro management
+- **Conversion:** Word to PDF (font embedding, custom font registration, PDF/A, accessibility), Word to Image (PNG, JPEG, BMP, TIFF, custom font registration), HTML ↔ DOCX, RTF ↔ DOCX, Text ↔ DOCX, XML ↔ DOCX
+- **Security:** Password encryption/decryption, document protection with editable ranges, macro management, and digital signatures
 
 
 ## Getting Started

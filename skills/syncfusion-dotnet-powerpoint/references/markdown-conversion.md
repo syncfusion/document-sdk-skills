@@ -11,28 +11,74 @@ using System.Text;
 using Syncfusion.Office.Markdown;
 ```
 
+### Required using for Cross-Platform
+
+```csharp
+using Syncfusion.PresentationRenderer;
+```
+
+### Required usings for Windows-Specific
+
+```csharp
+using Syncfusion.OfficeChartToImageConverter;
+```
+
 ---
 
 ## Convert PowerPoint Presentation to Markdown
 
 ### Export Markdown Document to Powerpoint
 
-#### Common code for Cross-Platform and Windows-Specific
-
+#### Cross-Platform
 ```csharp
 //Open an existing Presentation document.
 using (IPresentation presentation = Presentation.Open("Input.pptx"))
 {
+    //Initialize the PresentationRenderer to preserve Word elements (including charts) as fallback images.
+    presentation.PresentationRenderer = new PresentationRenderer();
+
     //Save the PowerPoint Presentation as a Markdown file.
     presentation.Save("Output.md");
 }
 ```
+
+#### Windows-Specific
+```csharp
+//Open an existing Presentation document.
+using (IPresentation presentation = Presentation.Open("Input.pptx"))
+{
+    //Initialize the ChartToImageConverter to preserve charts as fallback images.
+    presentation.ChartToImageConverter = new ChartToImageConverter();
+
+    //Save the PowerPoint Presentation as a Markdown file.
+    presentation.Save("Output.md");
+}
+```
+
 ### Export Markdown Instance from Powerpoint
 
-#### Common code for Cross-Platform and WIndows-Specific
+#### Cross-Platform
 ```csharp
     //Open an existing Presentation document.
     IPresentation presentation = Presentation.Open("Input.pptx");
+    // Initialize the PresentationRenderer to preserve Word elements (including charts) as fallback images.
+    presentation.PresentationRenderer = new PresentationRenderer();
+    // Convert the Presentation document to Markdown Instance.
+    MarkdownDocument markdownDocument = presentation.GetMarkdownDocument();
+    // Save the Markdown document to a file.
+    markdownDocument.Save("Output.md");
+    // Dispose the Markdown document instance.
+    markdownDocument.Dispose();
+    // Dispose the Presentation instance.
+    presentation.Dispose();
+```
+
+#### Windows-Specific
+```csharp
+    //Open an existing Presentation document.
+    IPresentation presentation = Presentation.Open("Input.pptx");
+    // Initialize the ChartToImageConverter to preserve charts as fallback images.
+    presentation.ChartToImageConverter = new ChartToImageConverter();
     // Convert the Presentation document to Markdown Instance.
     MarkdownDocument markdownDocument = presentation.GetMarkdownDocument();
     // Save the Markdown document to a file.
@@ -88,12 +134,38 @@ Customize Markdown output by configuring image export settings, character encodi
 
 ### Customize Image path
 Control how images are saved and referenced in the generated Markdown file.
+
+#### Cross-Platform
 ```csharp
 // Open an existing Presentation document.
 using (IPresentation presentation = Presentation.Open("Input.pptx"))
 {
-	// Hook the event to customize the image.
+    // Initialize the PresentationRenderer to preserve Word elements (including charts) as fallback images.
+    presentation.PresentationRenderer = new PresentationRenderer();
+	 // Hook the event to customize the image.
     presentation.MdSaveOptions.ImageNodeVisited += SaveImage;
+    // Save the PowerPoint Presentation as a Markdown file.
+    presentation.Save(@"Output.md");
+}
+
+static void SaveImage(object sender, MdImageNodeVisitedEventArgs args)
+{
+    string imagepath = @"D:\Temp\Image1.png";
+	 // Save the image stream as a file.
+	using (FileStream fileStreamOutput = File.Create(imagepath))
+		args.ImageStream.CopyTo(fileStreamOutput);
+	 // Set the URI to be used for the image in the output Markdown. 
+	args.Uri = imagepath;
+}
+```
+
+#### Windows-Specific
+```csharp
+// Open an existing Presentation document.
+using (IPresentation presentation = Presentation.Open("Input.pptx"))
+{
+    // Initialize the ChartToImageConverter to preserve charts as fallback images.
+    presentation.ChartToImageConverter = new ChartToImageConverter();
     // Save the PowerPoint Presentation as a Markdown file.
     presentation.Save(@"Output.md");
 }
@@ -114,10 +186,27 @@ static void SaveImage(object sender, MdImageNodeVisitedEventArgs args)
 
 Specify the character encoding used when saving the Markdown file, including UTF-8, UTF-16, ASCII, and other supported encodings.
 
+#### Cross-Platform
 ```csharp
 // Open an existing Presentation document.
  using (IPresentation presentation = Presentation.Open("Input.pptx"))
  {
+    // Initialize the PresentationRenderer to preserve Word elements (including charts) as fallback images.
+    presentation.PresentationRenderer = new PresentationRenderer();
+    // Set the encoding for the Markdown file.
+    presentation.MdSaveOptions.Encoding = Encoding.ASCII;
+    // Save the PowerPoint Presentation as a Markdown file.
+    presentation.Save("Output.md");
+ }
+```
+
+#### Windows-Specific
+```csharp
+// Open an existing Presentation document.
+ using (IPresentation presentation = Presentation.Open("Input.pptx"))
+ {
+    // Initialize the ChartToImageConverter to preserve charts as fallback images.
+    presentation.ChartToImageConverter = new ChartToImageConverter();
     // Set the encoding for the Markdown file.
     presentation.MdSaveOptions.Encoding = Encoding.ASCII;
     // Save the PowerPoint Presentation as a Markdown file.

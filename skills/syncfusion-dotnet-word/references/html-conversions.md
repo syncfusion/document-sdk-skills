@@ -199,7 +199,7 @@ using (FileStream fileStream = new FileStream("Input.docx", FileMode.Open, FileA
         document.SaveOptions.HtmlExportCssStyleSheetType = CssStyleSheetType.External;
         document.SaveOptions.HtmlExportCssStyleSheetFileName = "UserDefinedFileName.css";
         // Export images as Base64 inside HTML
-        document.SaveOptions.HtmlExportImagesAsBase64 = true;
+        document.SaveOptions.HTMLExportImageAsBase64 = true;
         // Specify folder for exported images
         document.SaveOptions.HtmlExportImagesFolder = @"Output\Images\";
 

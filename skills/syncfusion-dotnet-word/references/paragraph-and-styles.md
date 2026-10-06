@@ -10,6 +10,10 @@
 using Syncfusion.DocIO;
 using Syncfusion.DocIO.DLS;
 ```
+## Required using for Cross-Platform
+```csharp
+using Syncfusion.Drawing;
+```
 
 ## Add Paragraph
 

@@ -426,6 +426,102 @@ private void FontSettings_SubstituteFont(object sender, SubstituteFontEventArgs 
 
 ---
 
+## Custom Font Registration
+
+Register custom fonts for Word-to-PDF conversion when they are not installed on the system.
+
+### Required common usings
+
+```csharp
+using Syncfusion.Drawing.Fonts;
+```
+
+### Supported Font Formats
+
+- TrueType Fonts (.ttf)
+- OpenType Fonts (.otf)
+
+### Register Fonts from a Folder
+
+```csharp
+//Specify the path to the folder containing font files.
+FontManager.RegisterFonts(@"C:\CustomFonts");
+```
+
+> Supported in .NET 8.0 and later. The folder must be accessible; otherwise this method throws `DirectoryNotFoundException`.
+
+### Full Example
+
+#### Cross-Platform
+
+```csharp
+//Register custom fonts before conversion
+FontManager.RegisterFonts(@"C:\CustomFonts");
+
+using var fs = new FileStream("document.docx", FileMode.Open, FileAccess.Read);
+using var wordDoc = new WordDocument(fs, FormatType.Automatic);
+
+using var renderer = new DocIORenderer();
+using var pdfDoc = renderer.ConvertToPDF(wordDoc);
+
+using var outputStream = new FileStream("output.pdf", FileMode.Create, FileAccess.Write);
+pdfDoc.Save(outputStream);
+
+//Clear all registered fonts after conversion
+FontManager.ClearRegisteredFonts(true);
+```
+
+#### Windows-Specific
+
+```csharp
+//Register custom fonts before conversion
+FontManager.RegisterFonts(@"C:\CustomFonts");
+
+WordDocument wordDocument = new WordDocument("Template.docx", FormatType.Docx);
+DocToPDFConverter converter = new DocToPDFConverter();
+PdfDocument pdfDocument = converter.ConvertToPDF(wordDocument);
+pdfDocument.Save("WordtoPDF.pdf");
+pdfDocument.Close(true);
+wordDocument.Close();
+
+//Clear all registered fonts after conversion
+FontManager.ClearRegisteredFonts(true);
+```
+
+### Register Custom Fonts from Streams
+
+```csharp
+List<Stream> fontStreams = new List<Stream>();
+fontStreams.Add(File.OpenRead("Arial.ttf"));
+fontStreams.Add(File.OpenRead("Calibri.ttf"));
+
+FontManager.RegisterFonts(fontStreams);
+```
+
+### Get Registered Font Names
+
+```csharp
+List<string> registeredFontNames = FontManager.RegisteredFontNames;
+foreach (string registeredFontName in registeredFontNames)
+{
+    Console.WriteLine(registeredFontName);
+}
+```
+
+### Clear Registered Fonts
+
+```csharp
+// Clear all registered fonts and dispose the associated font streams.
+FontManager.ClearRegisteredFonts(true);
+```
+
+### Placeholders
+- `@"C:\CustomFonts"` → Replace with `"{font-folder-path}"`
+- `"Arial.ttf"`, `"Calibri.ttf"` → Replace with `"{font-file-path}"`
+- `"Fonts"` → Replace with `"{font-folder-path}"`
+
+---
+
 ## Fallback Fonts
 
 Use fallback fonts for missing glyphs in specific script types or Unicode ranges.
