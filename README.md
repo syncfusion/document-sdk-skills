@@ -17,6 +17,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 - **Calculate** - Parse and compute formulas, expressions, and calculations with support for 400+ built-in functions, named ranges, array formulas, custom functions, and Excel-style formula evaluation.
 - **Smart Data Extraction** - Extract text, structured fields, form fields, and tables from PDFs and images as JSON or PDF output.
 - **PDF to Image Converter** - Convert PDF document pages to images.
+- **Document Chunking** - Split Word, PDF, PowerPoint, Excel, and Markdown documents into token-bounded, structure-aware chunks for RAG and vector indexing, with metadata and citations.
 
 ### Java
 - **Word (DOCX)** - Create and edit Word documents in Java with support for mail merge, track changes, comments, shapes, tables, encryption, and multi-format export (HTML, RTF, Markdown, XML).
@@ -24,6 +25,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 ### JavaScript
 - **PDF** - Create, read and edit PDF files with support for forms, annotations, digital signatures, merge/split, text/image extraction, redaction, and watermarks across TypeScript, JavaScript, Angular, React, Vue, and ASP.NET platforms.
 - **PowerPoint (PPTX)** - Create, open, modify, and save PowerPoint presentations with support for slides, text boxes, paragraphs, and text formatting across TypeScript, JavaScript, Angular, React, Vue, and Node.js platforms.
+- **Excel (XLSX)** - Create, open, edit, and save Excel workbooks in Node.js and browsers with worksheets, cells, formulas, styles, tables, charts, images, data validation, conditional formatting, and protection.
 
 ### Flutter
 - **PDF** - Create, edit, and convert PDF files with support for forms, digital signatures, encryption and conformance standards (PDF/A-1b, PDF/A-2b and PDF/A-3b).
@@ -35,7 +37,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 
 **Step 1: Checkout and copy the required skills**
 
-Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-javascript-pdf`, `syncfusion-javascript-powerpoint`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
+Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-dotnet-document-chunking`, `syncfusion-javascript-pdf`, `syncfusion-javascript-powerpoint`, `syncfusion-javascript-excel`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
 
 **Step 2: Install the skills**
 
@@ -60,11 +62,15 @@ your-workspace/
 │   │   └── SKILL.md
 │   ├── syncfusion-dotnet-smart-data-extraction/
 │   │   └── SKILL.md
+│   ├── syncfusion-dotnet-document-chunking/
+│   │   └── SKILL.md
 │   ├── syncfusion-javascript-pdf/
 │   │   └── SKILL.md
 │   ├── syncfusion-flutter-pdf/
 │   │   └── SKILL.md
 │   ├── syncfusion-javascript-powerpoint/
+│   │   └── SKILL.md
+│   ├── syncfusion-javascript-excel/
 │   │   └── SKILL.md
 │   ├── syncfusion-flutter-excel/
 │   │   └── SKILL.md
@@ -151,6 +157,11 @@ dotnet add package Syncfusion.Calculate.Base
 
 # Smart Data Extraction
 dotnet add package Syncfusion.SmartDataExtractor.Net.Core
+
+# Document Chunking
+dotnet add package Syncfusion.DocumentChunking.Net.Core
+# or, for portable / multi-target .NET
+dotnet add package Syncfusion.DocumentChunking.NET
 ```
 
 ### npm Packages (JavaScript PDF)
@@ -168,6 +179,13 @@ npm install @syncfusion/ej2-pdf-data-extract --save
 ```bash
 # PowerPoint library
 npm install @syncfusion/ej2-pptx --save
+```
+
+### npm Packages (JavaScript Excel)
+
+```bash
+# Excel library
+npm install @syncfusion/ej2-xlsx --save
 ```
 
 ### Flutter Packages
@@ -208,9 +226,11 @@ For skills that explicitly document execution mode, creates a temporary script, 
 | .NET Calculate | ✅ | ❌ | Code generation only |
 | .NET Smart Data Extraction | ✅ | ❌ | Code generation only |
 | .NET PDF to Image Converter | ✅ | ❌ | Code generation only |
+| .NET Document Chunking | ✅ | ❌ | Code generation only |
 | Java Word | ✅ | ❌ | Code generation only |
 | JavaScript PDF | ✅ | ❌ | Code generation only |
 | JavaScript PowerPoint | ✅ | ❌ | Code generation only |
+| JavaScript Excel | ✅ | ❌ | Code generation only |
 | Flutter PDF | ✅ | ❌ | Code generation only |
 | Flutter Excel | ✅ | ❌ | Code generation only |
 
@@ -311,6 +331,15 @@ Generate a C# snippet to enable OCR fallback during data extraction.
 Show me the C# code to convert pdf to image.
 ```
 
+### Document Chunking
+
+```
+# Mode 1 — Code generation
+Show me how to chunk a PDF by page for RAG using Syncfusion Document Chunking.
+Generate code to chunk uploaded streams with sourceName.
+How do I set MaxTokens and OverlapTokens for embeddings?
+```
+
 ### Flutter PDF
 
 ```
@@ -328,6 +357,16 @@ Show me TypeScript code to create a PDF document with text and images using Sync
 How do I add form fields and digital signatures to a PDF using @syncfusion/ej2-pdf?
 Generate a React example to merge two PDF files using Syncfusion JavaScript PDF library.
 Show me how to extract text from a PDF using @syncfusion/ej2-pdf-data-extract.
+```
+
+### JavaScript Excel
+
+```
+# Mode 1 — Code generation
+Show me @syncfusion/ej2-xlsx code to create a workbook with a title, header row, and data rows.
+Generate a TypeScript snippet to add an Excel table and style the header row.
+Write Node code using @syncfusion/ej2-xlsx to open a file, update B2, and save.
+How do I add data validation dropdowns and conditional formatting with ej2-xlsx?
 ```
 
 ### JavaScript PowerPoint
@@ -377,7 +416,7 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 - [Syncfusion PdfToImageConverter Documentation](https://help.syncfusion.com/document-processing/pdf/conversions/pdf-to-image/net/convert-pdf-to-image)
 - [Syncfusion Calculate Documentation](https://help.syncfusion.com/windowsforms/calculation-engine/overview)
 - [Syncfusion Smart Data Extractor Documentation](https://help.syncfusion.com/document-processing/data-extraction/overview)
-
+- [Syncfusion Document Chunking Documentation](https://help.syncfusion.com/document-processing/document-chunking-library/overview)
 
 ### Java
 - [Syncfusion DocIO for Java Documentation](https://help.syncfusion.com/document-processing/word/word-library/java/overview)
@@ -385,6 +424,7 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 ### JavaScript
 - [Syncfusion JavaScript PDF Documentation](https://help.syncfusion.com/document-processing/pdf/pdf-library/javascript/overview)
 - [Syncfusion JavaScript PowerPoint Documentation](https://help.syncfusion.com/document-processing/powerpoint/powerpoint-library/javascript/overview)
+- [Syncfusion JavaScript Excel Documentation](https://help.syncfusion.com/document-processing/excel/excel-library/javascript/overview)
 
 ### Flutter
 - [Syncfusion Flutter PDF Documentation](https://help.syncfusion.com/document-processing/pdf/pdf-library/flutter/overview)
