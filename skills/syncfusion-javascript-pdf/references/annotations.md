@@ -4,16 +4,19 @@
 
 1. [Overview](#overview)
 2. [Annotation Types](#annotation-types)
-3. [Adding Annotations](#adding-annotations)
-4. [Modifying Annotations](#modifying-annotations)
-5. [Removing Annotations](#removing-annotations)
-6. [Flattening Annotations](#flattening-annotations)
-7. [Import and Export](#import-and-export)
-8. [Best Practices](#best-practices)
+3. [Cloud Border Styles](#cloud-border-styles)
+4. [Adding Annotations](#adding-annotations)
+5. [Modifying Annotations](#modifying-annotations)
+6. [Removing Annotations](#removing-annotations)
+7. [Flattening Annotations](#flattening-annotations)
+8. [Import and Export](#import-and-export)
+9. [Best Practices](#best-practices)
+10. [Common Gotchas](#common-gotchas)
+11. [Related References](#related-references)
 
 ## Overview
 
-Annotations in Syncfusion's JavaScript PDF library enable interactive elements within PDF documents including comments, highlights, shapes, and markup. The library supports creating, modifying, importing, and exporting annotations with full control over appearance and behavior.
+Annotations in Syncfusion's JavaScript PDF library enable interactive elements within PDF documents including comments, highlights, shapes, and markup. The library supports creating, modifying, importing, and exporting annotations with full control over appearance and behavior. The library supports annotation appearance customization, including cloud border style effects for supported shape-based annotations.
 
 ## Annotation Types
 
@@ -184,6 +187,34 @@ document.save('output.pdf');
 document.destroy();
 ```
 
+## Cloud Border Styles
+
+Apply cloud-style borders to supported annotations using PdfBorderEffect. Cloud borders help visually emphasize annotations and preserve the appearance of review and markup workflows.
+
+### Supported Annotation Types
+
+- Rectangle annotations
+- Polygon annotations
+- Circle annotations
+- Ellipse annotations
+- Free text annotations
+
+### Key APIs
+
+- PdfBorderEffect
+- PdfBorderEffectStyle
+- borderEffect
+
+```typescript
+const borderEffect = new PdfBorderEffect();
+borderEffect.intensity = 2;
+borderEffect.style = PdfBorderEffectStyle.cloudy;
+
+annotation.borderEffect = borderEffect;
+```
+
+Use cloud border effects when annotations need stronger visual emphasis or when preserving review markup appearance during annotation modification workflows.
+
 ## Adding Annotations
 
 ### Basic Addition
@@ -289,6 +320,10 @@ document.destroy();
 4. **Flattening**: Flatten annotations before final document distribution
 5. **Performance**: Minimize number of complex annotations per page
 6. **Accessibility**: Add meaningful text descriptions for screen readers
+7. **Cloud Border Styling**: Use cloud border styles for review-oriented annotations.
+8. **Intensity Adjustment**: Adjust border effect intensity carefully to maintain readability.
+9. **Preserve Settings**: Preserve borderEffect settings when modifying annotations.
+10. **Consistency**: Apply cloud effects consistently across related annotations.
 
 ## Common Gotchas
 
@@ -298,6 +333,10 @@ document.destroy();
 4. **Bounds Validation**: Invalid bounds may cause rendering issues
 5. **Type Casting**: Cast to specific types when accessing annotations
 6. **Document State**: Some operations require saving before export
+7. **Type Support**: Cloud border effects are supported only by specific annotation types.
+8. **Intensity Impact**: Extreme intensity values may reduce readability.
+9. **Style Requirement**: Border effects require PdfBorderEffectStyle.cloudy to render as cloud borders.
+10. **Appearance Workflow**: Appearance changes may require saving the document before export workflows.
 
 ## Related References
 
@@ -305,3 +344,5 @@ document.destroy();
 - [Form Fields](./form-fields.md) - Interactive form elements
 - [Bookmarks](./bookmarks.md) - Document navigation
 - [Hyperlinks](./hyperlinks.md) - Link annotations
+- [Measurement Annotations](./annotations.md) - Dimension and markup tracking
+- [Templates](./templates.md) - Document stamps and templates

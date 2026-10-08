@@ -8,15 +8,19 @@
     - [Unordered Lists](#unordered-lists)
 - [Customizing Lists](#customizing-lists)
     - [Custom Markers](#custom-markers)
+    - [Image Markers](#image-markers)
     - [Custom Fonts](#custom-fonts)
 - [Nested Lists](#nested-lists)
 - [List Formatting](#list-formatting)
+- [List Pagination](#list-pagination)
+- [List Item Collection](#list-item-collection)
 - [Best Practices](#best-practices)
+- [Common Gotchas](#common-gotchas)
 - [Related References](#related-references)
 
 ## Overview
 
-The Syncfusion JavaScript PDF library provides comprehensive support for creating ordered and unordered lists in PDF documents. Lists can be customized with various markers, fonts, colors, and nested structures, offering flexible content organization.
+The Syncfusion JavaScript PDF library provides comprehensive support for creating ordered and unordered lists in PDF documents. Lists can be customized with various markers, custom image markers, fonts, colors, and nested structures, offering flexible content organization and branded list presentation. Lists can use standard markers or custom image-based markers for enhanced visual presentation.
 
 ## List Types
 
@@ -105,7 +109,7 @@ document.destroy();
 
 ### Custom Markers
 
-Change the marker style:
+Change the marker style of an unordered list using predefined marker styles. Marker customization supports both built-in marker styles and image-based markers.
 
 ```typescript
 import { PdfDocument, PdfPage, PdfUnorderedList, PdfUnorderedListStyle, PdfListItemCollection } from '@syncfusion/ej2-pdf';
@@ -129,6 +133,29 @@ document.save('output.pdf');
 // Destroy the document
 document.destroy();
 ```
+
+### Image Markers
+
+Use custom images as unordered list markers instead of standard bullet styles. Image markers help create branded, visual, or visually distinctive list presentations.
+
+Key APIs
+
+- PdfImageMarker
+- PdfBitmap
+- PdfUnorderedList
+- setMarker()
+
+```typescript
+import { PdfBitmap, PdfImageMarker, PdfUnorderedList } from '@syncfusion/ej2-pdf';
+
+const imageMarker: PdfImageMarker = {
+    image: new PdfBitmap(imageData)
+};
+
+unorderedList.setMarker(imageMarker);
+```
+
+Image markers are useful for branded reports, custom bullet styles, checklists, dashboards, and visually enhanced content.
 
 ### Custom Fonts
 
@@ -285,6 +312,11 @@ let count = list.items.count;
 4. **Text Wrapping**: Ensure sufficient width for text to wrap properly
 5. **Pagination**: Use layout format when lists may span multiple pages
 6. **Performance**: Create item collections once and reuse for multiple lists
+7. **Image Markers for Branding**: Use image markers for branding and visual consistency.
+8. **Marker Sizing**: Keep image marker sizes small to avoid layout issues.
+9. **Contrast**: Use high-contrast markers for readability.
+10. **Resource Reuse**: Reuse image resources when drawing multiple lists.
+11. **Baseline Alignment**: Ensure marker images align well with list text baselines.
 
 ## Common Gotchas
 
@@ -294,9 +326,15 @@ let count = list.items.count;
 4. **Marker Width**: Account for marker width when calculating available text space
 5. **Font Size**: Large fonts require more vertical space; adjust bounds accordingly
 6. **RTL Text**: Right-to-left text requires special handling with format settings
+7. **Image Marker Dimensions**: Large marker images may affect list spacing and alignment.
+8. **Layout Impact**: Image marker dimensions influence list layout.
+9. **Resolution**: Low-resolution images may appear blurred in PDFs.
+10. **Decorative Markers**: Excessively decorative markers may reduce readability.
+11. **List Support Limitation**: Image markers are supported only for unordered lists.
 
 ## Related References
 
 - [Text Rendering](./text-rendering.md) - Advanced text formatting
 - [Templates](./templates.md) - Reusable list templates
 - [Annotations](./annotations.md) - Adding annotations to lists
+- [Images](./images.md) - Loading and drawing image elements

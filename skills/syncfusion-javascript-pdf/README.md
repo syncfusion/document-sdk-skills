@@ -8,7 +8,7 @@ This directory contains comprehensive skill documentation for working with Syncf
 syncfusion-javascript-pdf/
 ├── README.md (this file)
 ├── SKILL.md (main skill entry point)
-└── references/ (20 detailed feature documentation files)
+└── references/ (22 detailed feature documentation files)
 ```
 
 ## Overview
@@ -103,7 +103,7 @@ For detailed platform-specific setup instructions, see:
 ✅ Draw text with multiple fonts and sizes  
 ✅ Add images (JPEG, PNG) with sizing/positioning  
 ✅ Draw shapes (rectangles, circles, lines, paths)  
-✅ Create tables and lists  
+✅ Create tables and lists (including custom image markers and advanced table layouts)  
 ✅ Apply colors, styling, and effects
 
 **Required Package:** `@syncfusion/ej2-pdf`
@@ -130,14 +130,14 @@ For detailed platform-specific setup instructions, see:
 - `@syncfusion/ej2-pdf-data-extract` (for extraction and redaction)
 
 ### Security Features
-✅ Password protection  
-✅ Document encryption  
-✅ Permission settings  
-✅ Digital signature validation
+✅ Password protection (user and owner passwords)  
+✅ Document encryption (RC4 and AES 128/256-bit)  
+✅ Permission settings and access control  
+✅ Digital signature validation and Long-Term Validation (LTV)
 
 **Required Package:** `@syncfusion/ej2-pdf`
 
-## Available Reference Files (20 Total)
+## Available Reference Files (22 Total)
 
 ### Core Document Operations
 
@@ -180,80 +180,96 @@ For detailed platform-specific setup instructions, see:
    - Pens and brushes
    - Complex paths and transformations
 
-7. **[lists.md](references/lists.md)** (~150 lines)
-   - Ordered and unordered lists
-   - Nested lists
-   - Custom list markers
+7. **[tables.md](references/tables.md)** (~500 lines)
+   - Creating tables with PdfGrid (data source and manual)
+   - Table and cell styling, borders, and built-in themes
+   - Pagination, repeated headers, and row break prevention
+   - Cell spanning, embedded images, background images, and hyperlinks
+   - Nested tables and horizontal overflow handling
 
-8. **[templates.md](references/templates.md)** (~200 lines)
+8. **[lists.md](references/lists.md)** (~200 lines)
+   - Ordered and unordered lists
+   - Custom markers and image markers (PdfImageMarker)
+   - Nested lists and custom fonts
+   - List pagination and formatting
+
+9. **[templates.md](references/templates.md)** (~200 lines)
    - Page templates
    - Reusable content
    - Dynamic stamping
 
 ### Interactive Features
 
-9. **[annotations.md](references/annotations.md)** (~300 lines)
-   - Annotation types
-   - Free text, ink, and stamp annotations
-   - Flattening annotations
+10. **[annotations.md](references/annotations.md)** (~350 lines)
+    - Annotation types (popup, free text, line, shapes, ink, text markup)
+    - Cloud border style customization (`borderEffect`)
+    - Adding, modifying, and deleting annotations
+    - Flattening annotations
 
-10. **[bookmarks.md](references/bookmarks.md)** (~200 lines)
+11. **[bookmarks.md](references/bookmarks.md)** (~200 lines)
     - Creating navigation bookmarks
     - Nested bookmark structures
     - Bookmark modification
 
-11. **[form-fields.md](references/form-fields.md)** (~300 lines)
+12. **[form-fields.md](references/form-fields.md)** (~300 lines)
     - Form field types (text, checkbox, radio, dropdown, button)
     - Field properties and validation
     - Filling and flattening forms
     - Import/export form data
 
-12. **[hyperlinks.md](references/hyperlinks.md)** (~150 lines)
+13. **[hyperlinks.md](references/hyperlinks.md)** (~150 lines)
     - Web and document hyperlinks
     - Link annotations
     - Navigation actions
 
-13. **[digital-signatures.md](references/digital-signatures.md)** (~250 lines)
-    - Certificate-based signing
-    - Signature appearance
-    - Validation and timestamp servers
+14. **[digital-signatures.md](references/digital-signatures.md)** (~350 lines)
+    - Certificate-based signing and external signing
+    - Long-Term Validation (LTV) with OCSP/CRL
+    - Digital signature validation (single field and document-wide)
+    - Signature appearance and timestamps
+
+15. **[encryption.md](references/encryption.md)** (~300 lines)
+    - Document encryption with RC4 (40/128-bit) and AES (128/256-bit Rev 5/6)
+    - User and owner password protection
+    - Document permissions and bitwise permission validation
+    - Password detection, password type identification, and decryption
 
 ### Document Operations
 
-14. **[watermarks.md](references/watermarks.md)** (~200 lines)
+16. **[watermarks.md](references/watermarks.md)** (~200 lines)
     - Text and image watermarks
     - Positioning, opacity, and rotation
 
-15. **[layers.md](references/layers.md)** (~150 lines)
+17. **[layers.md](references/layers.md)** (~150 lines)
     - Creating and managing layers
     - Layer visibility
     - Removing/flattening layers
 
-16. **[merge-documents.md](references/merge-documents.md)** (~150 lines)
+18. **[merge-documents.md](references/merge-documents.md)** (~150 lines)
     - Merging multiple PDFs
     - Importing pages
     - Bookmarks preservation
 
-17. **[split-documents.md](references/split-documents.md)** (~150 lines)
+19. **[split-documents.md](references/split-documents.md)** (~150 lines)
     - Splitting by page range
     - Extracting pages
     - Creating separate documents
 
 ### Data Extraction & Redaction ⚠️ Requires `@syncfusion/ej2-pdf-data-extract`
 
-18. **[text-extraction.md](references/text-extraction.md)** (~200 lines)
+20. **[text-extraction.md](references/text-extraction.md)** (~300 lines)
     - ⚠️ **Requires:** `@syncfusion/ej2-pdf-data-extract`
-    - Extracting text from pages
-    - Text extraction layouts
-    - Text bounds and positioning
+    - Synchronous and asynchronous text extraction (`extractTextSync`, `extractText`)
+    - Layout-based and bounds-based extraction (`extractTextLinesSync`, `extractTextLines`)
+    - Find text and search multiple text values (`findTextSync`, `findText`)
 
-19. **[image-extraction.md](references/image-extraction.md)** (~200 lines)
+21. **[image-extraction.md](references/image-extraction.md)** (~200 lines)
     - ⚠️ **Requires:** `@syncfusion/ej2-pdf-data-extract`
     - Extracting images from PDFs
     - Image metadata and properties
     - Saving extracted images
 
-20. **[content-redaction.md](references/content-redaction.md)** (~200 lines)
+22. **[content-redaction.md](references/content-redaction.md)** (~200 lines)
     - ⚠️ **Requires:** `@syncfusion/ej2-pdf-data-extract`
     - Text and shape redaction
     - Permanent content removal

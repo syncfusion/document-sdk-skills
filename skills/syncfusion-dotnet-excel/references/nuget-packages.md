@@ -93,6 +93,14 @@ Install **in addition** to PDF or Image conversion packages above **only if you 
 
 ---
 
+## Custom Fonts for PDF and Image Conversion
+
+`Syncfusion.Drawing.Fonts.FontManager` is included in the PDF and image conversion packages above. No extra package is required.
+
+Register `.ttf` / `.otf` files with `FontManager.RegisterFont` or `FontManager.RegisterFonts` before `ConvertToPDF`, `ConvertToImage`, or chart `SaveAsImage`. Snippets are in `references/custom-fonts.md`.
+
+---
+
 ## Linux Deployment — Native Asset Packages
 
 Required **only** when deploying ASP.NET Core apps with PDF/Image conversion to Linux environments.

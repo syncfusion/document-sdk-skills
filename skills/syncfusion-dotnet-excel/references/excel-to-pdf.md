@@ -943,9 +943,24 @@ class Program
 
 ---
 
+## Custom Fonts for Conversion
+
+When the workbook already uses a font family that is not installed, register the `.ttf` or `.otf` file **before** conversion. Do not rename the cell font.
+
+```csharp
+using (FileStream fontStream = new FileStream("fonts/CustomFont.ttf", FileMode.Open, FileAccess.Read))
+    FontManager.RegisterFont(fontStream);
+```
+
+Required using: `Syncfusion.Drawing.Fonts`. Full stream, folder, style, image-export, and cleanup snippets are in `references/custom-fonts.md`.
+
+Use the substitute-font event below only when the missing family must be replaced by a different installed family or by one embedded stream. Use fallback fonts when a script glyph is missing.
+
+---
+
 ## Substitute Font in Excel-to-PDF Conversion
 
-Replace unsupported or missing fonts with installed alternate fonts or custom font files during Excel-to-PDF conversion.
+Replace unsupported or missing fonts with installed alternate fonts or a font stream during Excel-to-PDF conversion.
 
 ### Minimal Code
 ```csharp
@@ -1277,3 +1292,4 @@ The Excel to PDF conversion supports the following elements:
 - [Excel to PDF Conversion Settings](https://help.syncfusion.com/document-processing/excel/conversions/excel-to-pdf/net/excel-to-pdf-converter-settings)
 - [XlsIORenderer Documentation](https://help.syncfusion.com/document-processing/excel/working-with-xlsiorenderer)
 - [Syncfusion XlsIO Examples Repository](https://github.com/SyncfusionExamples/XlsIO-Examples)
+- Custom font registration: `references/custom-fonts.md`

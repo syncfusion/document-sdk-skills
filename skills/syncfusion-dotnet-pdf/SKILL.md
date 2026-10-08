@@ -17,7 +17,8 @@ Create, read, write, and convert PDF files using the Syncfusion PDF Library. Thi
 - **Create & Edit:** PDF files from scratch, text, images (various formats), tables, shapes, paragraphs, headings, styles, lists, hyperlinks, bookmarks, headers/footers, watermarks, template management, metadata editing
 - **Forms & Interactive Elements:** Create, fill, and flatten forms (AcroForms and XFA), bookmarks, annotations, attachments, buttons, and content controls
 - **Advanced Features:** Comments, layers (add, remove, flatten), PDF portfolios, JavaScript execution, 3D model embedding and interaction, rich media content (audio/video), optical character recognition (Tesseract engine), text redaction, image redaction, digital signatures and validation
-- **Conversion:** XPS to PDF, PDF to PDF/A conformance, extract text and images from PDF documents
+- **Conversion:** SVG to PDF, XPS to PDF, PDF to PDF/A conformance
+- **Extraction:** Extract text and images from PDF documents
 - **Security:** Password encryption/decryption, advanced encryption standards, document protection with editable ranges, macro management, digital signing capabilities
 - **Barcodes & Standards:** 1D barcodes, 2D barcodes, ZUGFeRD invoice support, PDF/A-1B, PDF/A-1A, PDF/A-2B, PDF/A-2A, PDF/A-2U, PDF/A-3B, PDF/A-3A, PDF/A-3U, PDF/A-4, PDF/A-4E, PDF/A-4F, PDF/X1-A conformances, Accessible PDF/Tagged PDF (PDF/UA) with Section 508 compliance
 - **Additional Operations:** Merge and split PDF files, open and modify existing PDF files, compress PDF files, corrupted PDF detection.
@@ -115,6 +116,7 @@ All templates and snippets are in the `references/` folder:
 | **tagged-pdf.md** | Create tagged (accessible/structured) PDFs with logical structure trees for screen-reader and reflow support |
 | **zugferd-invoice.md** | Create ZUGFeRD electronic invoice PDFs (PDF/A-3b) with embedded XML; supports ZUGFeRD 1.0, 2.0, Factur-X, and XRechnung conformance levels; extract XML from existing ZUGFeRD PDFs |
 | **xps-to-pdf.md** | Convert XPS (XML Paper Specification) documents to PDF using XPSToPdfConverter |
+| **svg-to-pdf.md** | Convert SVG files into PDF documents using `SvgConverter` and `PdfGraphics.DrawPdfTemplate` |
 
 ---
 ## Rules

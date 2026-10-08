@@ -466,6 +466,19 @@ Console.WriteLine("\nAll chart exports completed successfully!");
 
 ---
 
+## Custom Fonts
+
+If the chart uses a font that is not installed, register the `.ttf` or `.otf` file before `SaveAsImage`. Required using: `Syncfusion.Drawing.Fonts`.
+
+```csharp
+using (FileStream fontStream = new FileStream("fonts/CustomFont.ttf", FileMode.Open, FileAccess.Read))
+    FontManager.RegisterFont(fontStream);
+```
+
+Folder registration, style files, and cleanup are in `references/custom-fonts.md`.
+
+---
+
 ## Reference Links
 
 - [Syncfusion XlsIO - Charts](https://www.syncfusion.com/document-processing/excel-library/net/charts)
@@ -473,3 +486,4 @@ Console.WriteLine("\nAll chart exports completed successfully!");
 - [ConvertToImage Method](https://help.syncfusion.com/document-processing/excel/excel-library/net/cells-manipulation/chart-to-image)
 - [Excel Chart Types](https://help.syncfusion.com/document-processing/excel/excel-library/net/cells-manipulation/chart-type)
 - [Syncfusion Excel Charts Documentation](https://www.syncfusion.com/kb/excel/chart)
+- Custom font registration: `references/custom-fonts.md`

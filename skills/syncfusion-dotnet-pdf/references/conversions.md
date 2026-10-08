@@ -14,4 +14,5 @@ Official documentation:
 
 - [text.md](text.md)
 - [xps-to-pdf.md](xps-to-pdf.md)
+- [svg-to-pdf.md](svg-to-pdf.md)
 - [conformance.md](conformance.md)

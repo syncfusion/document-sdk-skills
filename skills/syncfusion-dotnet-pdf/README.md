@@ -102,6 +102,7 @@ All templates and snippets used by the skill are in the `references/` folder:
 | **tagged-pdf.md** | Create tagged (accessible/structured) PDFs with logical structure trees for screen-reader and reflow support |
 | **zugferd-invoice.md** | Create ZUGFeRD electronic invoice PDFs (PDF/A-3b) with embedded XML; supports ZUGFeRD 1.0, 2.0, Factur-X, and XRechnung conformance levels; extract XML from existing ZUGFeRD PDFs |
 | **xps-to-pdf.md** | Convert XPS (XML Paper Specification) documents to PDF using XPSToPdfConverter |
+| **svg-to-pdf.md** | Convert SVG files into PDF documents using `SvgConverter` and `PdfGraphics.DrawPdfTemplate` |
 
 ---
 
@@ -138,6 +139,7 @@ When working with PDF documents, Copilot can automatically:
 - "How do I add a header and footer with page numbers using Syncfusion PDF Library?"
 - "Provide C# code to merge three PDF files into one using Syncfusion."
 - "Show me how to extract text from all pages of a PDF using Syncfusion PDF Library."
+- "Generate C# code to convert an SVG file to PDF using Syncfusion PDF Library."
 
 #### Mode 2 / Document Generation Prompts (creates output PDF file)
 
@@ -151,6 +153,7 @@ When working with PDF documents, Copilot can automatically:
 - "Convert `output/report.pdf` to PDF/A-1B."
 - "Merge `output/part1.pdf` and `output/part2.pdf` into `output/combined.pdf`."
 - "Extract all images from `output/source.pdf` and save them to `output/images/`."
+- "Convert `output/diagram.svg` to `output/diagram.pdf`."
 
 #### Complex / Multi-Step Prompt
 

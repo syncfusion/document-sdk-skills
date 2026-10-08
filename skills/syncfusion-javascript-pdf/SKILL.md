@@ -1,6 +1,6 @@
 ---
 name: syncfusion-javascript-pdf
-description: "Provides comprehensive guidance for implementing the Syncfusion JavaScript PDF library (@syncfusion/ej2-pdf) to create and manipulate PDF documents programmatically across TypeScript, JavaScript, Angular, React, Vue, and ASP.NET platforms. Use this when working with PDF creation, form filling, annotations, document merging/splitting, text or image extraction, or digital signatures."
+description: "Provides comprehensive guidance for implementing the Syncfusion JavaScript PDF library (@syncfusion/ej2-pdf) to create and manipulate PDF documents programmatically across TypeScript, JavaScript, Angular, React, Vue, and ASP.NET platforms. Use this when working with PDF creation, tables, lists, form filling, annotations, encryption, document merging/splitting, text or image extraction, or digital signatures."
 metadata:
   author: "Syncfusion Inc"
   version: "34.1.29"
@@ -14,12 +14,12 @@ A comprehensive skill for creating, reading, and manipulating PDF documents prog
 
 Use this skill when the user needs to:
 
-- **Create PDF documents** from scratch with text, images, shapes, and other graphical elements
+- **Create PDF documents** from scratch with text, images, shapes, tables, lists, and other graphical elements
 - **Manipulate existing PDFs** by adding content, modifying properties, or extracting data
 - **Add interactive features** such as forms, annotations, bookmarks, and hyperlinks
-- **Secure PDFs** with digital signatures
+- **Secure PDFs** with password protection, RC4/AES encryption, permissions, and digital signatures
 - **Merge or split** PDF documents for document management workflows
-- **Extract content** including text and images from existing PDFs
+- **Extract content** including text (with search and bounds) and images from existing PDFs
 - **Add watermarks** (text or image-based) for branding or security
 - **Manage document informations** including title, author, subject, keywords, and dates
 - **Work with PDF layers** for complex document structures
@@ -38,12 +38,13 @@ The Syncfusion JavaScript PDF library (`@syncfusion/ej2-pdf`) is a powerful, hig
 - Interactive components (bookmarks, annotations, form fields)
 - Document operations (merge, split, flatten)
 - Content extraction (text, images)
-- Security features (digital signatures, redaction)
+- Security features (digital signatures, LTV, validation, encryption, redaction)
 
 **Key Classes:**
 - `PdfDocument` - Main document object
 - `PdfPage` - Individual pages
 - `PdfGraphics` - Drawing surface for content
+- `PdfGrid` - Table generation and layout
 - `PdfFont`, `PdfBitmap`, `PdfBrush` - Content elements
 
 ## Documentation and Navigation Guide
@@ -109,13 +110,24 @@ Use this reference for drawing shapes:
 - Fill and stroke operations
 - Graphics transformations (translate, rotate, scale)
 
+📄 **Read:** [references/tables.md](references/tables.md)
+
+Use this reference for creating and formatting tables:
+- Creating tables with `PdfGrid` from data sources or manual row/column definitions
+- Table and cell styling, custom borders, padding, and built-in themes (`PdfGridBuiltinStyle`)
+- Row and column customization, text alignment, and formatting
+- Pagination, repeating header rows (`repeatHeader`), and row break prevention (`fitElement`)
+- Dynamic multiple table positioning with `PdfGridLayoutResult`
+- Merged cells (`rowSpan`, `columnSpan`), cell images, background images, and hyperlinks
+- Nested grids, borderless tables, data source updating, and horizontal overflow modes
+
 📄 **Read:** [references/lists.md](references/lists.md)
 
 Use this reference for creating lists:
 - Ordered and unordered lists
 - Nested list structures
-- Custom list markers
-- List formatting options
+- Custom list markers and image markers (`PdfImageMarker`)
+- List formatting options and pagination
 
 📄 **Read:** [references/templates.md](references/templates.md)
 
@@ -130,8 +142,9 @@ Use this reference for reusable content:
 📄 **Read:** [references/annotations.md](references/annotations.md)
 
 Use this reference for annotations:
-- Annotation types (free text, ink, stamp, etc.)
-- Adding and configuring annotations
+- Annotation types (popup, free text, line, shapes, ink, text markup)
+- Cloud border style customization (`borderEffect`, `PdfBorderEffectStyle`)
+- Adding, configuring, and modifying annotations
 - Annotation properties and appearance
 - Flattening annotations to static content
 
@@ -199,10 +212,11 @@ Use this reference for layer management:
 📄 **Read:** [references/text-extraction.md](references/text-extraction.md)
 
 Use this reference for extracting text:
-- Extracting text from PDF pages
-- Text extraction layouts
-- Text bounds and positioning
-- Extracting from specific regions
+- Synchronous and asynchronous text extraction (`extractTextSync`, `extractText`)
+- Page-range text extraction
+- Layout-based and bounds-based extraction (`extractTextLinesSync`, `extractTextLines`)
+- Finding text and bounding rectangles (`findTextSync`, `findText`)
+- Searching for multiple text values with match coordinates across pages
 
 📄 **Read:** [references/image-extraction.md](references/image-extraction.md)
 
@@ -216,12 +230,22 @@ Use this reference for extracting images:
 
 📄 **Read:** [references/digital-signatures.md](references/digital-signatures.md)
 
-Use this reference for security:
-- Adding digital signatures
+Use this reference for digital signatures:
+- Adding digital signatures (standard and external signing)
 - Certificate-based signing
 - Signature appearance customization
-- Validation and verification
-- Timestamp servers
+- Long-Term Validation (LTV) with embedded OCSP/CRL revocation
+- Digital signature validation (single field and document-wide)
+- Timestamp servers and certificate trust chains
+
+📄 **Read:** [references/encryption.md](references/encryption.md)
+
+Use this reference for encryption and document security:
+- Document encryption with RC4 (40-bit, 128-bit) and AES (128-bit, 256-bit Rev 5 and Rev 6)
+- User passwords (opening) and owner passwords (permissions)
+- Document permission restrictions (`PdfPermissionFlag`) and bitwise permission checking
+- Decrypting secured documents and changing passwords
+- Detecting password protection and identifying password types
 
 📄 **Read:** [references/content-redaction.md](references/content-redaction.md)
 
@@ -355,16 +379,17 @@ For complete API details, refer to the specific reference files.
 
 ## Common Use Cases
 
-1. **Automated Report Generation** - Create branded reports with charts, tables, and formatted text
-2. **Invoice Creation** - Generate professional invoices with line items and totals
+1. **Automated Report Generation** - Create branded reports with tables (`PdfGrid`), lists, charts, and formatted text
+2. **Invoice Creation** - Generate professional invoices with `PdfGrid` line items, totals, and company logos
 3. **Certificate Generation** - Create certificates with templates and custom text
 4. **Form Filling** - Programmatically fill PDF forms for bulk processing
 5. **Document Assembly** - Merge multiple PDFs into consolidated documents
-6. **Data Extraction** - Extract text and images from PDFs for processing
-7. **Digital Signing** - Apply digital signatures for document authentication
-8. **Watermarking** - Add branding or security watermarks to documents
-9. **Redaction** - Remove sensitive information before sharing
-10. **Archive Creation** - Convert documents to PDF/A format for long-term storage
+6. **Data Extraction & Search** - Extract or find text with bounds and extract images from PDFs for processing
+7. **Digital Signing & Validation** - Apply digital signatures with LTV and validate signature trust chains
+8. **Document Encryption & Access Control** - Secure documents with AES 256-bit encryption, passwords, and permissions
+9. **Watermarking** - Add branding or security watermarks to documents
+10. **Redaction** - Remove sensitive information permanently before sharing
+11. **Archive Creation** - Convert documents for long-term storage and compliance workflows
 
 ## Troubleshooting Tips
 

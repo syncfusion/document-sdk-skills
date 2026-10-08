@@ -1,6 +1,6 @@
 ---
 name: syncfusion-dotnet-excel
-description: Create, edit, and convert Excel workbooks (.xlsx/.xls) using Syncfusion XlsIO. Supports two modes — generate C# code for the user's project, or execute a temporary CSX script. Use when the user mentions Excel, xlsx, workbook, template markers, Syncfusion XlsIO, or PDF conversion.
+description: Create, edit, and convert Excel workbooks (.xlsx/.xls) using Syncfusion XlsIO. Supports two modes — generate C# code for the user's project, or execute a temporary CSX script. Use when the user mentions Excel, xlsx, workbook, template markers, Syncfusion XlsIO, PDF conversion, or custom fonts for Excel-to-PDF or Excel-to-Image conversion.
 metadata:
   author: Syncfusion Inc
   version: "34.1.29"
@@ -18,7 +18,7 @@ This skill supports two operational modes — generating C# code for the user's 
 - **Create & Edit:** Workbooks, worksheets, cells, rows, columns, cell formatting, styles, formulas, names ranges, charts, shapes, images, hyperlinks, comments, data validation, conditional formatting
 - **Advanced Features:** Template markers and mail merge, data binding (DataTable, collections, objects), pivot tables, pivot charts, slicers, auto-fill, fill series, what-if analysis scenarios, custom XML, drawing objects (text boxes, checkboxes, shapes), VBA macros
 - **Data Management:** Import data (CSV, DataTable, collections, nested objects, XML, HTML tables), export data (ranges, tables, named ranges), find/replace with regex, advanced filtering (top10, custom, color, icon filters), freeze panes, show/hide rows/columns/sheets
-- **Conversion:** Excel to PDF, Excel to JSON, Excel to CSV (import/export)
+- **Conversion:** Excel to PDF, Excel to JSON, Excel to CSV (import/export), custom font registration for PDF and image conversion
 - **Security:** Password encryption/decryption, document protection, permission settings
 - **Page Setup:** Margins, headers/footers, print areas
 
@@ -45,7 +45,7 @@ Before choosing a mode, infer what the user wants to accomplish:
 
 Use this mode when the user wants to view, write, review, refactor, or modify C# code related to Excel processing.
  
-**Trigger keywords:** "code", "snippet", "how to write", "Program.cs", "show me", "sample", "example code", "generate code for", "NuGet", "add to project", "integrate", "implementation", "usage example", "API example", "learn", "teach", "how do I", "I want to", "I need to", "help me implement", "library", "package", "ASP.NET", "Blazor", "WPF", "WinForms", "MAUI", "console app", "sort", "sorting", "sorted", "chart to image", "export chart", "chart as image", "hyperlink", "link", "links", "find replace", "replace", "filter", "filtering", "pivot", "template", "marker", "formula", "function".
+**Trigger keywords:** "code", "snippet", "how to write", "Program.cs", "show me", "sample", "example code", "generate code for", "NuGet", "add to project", "integrate", "implementation", "usage example", "API example", "learn", "teach", "how do I", "I want to", "I need to", "help me implement", "library", "package", "ASP.NET", "Blazor", "WPF", "WinForms", "MAUI", "console app", "sort", "sorting", "sorted", "chart to image", "export chart", "chart as image", "hyperlink", "link", "links", "find replace", "replace", "filter", "filtering", "pivot", "template", "marker", "formula", "function", "custom font", "font registration", "FontManager", "missing font".
  
 **Workflow:**
  
@@ -117,6 +117,7 @@ All templates and snippets are in the `references/` folder:
 | **excel-csv.md** | Import/export CSV |
 | **excel-to-json.md** | Convert worksheets or ranges to JSON |
 | **excel-to-pdf.md** | Convert workbook to PDF using renderer |
+| **custom-fonts.md** | Register .ttf/.otf fonts with FontManager for Excel-to-PDF and Excel-to-Image conversion |
 | **export-data.md** | Exporting tables, ranges and named ranges |
 | **import-data.md** | Import CSV, DataTable, and other data sources into sheets |
 | **import-data-advanced.md** | Import HTML tables, XML, arrays, collections, nested collections, DataColumn, DataView, grid controls |
