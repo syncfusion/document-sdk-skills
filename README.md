@@ -26,6 +26,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 - **PDF** - Create, read and edit PDF files with support for forms, annotations, digital signatures, merge/split, text/image extraction, redaction, and watermarks across TypeScript, JavaScript, Angular, React, Vue, and ASP.NET platforms.
 - **PowerPoint (PPTX)** - Create, open, modify, and save PowerPoint presentations with support for slides, text boxes, paragraphs, and text formatting across TypeScript, JavaScript, Angular, React, Vue, and Node.js platforms.
 - **Excel (XLSX)** - Create, open, edit, and save Excel workbooks in Node.js and browsers with worksheets, cells, formulas, styles, tables, charts, images, data validation, conditional formatting, and protection.
+- **Word (DOCX)** - Create, open, edit, and save Word documents in Node.js and browsers with paragraphs, text formatting, lists, tables, images, hyperlinks, fields, content controls, sections, headers, and footers.
 
 ### Flutter
 - **PDF** - Create, edit, and convert PDF files with support for forms, digital signatures, encryption and conformance standards (PDF/A-1b, PDF/A-2b and PDF/A-3b).
@@ -37,7 +38,7 @@ This repository contains **AI-ready skills** that empower AI agents to efficient
 
 **Step 1: Checkout and copy the required skills**
 
-Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-dotnet-document-chunking`, `syncfusion-javascript-pdf`, `syncfusion-javascript-powerpoint`, `syncfusion-javascript-excel`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
+Clone or download the Document-SDK-Skills repository and copy the product skills you need from the `skills/` directory. Available skill folders include `syncfusion-dotnet-pdf`, `syncfusion-dotnet-word`, `syncfusion-dotnet-excel`, `syncfusion-dotnet-powerpoint`, `syncfusion-dotnet-pdf-to-image`, `syncfusion-dotnet-markdown`, `syncfusion-dotnet-calculate`, `syncfusion-dotnet-smart-data-extraction`, `syncfusion-dotnet-document-chunking`, `syncfusion-javascript-pdf`, `syncfusion-javascript-powerpoint`, `syncfusion-javascript-excel`, `syncfusion-javascript-docx`, `syncfusion-flutter-pdf`, `syncfusion-flutter-excel`, and `syncfusion-java-word`.
 
 **Step 2: Install the skills**
 
@@ -71,6 +72,8 @@ your-workspace/
 │   ├── syncfusion-javascript-powerpoint/
 │   │   └── SKILL.md
 │   ├── syncfusion-javascript-excel/
+│   │   └── SKILL.md
+│   ├── syncfusion-javascript-docx/
 │   │   └── SKILL.md
 │   ├── syncfusion-flutter-excel/
 │   │   └── SKILL.md
@@ -181,6 +184,14 @@ npm install @syncfusion/ej2-pdf-data-extract --save
 npm install @syncfusion/ej2-pptx --save
 ```
 
+
+### npm Packages (JavaScript Word)
+
+```bash
+# Word library
+npm install @syncfusion/ej2-docx --save
+```
+
 ### npm Packages (JavaScript Excel)
 
 ```bash
@@ -229,6 +240,7 @@ For skills that explicitly document execution mode, creates a temporary script, 
 | .NET Document Chunking | ✅ | ❌ | Code generation only |
 | Java Word | ✅ | ❌ | Code generation only |
 | JavaScript PDF | ✅ | ❌ | Code generation only |
+| JavaScript Word | ✅ | ❌ | Code generation only |
 | JavaScript PowerPoint | ✅ | ❌ | Code generation only |
 | JavaScript Excel | ✅ | ❌ | Code generation only |
 | Flutter PDF | ✅ | ❌ | Code generation only |
@@ -368,7 +380,17 @@ Generate a TypeScript snippet to add an Excel table and style the header row.
 Write Node code using @syncfusion/ej2-xlsx to open a file, update B2, and save.
 How do I add data validation dropdowns and conditional formatting with ej2-xlsx?
 ```
+### JavaScript Word
 
+```
+# Mode 1 — Code generation
+How do I create an empty Word document using @syncfusion/ej2-docx?
+Show me TypeScript code to create a Word document and add a paragraph on the section body.
+How do I create a Word document with a table using @syncfusion/ej2-docx?
+How do I add a bulleted list, a header, and a footer with page numbers using ej2-docx?
+Show me how to open a .docx from bytes, add a paragraph, and save it in Node.js.
+```
+ 
 ### JavaScript PowerPoint
 
 ```
@@ -423,6 +445,7 @@ How do I export data to CSV format using Syncfusion Flutter XlsIO?
 
 ### JavaScript
 - [Syncfusion JavaScript PDF Documentation](https://help.syncfusion.com/document-processing/pdf/pdf-library/javascript/overview)
+- [Syncfusion JavaScript Word Library (`@syncfusion/ej2-docx`)](https://help.syncfusion.com/document-processing/word/word-library/javascript/overview)
 - [Syncfusion JavaScript PowerPoint Documentation](https://help.syncfusion.com/document-processing/powerpoint/powerpoint-library/javascript/overview)
 - [Syncfusion JavaScript Excel Documentation](https://help.syncfusion.com/document-processing/excel/excel-library/javascript/overview)
 

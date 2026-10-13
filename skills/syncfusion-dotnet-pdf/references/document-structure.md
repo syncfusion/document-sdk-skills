@@ -75,3 +75,13 @@ loadedPage.Graphics.DrawString("Hello World!!!", font, PdfBrushes.Black, new Syn
 loadedDocument.Save(outputPath);
 loadedDocument.Close(true);
 ```
+
+## Linearize a PDF (Fast Web View)
+
+Linearization restructures the PDF so the first page can be rendered without downloading the entire file (also known as **Fast Web View**). Set `IsLinearized = true` on `FileStructure` before saving; Syncfusion then writes the document in a linearized layout. This works for both a new `PdfDocument` and a loaded `PdfLoadedDocument` being re-saved.
+
+```csharp
+document.FileStructure.IsLinearized = true;
+```
+
+> **Note:** When `IsLinearized = true` is set, `IncrementalUpdate` is implicitly disabled — the document is written as a fully linearized layout rather than as an incremental update.
