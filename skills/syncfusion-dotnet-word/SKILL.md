@@ -110,7 +110,7 @@ All templates and snippets are in the `references/` folder:
 | **styles-and-formats.md** | Paragraphs, headings, bullet & numbered lists |
 | **paragraph-and-styles.md** | Add paragraphs, paragraph formatting, styles (built-in/custom), text formatting, tab stops, breaks, symbols, text boxes |
 | **tables.md** | Create tables, cell formatting, merge cells |
-| **bookmarks.md** | Create bookmarks, navigate, retrieve, insert, replace, delete content |
+| **bookmarks.md** | Create bookmarks, navigate, retrieve, insert, replace, delete content, Bookmark end positioning options |
 | **charts.md** | Create charts from scratch/Excel, modify data, refresh, customize elements, 3D formatting, convert to image |
 | **shapes.md** | Add shapes, format, rotate, group, ungroup shapes |
 | **mail-merge.md** | Simple field merge, merge with regions (groups), nested merge, DataTable, dynamic objects, business objects, DataView, XML, JSON, image merge fields, merge events (MergeField, MergeImageField, BeforeClearField, BeforeClearGroupField), field mapping, retrieve merge field names, remove empty paragraphs, clear fields option |
