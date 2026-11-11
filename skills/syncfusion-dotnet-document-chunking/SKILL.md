@@ -1,4 +1,4 @@
-﻿---
+---
 name: syncfusion-dotnet-document-chunking
 description: Structure-aware document chunking for RAG and vector indexing using Syncfusion Document Chunking. Supports Word, PDF, PowerPoint, Excel, and Markdown via ChunkingService with path/stream/async APIs, ChunkingOptions, format modes, metadata/citations. Generate C# code for the user's project from reference APIs only. Use when the user mentions document chunking, RAG chunks, embeddings, vector indexing, ChunkingService, Syncfusion DocumentChunking, or splitting docs/pdf/docx/pptx/xlsx/md for semantic search.
 metadata:

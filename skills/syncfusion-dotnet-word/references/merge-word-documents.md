@@ -83,6 +83,43 @@ sourceDoc.Close();
 
 ---
 
+## Merge First Source Section into Last Section
+
+Import contents from source document into destination document where the first source section is merged into the last section of the destination document, by passing `true` for the `mergeFirstSection` parameter.
+
+### Minimal Code
+
+#### Common for Cross-Platform and Windows-Specific
+```csharp
+var sourceStream = new FileStream("source.docx", FileMode.Open, FileAccess.Read);
+var sourceDoc = new WordDocument(sourceStream, FormatType.Automatic);
+var destStream = new FileStream("destination.docx", FileMode.Open, FileAccess.Read);
+var destDoc = new WordDocument(destStream, FormatType.Docx);
+
+destDoc.ImportContent(sourceDoc, ImportOptions.UseDestinationStyles, true);
+
+var outputStream = new FileStream("merged.docx", FileMode.Create, FileAccess.Write);
+destDoc.Save(outputStream, FormatType.Docx);
+outputStream.Close();
+destStream.Close();
+sourceStream.Close();
+destDoc.Close();
+sourceDoc.Close();
+```
+
+### Placeholders
+- `"source.docx"` → Replace with `"{source-file-path}"`
+- `"destination.docx"` → Replace with `"{destination-file-path}"`
+- `"merged.docx"` → Replace with `"{output-file-path}"`
+
+### Options
+```csharp
+destDoc.ImportContent(sourceDoc, ImportOptions.UseDestinationStyles, true);   // Merge first source section into last destination section
+destDoc.ImportContent(sourceDoc, ImportOptions.UseDestinationStyles, false); // Import as separate sections (default behavior)
+```
+
+---
+
 ## Maintain Imported List Style Information
 
 Preserve list style cache when merging documents with list styles. Useful for cloning and merging with list formatting.
