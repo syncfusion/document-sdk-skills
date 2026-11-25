@@ -1,42 +1,29 @@
 # Syncfusion JavaScript Excel Library Skill
 
-Create, open, edit, and save Excel workbooks (`.xlsx`) using Syncfusion **`@syncfusion/ej2-xlsx`** in **Node.js and browsers**. Operates purely as a **Coding Assistant** — generating production-ready TypeScript/JavaScript directly for the user's project.
+Create, open, edit, and save Excel workbooks (`.xlsx`) using Syncfusion **`@syncfusion/ej2-xlsx`** in **Node.js and browsers**, with JavaScript or TypeScript. The skill has two modes: **Coding Assistant** (default, generates code) and **Execution** (Node.js only, produces a workbook file).
 
-This is a **programmatic file library**, not EJ2 Spreadsheet or Grid UI.
+This is a **programmatic file library**, not the EJ2 Spreadsheet or Grid UI component.
 
 See **[SKILL.md](SKILL.md)** for the full intent-routing guide and rules.
 
 ---
 
-## Role: Coding Assistant
+## Modes
 
-This skill generates production-ready TypeScript or JavaScript for the user's project files (for example `src/exportWorkbook.ts`, `scripts/build-report.mjs`). It does not run temporary scripts or mutate the user's workspace on its own.
+### Mode 1: Coding Assistant *(default)*
 
-### Workflow
+For code, examples, snippets, integration guidance, and API explanations. The agent detects the host (Node.js or browser, TypeScript or JavaScript, ESM or CommonJS, React/Angular/Vue), prefers TypeScript when `tsconfig.json` or `.ts` sources exist, and generates code from the reference files only. It does not run code, create temporary scripts, or create workbook files.
 
-#### Step 1 — Detect the Host and Install the Package
+### Mode 2: Execution *(explicit request only)*
 
-- Inspect the workspace (`package.json`, `tsconfig.json`, bundler config, browser vs Node entry points).
-- Ensure the project imports from the package root only:
+For requests such as "create output/sales-report.xlsx" or "update this workbook and save a copy". Runs only in Node.js 18+. The agent copies `scripts/template.ts` to a timestamped temp script inside the skill's `scripts/` folder, runs it with `tsx`, verifies the output file is non-empty, deletes the temp script, and reports the output path. Input workbooks are never overwritten or deleted. Details: [references/execution-mode.md](references/execution-mode.md). Browser-only workflows stay in Mode 1.
 
-```bash
-npm install @syncfusion/ej2-xlsx
-```
+### Workflow for Mode 1
 
-- Remind the user to install `@syncfusion/ej2-xlsx` if the dependency is missing.
-- Prefer **TypeScript** when the host project is TS; use plain ESM/CJS JavaScript when it is not.
-
-#### Step 2 — Generate Code from Reference Files Only
-
-**Do NOT invent, guess, or suggest any API, method, property, class, type, or import path not explicitly present in the reference files or the public package surface.**
-
-- Read the relevant `references/*.md` file(s) for the requested feature.
-- Build code **strictly** from the APIs and snippets found in those files and **[SKILL.md](SKILL.md)**.
-- Always import from `@syncfusion/ej2-xlsx` — never use internal paths (like `@syncfusion/ej2-xlsx/internal/charts`) in application code.
-- Match host I/O:
-  - **Browser** → `await wb.save()` / `Workbook.open(Uint8Array | ArrayBuffer)` (bytes only)
-  - **Node.js** → path overloads `await wb.save('./out.xlsx')` / `await Workbook.open('./in.xlsx')` or byte arrays.
-
+1. Detect the host from `package.json`, `tsconfig.json`, and entry points; ask the user to `npm install @syncfusion/ej2-xlsx` if it is missing.
+2. Read the relevant `references/*.md` file(s) and build code **strictly** from the APIs documented there. Never invent APIs, methods, properties, or OOXML.
+3. Import only from `@syncfusion/ej2-xlsx` (never `internal/...`).
+4. Match host I/O: browser → bytes (`Uint8Array`/`ArrayBuffer`); Node.js → path overloads or bytes. See [references/browser-and-node-io.md](references/browser-and-node-io.md).
 
 ---
 
@@ -44,7 +31,7 @@ npm install @syncfusion/ej2-xlsx
 
 ### Prerequisites
 
-- **Node.js 18+** (LTS recommended) for Node path I/O and Mode 2
+- **Node.js 18+** (LTS recommended) for Node path I/O and Mode 2 (Mode 2 also installs `tsx` locally inside `scripts/`)
 - **npm / yarn / pnpm** to install the package
 - **TypeScript** optional but preferred when the host project is TS
 - Browser hosts need only the package + bundler/runtime that can load ESM
@@ -72,12 +59,13 @@ async function main(): Promise<void> {
 
   // Bytes (Node and browser)
   const bytes = await wb.save();
+  void bytes;
 
   // Node only — path overload
   // await wb.save('./output/out.xlsx');
 }
 
-void main();
+main().catch((err) => { console.error(err); process.exitCode = 1; });
 ```
 
 Full routing, core rules, and feature map: **[SKILL.md](SKILL.md)** and **[references/getting-started.md](references/getting-started.md)**.
@@ -93,9 +81,14 @@ Full routing, core rules, and feature map: **[SKILL.md](SKILL.md)** and **[refer
 - **Append-only shared tables** — shared strings, styles, number formats, `dxf` (never renumber)
 - **Preserve unknown OOXML** on load/save when the library does not model a part
 - **Indexing** — `sheet(i)` is **0-based**; `cell(row, col)` is **1-based**; A1 strings always work
+- `style` and `numberFormat` setters overwrite each other — put `numFmtId` inside `style` to combine them
+- Fit-to-page printing is only partially supported; the `fitToPage` flag is not written
+- Text boxes have no wrap or border property
 - Prefer **`cell`**, not deprecated `getCell`
 - Workbook/sheet **protect** is OOXML protection, **not** AES password-to-open encryption
-- Never use Python libraries (e.g. openpyxl, pandas) or other Excel stacks for these tasks when this skill applies — use `@syncfusion/ej2-xlsx`
+- Never use openpyxl, pandas, ExcelJS, SheetJS, or other workbook libraries when this skill applies — use `@syncfusion/ej2-xlsx`
+- Never overwrite or delete the user's input workbook; write modifications to a separate output file
+- Do not log cell values unless requested; validate user-supplied output paths
 - Do **not** invent OOXML elements, attributes, namespaces, relationship types, or content types
 
 ---
@@ -116,8 +109,12 @@ Full routing, core rules, and feature map: **[SKILL.md](SKILL.md)** and **[refer
 | Data validation | [references/data-validation.md](references/data-validation.md) |
 | Conditional formatting | [references/conditional-formatting.md](references/conditional-formatting.md) |
 | Comments, form controls, sheet protection | [references/comments-controls-protection.md](references/comments-controls-protection.md) |
+| Page setup, headers/footers, print areas | [references/page-setup.md](references/page-setup.md) |
+| Browser and Node.js I/O | [references/browser-and-node-io.md](references/browser-and-node-io.md) |
+| Execution mode (Mode 2) | [references/execution-mode.md](references/execution-mode.md) |
+| Security, large workbooks, troubleshooting | [references/security-and-troubleshooting.md](references/security-and-troubleshooting.md) |
 | API conventions | [references/api-conventions.md](references/api-conventions.md) |
-| Limits and security | [references/capability-boundaries.md](references/capability-boundaries.md) |
+| Limits and feature support matrix | [references/capability-boundaries.md](references/capability-boundaries.md) |
 
 ---
 
@@ -131,8 +128,8 @@ For other repos, place the skill folder where your agent loads skills (for examp
 
 When working with Excel files in JS/TS, the agent can:
 
-1. Generate idiomatic `@syncfusion/ej2-xlsx` code directly into the user's project files
-2. Provide code snippets based strictly on the reference documents
+1. Generate idiomatic `@syncfusion/ej2-xlsx` code directly into the user's project files (Mode 1)
+2. Run a temporary Node.js script to produce a requested workbook file (Mode 2)
 3. Explain and apply correct OOXML patterns without inventing APIs
 
 ### Example Prompts
@@ -143,6 +140,12 @@ When working with Excel files in JS/TS, the agent can:
 - "Generate a TypeScript snippet to add an Excel Table and style the header row."
 - "Write Node code using `@syncfusion/ej2-xlsx` to open a file, update `B2`, and save."
 - "How do I add data validation dropdowns and conditional formatting with ej2-xlsx?"
+
+#### Execution (Mode 2)
+
+- "Create output/sales-report.xlsx with a sales table and a column chart."
+- "Update the uploaded `input.xlsx`, change `B2`, and save a new copy as `output/updated.xlsx`."
+- "Generate a workbook with multiple sheets, formulas, and a chart."
 
 #### Complex / Multi-Step Implementations
 
@@ -170,7 +173,9 @@ When working with Excel files in JS/TS, the agent can:
 | Deprecated API | Prefer `cell` over `getCell` |
 | Chart import confusion | Use `ChartType` from `@syncfusion/ej2-xlsx`, not `internal/charts` |
 | Protect vs encryption | `protect` is OOXML protection flags — not password-to-open AES |
+| Mode 2 refuses to overwrite | The output exists; choose a new name, or pass `--force` only if overwriting was requested |
 | File locked / EBUSY | Ensure the `.xlsx` is not open in Excel; check path permissions |
+| More issues | See [references/security-and-troubleshooting.md](references/security-and-troubleshooting.md) |
 | Invented OOXML / APIs | Re-read the matching `references/*.md` file; do not guess |
 
 ---

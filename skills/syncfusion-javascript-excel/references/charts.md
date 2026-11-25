@@ -136,3 +136,16 @@ That surface (`createOfficeChart`, `parseOfficeChart`, …) is for host integrat
 - Prefer non-deprecated `ChartType` tokens for forward compatibility.
 - Anchors and sizes are not pixel CSS units — they are worksheet drawing points.
 - Extended layouts (funnel, sunburst, …) need Excel versions that support them.
+
+## Axis titles and legend (verified)
+
+```ts
+chart.hasTitle = true;
+chart.chartTitle = 'Sales by Product';
+chart.primaryCategoryAxis.title = 'Product';
+chart.primaryValueAxis.title = 'Line Total (USD)';
+chart.hasLegend = true;
+chart.legend.position = LegendPosition.Bottom;
+```
+
+Chart data ranges may contain formulas that point to other sheets (for example `Summary!A2:A6` holding `=Invoice!B10`); the library does not calculate them or write cached values, so charts render correctly only after Excel recalculates on open.

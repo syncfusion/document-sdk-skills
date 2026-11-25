@@ -92,7 +92,7 @@ sheet.hyperlinks.add(
 | `url` | `https://…` |
 | `file` | File path |
 | `unc` | UNC path |
-| `workbook` | Internal location; use `subAddress` as needed |
+| `workbook` | Internal location. Pass the location as `target`, for example `sheet.hyperlinks.add('A1', 'Summary!A1', 'Go', 'tip', 'workbook')`; it is saved as `location`. An empty `target` throws. |
 
 **External targets are never fetched** by the library.
 
@@ -124,3 +124,7 @@ Important:
 - Do not implement a formula engine “to be helpful” in agent code using this library.
 - Merged area edits should still go through public merges/cell APIs, not hand-written sheet XML.
 - Workbook-type links must not be resolved to other files on disk automatically.
+
+## Fixed: external hyperlinks on a sheet with drawings
+
+In `@syncfusion/ej2-xlsx` 35.1.42, external hyperlinks (`url`, `mailto:`) and a drawing on the same sheet reused relationship id `rId2`, which corrupted the file. This is fixed in 35.2.12: the hyperlink and the drawing get distinct ids. On older versions, avoid combining them, and check `xl/worksheets/_rels/*.rels` for repeated `Id` values.

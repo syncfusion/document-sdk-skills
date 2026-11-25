@@ -159,5 +159,30 @@ The public style setters already ensure cells through workbook style services �
 
 - Setting `style` replaces the cell’s style index via ensure-xf — merge carefully if you need partial updates (read-modify-write the style object).
 - `numberFormat` and `style.numFmtId` interact; prefer one clear authoring path.
+- Never assign `numberFormat` and `style` to the same cell in sequence expecting both to apply; see [Combining a style and a number format](#combining-a-style-and-a-number-format-verified).
 - RGB often includes alpha (`FF` prefix).
 - Clearing style does not clear value/formula; clearing value does not clear style.
+
+## Combining a style and a number format (verified)
+
+`cell.style = {...}` and `cell.numberFormat = '...'` each **replace the cell's whole format**; whichever is assigned last wins and the other part is lost (assigning `numberFormat` after `style` resets the font to default; assigning `style` after `numberFormat` resets the number format to General).
+
+To get both, create the number format once, read its id, and put `numFmtId` inside the style object:
+
+```ts
+import { Workbook } from '@syncfusion/ej2-xlsx';
+
+const wb = Workbook.create();
+const sheet = wb.sheet(0);
+
+sheet.cell('A1').numberFormat = '$#,##0.00'; // registers the custom format
+const currencyId = sheet.cell('A1').style?.numFmtId; // e.g. 164
+
+sheet.cell('B2').value = 1250;
+sheet.cell('B2').style = { numFmtId: currencyId, font: { bold: true } };
+
+sheet.cell('C2').value = 0.18;
+sheet.cell('C2').style = { numFmtId: 9, font: { bold: true } }; // built-in 9 = 0%
+```
+
+Apply this to every cell that needs both a number format and borders, fills, alignment, or `protection.locked = false`. Use `dateTime` carefully: it applies the default format `yyyy-mm-dd hh:mm`, so set a date format afterward through `numFmtId` as above.

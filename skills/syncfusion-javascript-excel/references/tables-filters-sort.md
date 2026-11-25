@@ -38,9 +38,11 @@ const table = sheet.tables.add('Sales', 'A1:B3', 1);
 Collections:
 
 ```ts
-for (const t of sheet.tables) {
+// `Tables` is not iterable: use count, list() or get(index)
+for (const t of sheet.tables.list()) {
   console.log(t);
 }
+const first = sheet.tables.get(0);
 // remove via sheet.tables APIs / table handle as exposed
 ```
 
@@ -95,3 +97,18 @@ import type { SortBy, SortCondition } from '@syncfusion/ej2-xlsx';
 - Tables and AutoFilter ranges should align with real header/data layout.
 - Removing rows/columns under a table may require updating table range through public APIs.
 - Filter/sort + sheet protection interact via protect allow-flags (`allowsAutoFilter`, `allowsSort`).
+
+## Totals row and filter interaction (verified)
+
+```ts
+const table = sheet.tables.add('Items', 'A9:H14', 1); // header + data only
+table.totalsRowEnabled = true;                         // table range becomes A9:H15
+table.columns[7].totalsRowFunction = 'sum';            // 0-based column index
+table.columns[0].totalsRowLabel = 'Total';
+table.style = { name: 'TableStyleMedium2', showFirstColumn: false, showLastColumn: false, showRowStripes: true, showColumnStripes: false };
+```
+
+- Pass the range **without** the totals row; enabling `totalsRowEnabled` extends `table.range` by one row and the table's own filter covers the data rows only.
+- A table already provides filter arrows. Do **not** also call `sheet.addAutoFilter()` for the same range — it adds a second, conflicting `autoFilter`.
+- Totals-row functions are strings: `sum`, `min`, `max`, `average`, `count`, `countNums`, `stdDev`, `var`, `custom`.
+- The totals row cell for an unlabeled/function column is not calculated by the library; Excel calculates it on open.

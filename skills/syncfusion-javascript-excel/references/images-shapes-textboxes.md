@@ -110,3 +110,9 @@ sheet.textBoxes;
 - Do not confuse CSS pixels with Excel points when matching layouts.
 - `moveWithCell` / `sizeWithCell` affect how Excel reflows drawings with row/column changes.
 - Prefer public `addImage` / `addShape` / `addTextBox` over fabricating drawing XML.
+
+## Verified notes from invoice testing
+
+- **Node image bytes:** `addImage` takes a `Uint8Array`; `fs.readFileSync('assets/logo.png')` returns a `Buffer` (a `Uint8Array`) and can be passed directly. In the browser use `new Uint8Array(await file.arrayBuffer())`.
+- **Text box vs shape:** `addTextBox` creates a real text box (`txBox`), separate from `addShape`. Text box properties are `text`, `fillColor`, `fontName`, `fontSize`, `fontBold`, `fontColor`, `horizontalAlignment`, `verticalAlignment`. There is **no public word-wrap or border property** for text boxes; report wrapping as unsupported rather than faking it.
+- **Shape styling:** `Shape.fill` (`ShapeFill`: `type`, `foreColor`), `Shape.line` (`color`, `weight`) and `Shape.textFrame` (`text`, alignment, `font`) are available for fill, border and label.

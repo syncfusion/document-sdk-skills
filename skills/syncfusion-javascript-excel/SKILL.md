@@ -1,13 +1,6 @@
 ---
 name: syncfusion-javascript-excel
-description: >-
-  Create, open, edit, and save Microsoft Excel (.xlsx) workbooks with Syncfusion
-  Excel for JavaScript (`@syncfusion/ej2-xlsx`) in Node.js and browsers. Covers worksheets,
-  cells, formulas (text only), styles, tables, charts, images, shapes, hyperlinks,
-  comments, conditional formatting, data validation, form controls, protection,
-  freeze panes, named ranges, and round-trip OOXML preservation. Use when building
-  non-UI spreadsheet file processing in JavaScript or TypeScript—not for EJ2
-  Spreadsheet or Grid UI components.
+description: Create, open, edit, and save Excel (.xlsx) workbooks programmatically with Syncfusion `@syncfusion/ej2-xlsx` in JavaScript and TypeScript, for Node.js and browser hosts. Supports two modes — generate TypeScript/JavaScript code for the user's project (default), or execute a temporary Node.js script that produces a workbook file. Use for Excel/xlsx/workbook file processing, cells, formulas, styles, tables, charts, images, validation, conditional formatting, protection, and page setup. Not for the EJ2 Spreadsheet or Grid UI components.
 metadata:
   author: Syncfusion Inc
   version: "34.1.29"
@@ -21,26 +14,55 @@ Programmatic Excel (`.xlsx`) create / open / edit / save for **Node.js and brows
 **Import surface:** `import { … } from '@syncfusion/ej2-xlsx'` only  
 **Not this skill:** EJ2 Spreadsheet component, Grid UI, formula calculation engines, VBA execution
 
-## Table of contents
+Use this skill for file processing (reports, exports, ETL, templates, round-tripping workbooks). For an on-screen editable grid use the EJ2 Spreadsheet or Grid component instead.
 
-- [When to use](#when-to-use)
-- [Documentation and navigation guide](#documentation-and-navigation-guide)
-- [Quick start](#quick-start)
-- [Core rules (always apply)](#core-rules-always-apply)
-- [Common patterns](#common-patterns)
-- [Import checklist](#import-checklist)
+## Two modes — choose from the full user intent
 
-## When to use
+Infer intent from the whole request, not from keywords alone.
 
-Use this skill when the user needs to:
+### Mode 1: Coding Assistant *(default)*
 
-- Build or transform `.xlsx` files in JS/TS (reports, exports, ETL, templates)
-- Round-trip existing workbooks while preserving unknown OOXML
-- Author cells, styles, tables, charts, validation, CF, comments, protection, etc.
+Use when the user wants code, examples, snippets, integration guidance, explanations, API usage, or changes to project code. Example phrases: "show me how", "write code", "snippet", "integrate", "how do I add a chart", "return bytes for download".
 
-Do **not** use for on-screen spreadsheet editing widgets or EJ2 Grid.
+1. **Detect the host:** Node.js or browser; TypeScript (`tsconfig.json` or `.ts` sources → prefer TypeScript) or JavaScript; ESM or CommonJS; framework (React, Angular, Vue) when identifiable.
+2. **Check the dependency:** tell the user to `npm install @syncfusion/ej2-xlsx` if it is missing from `package.json`.
+3. **Generate code from the reference files only** — see the rules below.
+4. **Do not** execute code, create temporary scripts, or create workbook output files.
+
+### Mode 2: Execution *(only on explicit request)*
+
+Use only when the user explicitly asks to run something or to receive a finished workbook file. Example phrases: "create an Excel file", "generate a workbook", "update this xlsx and save a copy", "open this workbook and change B2", "save the result to output/report.xlsx", "run the script", "produce the completed spreadsheet".
+
+- Requires a **Node.js** environment (18+). In a browser-only workflow, stay in Mode 1 and say that execution is unavailable.
+- Full procedure: [references/execution-mode.md](references/execution-mode.md). Summary:
+  1. Copy `scripts/template.ts` to `{skill-root}/syncfusion-javascript-excel/scripts/temp-{timestamp}.ts` (never the workspace root).
+  2. Fill in `buildWorkbook()` using only APIs from the reference files.
+  3. Install dependencies inside `scripts/` (`npm install --no-save --no-package-lock @syncfusion/ej2-xlsx tsx`) if `scripts/node_modules` is absent.
+  4. Run `npx tsx temp-{timestamp}.ts --output <file.xlsx> [--input <file.xlsx>]` from the workspace directory that should contain the output.
+  5. Verify the output exists and is non-empty, delete the temp script, report SUCCESS/ERROR and the output path.
+- Never delete the output workbook or the user's input workbook. Do not modify unrelated project files.
+
+### Examples
+
+| Request | Mode | Result |
+|---|---|---|
+| "Show me how to create a workbook with a styled header" | 1 | TypeScript snippet only |
+| "Open a workbook and update B2" (code) | 1 | Snippet using `Workbook.open` / `save` |
+| "Add formulas, validation, and conditional formatting" | 1 | Snippet |
+| "Return XLSX bytes so the browser can download it" | 1 | `save()` bytes + `Blob` download snippet |
+| "Create output/sales-report.xlsx with a chart" | 2 | File created at the path |
+| "Update the uploaded `in.xlsx` and save a new copy" | 2 | New file; input untouched |
+| "Generate a workbook with several sheets, formulas, and a chart" | 2 | File created |
 
 ## Documentation and navigation guide
+
+### Execution mode
+📄 **Read:** [references/execution-mode.md](references/execution-mode.md)
+- Mode 2 procedure, `scripts/template.ts`, validation, cleanup
+
+### Browser and Node.js I/O
+📄 **Read:** [references/browser-and-node-io.md](references/browser-and-node-io.md)
+- Bytes vs path overloads, browser download/upload, Node file output
 
 ### Getting started
 📄 **Read:** [references/getting-started.md](references/getting-started.md)
@@ -114,6 +136,10 @@ Do **not** use for on-screen spreadsheet editing widgets or EJ2 Grid.
 - Check boxes, combo boxes, and other form controls
 - Sheet protect allow-flags; freeze panes
 
+### Page setup, print areas, headers and footers
+📄 **Read:** [references/page-setup.md](references/page-setup.md)
+- `sheet.pageSetup`: orientation, margins, scaling, headers/footers, print area/titles
+
 ### API conventions
 📄 **Read:** [references/api-conventions.md](references/api-conventions.md)
 - Index bases (sheet 0-based; cell row/col 1-based)
@@ -125,6 +151,12 @@ Do **not** use for on-screen spreadsheet editing widgets or EJ2 Grid.
 - What the library does **not** do
 - OOXML preservation and security limits
 - Workbook protect ≠ file encryption
+- Feature support matrix
+- Verified findings from invoice testing (style + number format, fit-to-page, text boxes)
+
+### Security and troubleshooting
+📄 **Read:** [references/security-and-troubleshooting.md](references/security-and-troubleshooting.md)
+- Untrusted input, path safety, licensing, large workbooks, common errors
 
 ## Quick start
 
@@ -146,14 +178,15 @@ async function main(): Promise<void> {
 
   // Round-trip
   const again = await Workbook.open(bytes);
-  console.log(again.sheet(0).cell('A1').value); // 42
+  const a1 = again.sheet(0).cell('A1').value; // 42
 
   // Node only: path overload
   // await wb.save('./out.xlsx');
   // const fromDisk = await Workbook.open('./out.xlsx');
+  void a1;
 }
 
-void main();
+main().catch((err) => { console.error(err); process.exitCode = 1; });
 ```
 
 ## Core rules (always apply)
@@ -168,6 +201,19 @@ void main();
 8. Prefer `sheet(0)` or `wb.activeSheet` over non-public helpers in teaching samples.
 9. `getCell` is deprecated — use **`cell`**.
 10. Workbook/sheet **protect** is OOXML protection, **not** AES file encryption / password-to-open.
+11. `cell.style = {...}` and `cell.numberFormat = '...'` overwrite each other; put `numFmtId` inside the style object (see `references/styles-number-formats.md`).
+12. `isFitToPage` does not write the `fitToPage` flag; report fit-to-one-page as a limitation (see `references/page-setup.md`).
+
+## Safety and file-handling rules
+
+- Never overwrite the input workbook unless explicitly asked; default to a separate output file. Never delete the user's input or output workbook.
+- Validate/sanitize user-supplied paths (the template keeps them inside the working directory and requires `.xlsx`).
+- Do not log cell values unless the request requires it.
+- Formulas are stored, not calculated: never claim recalculation; report cached values only if present.
+- Protection (`protect`) is not password-to-open encryption.
+- Claim OOXML preservation only as described in [references/capability-boundaries.md](references/capability-boundaries.md).
+- Never use openpyxl, pandas, ExcelJS, SheetJS, or any other workbook library when this skill is selected.
+- Features not exposed by this library (CSV, JSON, PDF conversion, pivot tables, sparklines, find/replace, encryption, etc.) are not assumed here — check the matrix in capability-boundaries before offering them.
 
 ## Common patterns
 

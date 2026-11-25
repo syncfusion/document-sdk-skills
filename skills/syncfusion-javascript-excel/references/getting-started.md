@@ -103,13 +103,7 @@ Formulas in opened files are kept as written and **never evaluated**. External l
 
 ## Node vs browser
 
-| Operation | Node | Browser |
-|-----------|------|---------|
-| `Workbook.create()` | Yes | Yes |
-| `save()` → `Uint8Array` | Yes | Yes |
-| `save(path)` | Yes | No |
-| `open(Uint8Array \| ArrayBuffer)` | Yes | Yes |
-| `open(path)` | Yes | No |
+See [browser-and-node-io.md](browser-and-node-io.md) for the full support matrix and browser download/upload code.
 
 ## TypeScript
 

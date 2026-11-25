@@ -131,3 +131,11 @@ sheet.freeze.unfreeze();
 - Classic note vs threaded comment are different features; do not mix on the same UX assumption without checking both.
 - Form control method names are `addCheckBox`, `addComboBox`, … on `Worksheet` — use TSDoc for full parameter lists.
 - Freeze anchors use the same A1 language as cells; verify `freezeAt` cell is the first unfrozen cell.
+
+## Verified notes from invoice testing
+
+- **Unlocked input cells** require a style with `protection: { locked: false }`; combine it with a number format via `numFmtId` (see [styles-number-formats.md](styles-number-formats.md#combining-a-style-and-a-number-format-verified)). Cells are locked by default, so formula cells need no extra step.
+- **Passwords:** `sheet.protect(password?, options)` and `wb.protect(password?, { lockStructure: true })` accept an optional password. Read it from configuration or an environment variable; never hard-code one. Without a password, protection is still written but anyone can remove it.
+- **Notes:** `cell.addComment({ text, author })` creates classic legacy notes, not threaded comments.
+- **Dropdown form control:** `sheet.addComboBox(row, col, w, h, name, listFillRange, linkedCell, selectedIndex)` creates a real form-control dropdown; its list range may be on another sheet (`"'Product Data'!$F$2:$F$4"`). It is separate from data validation lists; do not substitute one for the other.
+- Workbook structure protection (`lockStructure`), sheet protection and password-to-open encryption are three different things; only the first two exist in this library.
